@@ -1,5 +1,5 @@
-------       -------  MÀY ĐÃ SKID ĐC NÓ....
-    --------- LOCALGUI=/#082929#)#
+
+--{~×~×€=$==${%{©==©[©{©{%°€✓€{=$=©=©=101982(3///1/10293)2///29292(2939tlovali2992(2(₫+(₫(*(#(#(#(₫((thucaisjsjjgsshhsbzbzjzjlgenvnslsksjsj/#//#)#(₫("bshsh
 local g = game; local lp = g.Players.LocalPlayer; local core = g:GetService("CoreGui"); local run = g:GetService("RunService")
 
 task.spawn(function()
