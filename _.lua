@@ -1,7 +1,6 @@
--- [[ DARK HUB ULTIMATE - FIXED END ERROR ]]
+
 repeat task.wait() until game:IsLoaded()
 
--- [[ 0. HỆ THỐNG LOAD UI ]]
 local function LoadUI()
     local success, result = pcall(function()
         return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -13,27 +12,22 @@ local Rayfield = LoadUI()
 if not Rayfield then task.wait(2); Rayfield = LoadUI() end
 if not Rayfield then return end
 
--- [[ 1. BIẾN HỆ THỐNG & BẢO MẬT ]]
 local g = game; local lp = g.Players.LocalPlayer; local UIS = g:GetService("UserInputService")
 
-task.spawn(function()
-    local mt = getrawmetatable(g); setreadonly(mt, false); local oldIdx = mt.__index
-    mt.__index = newcclosure(function(t, k)
-        if not checkcaller() then
-            if k == "WalkSpeed" then return 16 end
-            if k == "JumpPower" then return 50 end
-        end
-        return oldIdx(t, k)
-    end)
-    setreadonly(mt, true)
-end)
-
--- [[ 2. KHỞI TẠO WINDOW ]]
 local Window = Rayfield:CreateWindow({
     Name = "DARK HUB | Dead Rail ULTIMATE",
-    LoadingTitle = "Đang khởi tạo DARK HUB...",
-    LoadingSubtitle = "by quocthai8424",
-    KeySystem = false 
+    LoadingTitle = "Đang kiểm tra bản quyền...",
+    LoadingSubtitle = "by ilovedog",
+    KeySystem = true,
+    KeySettings = {
+        Title = "DARK HUB | Key System",
+        Subtitle = "Vui lòng nhập Key để tiếp tục",
+        Note = "Tham gia Discord để lấy Key miễn phí!",
+        FileName = "PRINT____KEY", 
+        SaveKey = true,
+        GrabKeyFromSite = false,
+        Key = {"PRINT36"} 
+    }
 })
 
 -- TABS
@@ -41,7 +35,21 @@ local MainTab = Window:CreateTab("Main", 4483362458)
 local ESPTab = Window:CreateTab("ESP Visuals", 4483362458)
 local PlayerTab = Window:CreateTab("Player", 12128784110)
 local AutoTab = Window:CreateTab("Auto Farm", 4483362458)
+local InfoTab = Window:CreateTab("Information", 4483362458) -- KHÔI PHỤC TAB INFO
 local SettingTab = Window:CreateTab("Settings", 4483362458)
+
+InfoTab:CreateSection("Bản Quyền")
+InfoTab:CreateLabel("Script được viết bởi: ilovedog")
+InfoTab:CreateLabel("Phiên bản: 6.7 Ultimate")
+
+InfoTab:CreateSection("Hệ Thống Key")
+InfoTab:CreateButton({
+    Name = "Copy Link Discord (Lấy Key)",
+    Callback = function()
+        setclipboard("https://discord.gg/RWpWmd4G") 
+        Rayfield:Notify({Title = "DARK HUB", Content = "Đã copy link Discord vào bộ nhớ tạm!", Duration = 5})
+    end
+})
 
 -- Hàm hỗ trợ ESP
 local function ApplyESP(obj, color)
@@ -54,8 +62,6 @@ end
 
 -- [[ TAB MAIN ]]
 MainTab:CreateSection("Combat")
-local ar = 50
-MainTab:CreateSlider({Name = "Kill Aura Range", Range = {0, 100}, Increment = 1, CurrentValue = 50, Callback = function(v) ar = v end})
 MainTab:CreateToggle({Name = "Kill Aura", CurrentValue = false, Callback = function(v) _G.KA = v end})
 
 MainTab:CreateSection("Bring Items")
@@ -87,29 +93,11 @@ MainTab:CreateButton({
 })
 
 -- [[ TAB ESP ]]
-ESPTab:CreateSection("Entities")
-local function ESP_Loop(toggle_var, keyword, color)
-    while _G[toggle_var] do
-        for _, o in pairs(workspace:GetChildren()) do
-            if o:FindFirstChild("Humanoid") and o ~= lp.Character then
-                if o.Name:lower():find(keyword) then ApplyESP(o, color) end
-            end
-        end
-        task.wait(2)
-    end
-end
-ESPTab:CreateToggle({Name = "ESP Zombie", CurrentValue = false, Callback = function(v) _G.EZ = v; if v then task.spawn(function() ESP_Loop("EZ", "zombie", Color3.new(0,1,0)) end) end end})
-ESPTab:CreateToggle({Name = "ESP Ma Sói", CurrentValue = false, Callback = function(v) _G.EW = v; if v then task.spawn(function() ESP_Loop("EW", "werewolf", Color3.fromRGB(139, 69, 19)) end) end end})
-ESPTab:CreateToggle({Name = "ESP Ma Cà Rồng", CurrentValue = false, Callback = function(v) _G.EV = v; if v then task.spawn(function() ESP_Loop("EV", "vampire", Color3.new(1,0,0)) end) end end})
-ESPTab:CreateToggle({Name = "ESP Boss", CurrentValue = false, Callback = function(v) _G.EB = v; if v then task.spawn(function() ESP_Loop("EB", "boss", Color3.new(1,0,1)) end) end end})
-ESPTab:CreateToggle({Name = "ESP Bond (Tiền Class)", CurrentValue = false, Callback = function(v) _G.ESPB = v; task.spawn(function() while _G.ESPB do for _, obj in pairs(workspace:GetDescendants()) do if obj.Name:lower():find("bond") then ApplyESP(obj, Color3.fromRGB(255, 0, 255)) end end task.wait(3) end end) end})
+ESPTab:CreateToggle({Name = "ESP Zombie", CurrentValue = false, Callback = function(v) _G.EZ = v; if v then task.spawn(function() while _G.EZ do for _, o in pairs(workspace:GetChildren()) do if o:FindFirstChild("Humanoid") and o.Name:lower():find("zombie") then ApplyESP(o, Color3.new(0,1,0)) end end task.wait(2) end end) end end})
+ESPTab:CreateToggle({Name = "ESP Bond (Tiền Class)", CurrentValue = false, Callback = function(v) _G.ESPB = v; task.spawn(function() while _G.ESPB do for _, obj in pairs(workspace:GetDescendants()) do if obj.Name:lower():find("bond") then ApplyESP(obj, Color3.fromRGB(255, 0, 255)) end end task.wait(3) end end) end end})
 
 -- [[ TAB PLAYER ]]
-PlayerTab:CreateSection("Abilities")
 PlayerTab:CreateToggle({Name = "Bất Tử (God Mode)", CurrentValue = false, Callback = function(v) _G.God = v; task.spawn(function() while _G.God do pcall(function() lp.Character.Humanoid.Health = 100 end) task.wait(0.1) end end) end})
-PlayerTab:CreateToggle({Name = "Tàng Hình (Invisible)", CurrentValue = false, Callback = function(v) pcall(function() for _, p in pairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") or p:IsA("Decal") then p.Transparency = v and 1 or 0 end end end) end})
-
-PlayerTab:CreateSection("Movement")
 PlayerTab:CreateSlider({Name = "WalkSpeed", Range = {16, 200}, Increment = 1, CurrentValue = 16, Callback = function(v) if lp.Character and lp.Character:FindFirstChild("Humanoid") then lp.Character.Humanoid.WalkSpeed = v end end})
 
 _G.FlySpeed = 50
@@ -138,9 +126,8 @@ PlayerTab:CreateToggle({
 })
 
 -- [[ TAB AUTO FARM ]]
-AutoTab:CreateSection("Auto Farming")
 AutoTab:CreateToggle({
-    Name = "Auto Hunt Bond (Tiền Class)",
+    Name = "Auto Hunt Bond",
     CurrentValue = false,
     Callback = function(v)
         _G.HuntBond = v
@@ -152,37 +139,6 @@ AutoTab:CreateToggle({
                             lp.Character.HumanoidRootPart.CFrame = (obj:IsA("Model") and obj:GetModelCFrame() or obj.CFrame) * CFrame.new(0, 2, 0)
                             task.wait(0.5)
                             if obj:FindFirstChild("TouchTransmitter") then firetouchinterest(lp.Character.HumanoidRootPart, obj, 0); firetouchinterest(lp.Character.HumanoidRootPart, obj, 1) end
-                            if obj:FindFirstChild("ProximityPrompt") then fireproximityprompt(obj.ProximityPrompt) end
-                        end
-                    end
-                end)
-                task.wait(2)
-            end
-        end)
-    end
-})
-
-AutoTab:CreateToggle({
-    Name = "Auto Farm Tiền (Gom & Bán)",
-    CurrentValue = false,
-    Callback = function(v)
-        _G.AutoMoney = v
-        task.spawn(function()
-            while _G.AutoMoney do
-                local items = false
-                pcall(function()
-                    for _, obj in pairs(workspace:GetDescendants()) do
-                        if _G.AutoMoney and (obj.Name:lower():find("corpse") or obj.Name:lower():find("money")) then
-                            items = true
-                            lp.Character.HumanoidRootPart.CFrame = (obj:IsA("Model") and obj:GetModelCFrame() or obj.CFrame); task.wait(0.5)
-                        end
-                    end
-                    if items then
-                        for _, s in pairs(workspace:GetDescendants()) do
-                            if s.Name:lower():find("sell") or s.Name:lower():find("table") then
-                                lp.Character.HumanoidRootPart.CFrame = s.CFrame; task.wait(1)
-                                if s:FindFirstChild("ClickDetector") then fireclickdetector(s.ClickDetector) end; break
-                            end
                         end
                     end
                 end)
@@ -194,6 +150,6 @@ AutoTab:CreateToggle({
 
 -- [[ TAB SETTINGS ]]
 SettingTab:CreateButton({Name = "🚀 FPS Boost", Callback = function() g:GetService("Lighting").GlobalShadows = false; for _, v in pairs(g:GetDescendants()) do if v:IsA("Part") then v.Material = "SmoothPlastic" end end end})
-SettingTab:CreateButton({Name = "❌ Hủy Script", Callback = function() _G.KA = false; _G.HuntBond = false; _G.AutoMoney = false; _G.EZ = false; _G.EW = false; _G.EV = false; _G.EB = false; _G.ESPB = false; Rayfield:Destroy() end})
+SettingTab:CreateButton({Name = "❌ Hủy Script", Callback = function() Rayfield:Destroy() end})
 
-Rayfield:Notify({Title = "DARK HUB", Content = "đã sẵn sàng!", Duration = 5})
+Rayfield:Notify({Title = "DARK HUB", Content = "Đã sẵn sàng", Duration = 5})
