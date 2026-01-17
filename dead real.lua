@@ -75,7 +75,7 @@ MainTab:CreateToggle({
                         if e:FindFirstChild("Humanoid") and e ~= lp.Character then
                             local er = e:FindFirstChild("HumanoidRootPart")
                             if er and (lp.Character.HumanoidRootPart.Position - er.Position).Magnitude <= ar then
-                                -- Combat logic here
+                                -- Logic chém quái
                             end
                         end
                     end
@@ -206,25 +206,6 @@ AutoTab:CreateToggle({
 })
 
 -- [[ SETTINGS TAB ]]
-SettingTab:CreateSection("Performance")
-SettingTab:CreateToggle({
-   Name = "White Part Mode",
-   CurrentValue = false,
-   Callback = function(v)
-      _G.WhitePart = v
-      task.spawn(function()
-         while _G.WhitePart do
-            for _, obj in pairs(workspace:GetDescendants()) do
-               if obj:IsA("BasePart") and not (obj.Parent:FindFirstChild("Humanoid") or obj:FindFirstChild("ClickDetector") or obj.Name:find("Bond")) then
-                  obj.Color = Color3.fromRGB(255, 255, 255); obj.Material = Enum.Material.SmoothPlastic
-               end
-            end
-            task.wait(5)
-         end
-      end)
-   end
-})
-
 SettingTab:CreateSection("System")
 SettingTab:CreateButton({
     Name = "❌ [destroy]",
@@ -236,7 +217,7 @@ SettingTab:CreateButton({
             Actions = {
                 ["Yes"] = {Name = "Yes", Callback = function()
                     _G.KA = false; _G.ZE = false; _G.SE = false; _G.Flying = false; 
-                    _G.SpeedEnabled = false; _G.LootMoney = false; _G.FB = false; _G.WhitePart = false
+                    _G.SpeedEnabled = false; _G.LootMoney = false; _G.FB = false;
                     Rayfield:Destroy()
                 end},
                 ["No"] = {Name = "No", Callback = function() end}
