@@ -1,147 +1,166 @@
-repeat task.wait() until game:IsLoaded()
+--[[
+    DARK HUB - DEAD RAIL ULTIMATE
+    Author: ilovedog
+    Key: T_H_R_E_N_5_@
+    Discord: https://discord.gg/HfVYnr8z
+]]
 
-local function LoadUI()
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- Tự động copy link Discord ngay khi chạy script
+local discordLink = "https://discord.gg/HfVYnr8z"
+if setclipboard then
+    setclipboard(discordLink)
+end
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+-- Variables
+local Config = {
+    AutoFarm = false,
+    FarmSpeed = 150,
+    Noclip = false,
+    ServerHop = false,
+    AntiBan = true
+}
+
+-- [NOCLIP LOGIC]
+RunService.Stepped:Connect(function()
+    if Config.Noclip then
+        local char = Players.LocalPlayer.Character
+        if char then
+            for _, v in pairs(char:GetDescendants()) do
+                if v:IsA("BasePart") then
+                    v.CanCollide = false
+                end
+            end
+        end
+    end
+end)
+
+-- [SERVER HOP LOGIC]
+local function doServerHop()
+    local success, servers = pcall(function()
+        return HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=100")).data
     end)
-    return success and result or nil
+    if success then
+        for _, v in pairs(servers) do
+            if v.playing < v.maxPlayers and v.id ~= game.JobId then
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, v.id)
+                break
+            end
+        end
+    end
 end
 
-local Rayfield = LoadUI()
-if not Rayfield then task.wait(2); Rayfield = LoadUI() end
-if not Rayfield then return end
+-- [FARM LOGIC]
+local function startUltraFarm()
+    task.spawn(function()
+        while Config.AutoFarm do
+            task.wait(0.1)
+            local char = Players.LocalPlayer.Character
+            local root = char and char:FindFirstChild("HumanoidRootPart")
+            if not root then continue end
 
-local g = game; local lp = g.Players.LocalPlayer; local UIS = g:GetService("UserInputService")
+            local target = nil
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v.Name == "Bond" or v.Name == "BondNote" or v.Name == "BondItem" then
+                    target = v:IsA("BasePart") and v or v:FindFirstChildWhichIsA("BasePart")
+                    if target then break end
+                end
+            end
 
+            if target then
+                local dist = (root.Position - target.Position).Magnitude
+                local tween = TweenService:Create(root, TweenInfo.new(dist/Config.FarmSpeed, Enum.EasingStyle.Linear), {CFrame = target.CFrame * CFrame.new(0, 2, 0)})
+                tween:Play()
+                tween.Completed:Wait()
+                
+                local prompt = target:FindFirstChildOfClass("ProximityPrompt") or target.Parent:FindFirstChildOfClass("ProximityPrompt")
+                if prompt then fireproximityprompt(prompt) end
+            elseif Config.ServerHop then
+                doServerHop()
+                break
+            end
+        end
+    end)
+end
+
+-- [RAYFIELD WINDOW]
 local Window = Rayfield:CreateWindow({
-    Name = "DARK HUB | Dead Rail ULTIMATE",
-    LoadingTitle = "Đang kiểm tra bản quyền...",
-    LoadingSubtitle = "by ilovedog",
-    KeySystem = true,
-    KeySettings = {
-        Title = "DARK HUB | Key System",
-        Subtitle = "Vui lòng nhập Key để tiếp tục",
-        Note = "Tham gia Discord để lấy Key miễn phí!",
-        FileName = "DarkHubKey", 
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = {"32675734"} 
-    }
+   Name = "Dark Hub | Dead Rail",
+   LoadingTitle = "Script by ilovedog",
+   LoadingSubtitle = "Link Discord đã được copy!",
+   KeySystem = true,
+   KeySettings = {
+      Title = "Key System",
+      Subtitle = "Join Discord to get Key",
+      Note = "Link: " .. discordLink .. " (Nhấn để copy lại)",
+      FileName = "DarkHubKey", 
+      SaveKey = true, 
+      GrabKeyFromSite = false,
+      Key = {"T_H_R_E_N_5_@"}
+   }
 })
 
-local MainTab = Window:CreateTab("Main", 4483362458)
-local ESPTab = Window:CreateTab("ESP Visuals", 4483362458)
-local PlayerTab = Window:CreateTab("Player", 12128784110)
-local AutoTab = Window:CreateTab("Auto Farm", 4483362458)
-local InfoTab = Window:CreateTab("Information", 4483362458)
-local SettingTab = Window:CreateTab("Settings", 4483362458)
-
-InfoTab:CreateSection("Bản Quyền")
-InfoTab:CreateLabel("Script được viết bởi: ilovedog")
-InfoTab:CreateLabel("Phiên bản: 6.7 Ultimate")
-
-InfoTab:CreateSection("Hệ Thống Key")
-InfoTab:CreateButton({
-    Name = "Copy Link Discord (Lấy Key)",
-    Callback = function()
-        setclipboard("https://discord.gg/HfVYnr8z")
-        Rayfield:Notify({Title = "DARK HUB", Content = "Đã copy link Discord!", Duration = 5})
-    end
+-- Thông báo sau khi nhập Key thành công
+Rayfield:Notify({
+    Title = "Dark Hub",
+    Content = "Chào mừng ilovedog! Link Discord đã nằm trong Clipboard của bạn.",
+    Duration = 5
 })
 
-local function ApplyESP(obj, color)
-    if obj and not obj:FindFirstChild("DH_Highlight") then
-        local h = Instance.new("Highlight", obj)
-        h.Name = "DH_Highlight"; h.FillColor = color; h.OutlineColor = Color3.new(1,1,1)
-        h.FillTransparency = 0.5; h.DepthMode = "AlwaysOnTop"
-    end
-end
+-- Tabs
+local FarmTab = Window:CreateTab("Auto Farm")
+local SettingTab = Window:CreateTab("Settings")
 
-MainTab:CreateSection("Combat")
-MainTab:CreateToggle({Name = "Kill Aura", CurrentValue = false, Callback = function(v) _G.KA = v end})
-
-MainTab:CreateSection("Bring Items")
-local selectedItem = "All"
-MainTab:CreateDropdown({
-    Name = "Chọn loại đồ",
-    Options = {"All", "Food", "Medical", "Ammo", "Weapon"},
-    CurrentOption = "All",
-    Callback = function(v) selectedItem = v end
-})
-MainTab:CreateButton({
-    Name = "Hút Vật Phẩm Đã Chọn",
-    Callback = function()
-        for _, item in pairs(workspace:GetDescendants()) do
-            if item:IsA("TouchTransmitter") then
-                local itemName = item.Parent.Name:lower()
-                local shouldBring = (selectedItem == "All") or 
-                                   (selectedItem == "Food" and (itemName:find("food") or itemName:find("water"))) or
-                                   (selectedItem == "Medical" and (itemName:find("med") or itemName:find("bandage"))) or
-                                   (selectedItem == "Ammo" and itemName:find("ammo")) or
-                                   (selectedItem == "Weapon" and (itemName:find("gun") or itemName:find("sword")))
-                if shouldBring then
-                    firetouchinterest(lp.Character.HumanoidRootPart, item.Parent, 0)
-                    firetouchinterest(lp.Character.HumanoidRootPart, item.Parent, 1)
-                end
-            end
-        end
-    end
+-- Farm Section
+FarmTab:CreateSection("Main Farming")
+FarmTab:CreateToggle({
+   Name = "Auto Farm Bond",
+   CurrentValue = false,
+   Callback = function(v)
+      Config.AutoFarm = v
+      if v then startUltraFarm() end
+   end,
 })
 
-ESPTab:CreateToggle({Name = "ESP Zombie", CurrentValue = false, Callback = function(v) _G.EZ = v; if v then task.spawn(function() while _G.EZ do for _, o in pairs(workspace:GetChildren()) do if o:FindFirstChild("Humanoid") and o.Name:lower():find("zombie") then ApplyESP(o, Color3.new(0,1,0)) end end task.wait(2) end end) end end})
-ESPTab:CreateToggle({Name = "ESP Bond (Tiền Class)", CurrentValue = false, Callback = function(v) _G.ESPB = v; task.spawn(function() while _G.ESPB do for _, obj in pairs(workspace:GetDescendants()) do if obj.Name:lower():find("bond") then ApplyESP(obj, Color3.fromRGB(255, 0, 255)) end end task.wait(3) end end) end end})
-
-PlayerTab:CreateToggle({Name = "Bất Tử (God Mode)", CurrentValue = false, Callback = function(v) _G.God = v; task.spawn(function() while _G.God do pcall(function() lp.Character.Humanoid.Health = 100 end) task.wait(0.1) end end) end})
-PlayerTab:CreateSlider({Name = "WalkSpeed", Range = {16, 200}, Increment = 1, CurrentValue = 16, Callback = function(v) if lp.Character and lp.Character:FindFirstChild("Humanoid") then lp.Character.Humanoid.WalkSpeed = v end end})
-
-_G.FlySpeed = 50
-PlayerTab:CreateToggle({
-    Name = "Fly Mode (Bay)",
-    CurrentValue = false,
-    Callback = function(v)
-        _G.Flying = v; local c = lp.Character
-        if v and c and c:FindFirstChild("HumanoidRootPart") then
-            local bv = Instance.new("BodyVelocity", c.HumanoidRootPart); bv.Name = "Dark_V"; bv.MaxForce = Vector3.new(1e5, 1e5, 1e5)
-            local bg = Instance.new("BodyGyro", c.HumanoidRootPart); bg.Name = "Dark_G"; bg.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
-            task.spawn(function()
-                while _G.Flying do
-                    local cam = workspace.CurrentCamera.CFrame; local dir = Vector3.new(0,0,0)
-                    if UIS:IsKeyDown(Enum.KeyCode.W) then dir = dir + cam.LookVector end
-                    if UIS:IsKeyDown(Enum.KeyCode.S) then dir = dir - cam.LookVector end
-                    if UIS:IsKeyDown(Enum.KeyCode.A) then dir = dir - cam.RightVector end
-                    if UIS:IsKeyDown(Enum.KeyCode.D) then dir = dir + cam.RightVector end
-                    bv.Velocity = dir * _G.FlySpeed; bg.CFrame = cam; task.wait()
-                end
-                if c.HumanoidRootPart:FindFirstChild("Dark_V") then c.HumanoidRootPart.Dark_V:Destroy() end
-                if c.HumanoidRootPart:FindFirstChild("Dark_G") then c.HumanoidRootPart.Dark_G:Destroy() end
-            end)
-        end
-    end
+FarmTab:CreateToggle({
+   Name = "Auto Server Hop",
+   CurrentValue = false,
+   Callback = function(v) Config.ServerHop = v end,
 })
 
-AutoTab:CreateToggle({
-    Name = "Auto Hunt Bond",
-    CurrentValue = false,
-    Callback = function(v)
-        _G.HuntBond = v
-        task.spawn(function()
-            while _G.HuntBond do
-                pcall(function()
-                    for _, obj in pairs(workspace:GetDescendants()) do
-                        if _G.HuntBond and obj.Name:lower():find("bond") then
-                            lp.Character.HumanoidRootPart.CFrame = (obj:IsA("Model") and obj:GetModelCFrame() or obj.CFrame) * CFrame.new(0, 2, 0)
-                            task.wait(0.5)
-                            if obj:FindFirstChild("TouchTransmitter") then firetouchinterest(lp.Character.HumanoidRootPart, obj, 0); firetouchinterest(lp.Character.HumanoidRootPart, obj, 1) end
-                        end
-                    end
-                end)
-                task.wait(2)
-            end
-        end)
-    end
+-- Settings Section
+SettingTab:CreateSection("Movement & Security")
+SettingTab:CreateToggle({
+   Name = "Noclip (Xuyên tường)",
+   CurrentValue = false,
+   Callback = function(v) Config.Noclip = v end,
 })
 
-SettingTab:CreateButton({Name = "🚀 FPS Boost", Callback = function() g:GetService("Lighting").GlobalShadows = false; for _, v in pairs(g:GetDescendants()) do if v:IsA("Part") then v.Material = "SmoothPlastic" end end end})
-SettingTab:CreateButton({Name = "❌ Hủy Script", Callback = function() Rayfield:Destroy() end})
+SettingTab:CreateSlider({
+   Name = "Tween Speed",
+   Min = 50, Max = 300, CurrentValue = 150,
+   Callback = function(v) Config.FarmSpeed = v end,
+})
 
-Rayfield:Notify({Title = "DARK HUB", Content = "Script đã sẵn sàng!", Duration = 5})
+SettingTab:CreateButton({
+   Name = "Copy Discord Link Again",
+   Callback = function()
+       if setclipboard then
+           setclipboard(discordLink)
+           Rayfield:Notify({Title = "Success", Content = "Đã copy link Discord!", Duration = 2})
+       end
+   end,
+})
+
+SettingTab:CreateButton({
+   Name = "Force Server Hop",
+   Callback = function() doServerHop() end,
+})
+
+Rayfield:LoadConfiguration()
