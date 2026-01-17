@@ -8,15 +8,16 @@
     　／￣|　　 |　|　|
     　| (￣ヽ＿_ヽ_)__)
     　＼二つ
-██  
-                                                                 
-    PRIVATE FOR: hieuzed05 & HannahPrimalMystic
+    
+    DARK HUB - RAYFIELD EDITION
+    OWNERS: hieuzed05 & HannahPrimalMystic
     CREDITS: Script by ilovedog | Idea by HUYKOGIAU
 ]]--
 
+--// SECURITY: WHITELIST
 local _0x_v = {
-    ["\104\105\101\117\122\101\100\48\53"] = true,
-    ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true
+    ["\104\105\101\117\122\101\100\48\53"] = true, -- hieuzed05
+    ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true -- HannahPrimalMystic
 }
 
 local _0x_p = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
@@ -25,57 +26,86 @@ if not _0x_v[_0x_p.Name] then
     return
 end
 
-local _0x_g = getgenv()
-_0x_g["\71\101\110\84"] = 2.5
-_0x_g["\65\70"] = false
+--// GLOBAL CONFIG
+getgenv().AutoFarm = false
+getgenv().GenDelay = 2.5
 
---// ENCRYPTED REPOSITORY
-local _0x_s = {
-    ["\85\73"] = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\120\72\101\112\116\99\47\75\97\118\111\45\85\73\45\76\105\98\114\97\114\121\47\109\97\105\110\47\115\111\114\99\101\46\108\117\97",
-    ["\68\67"] = "\104\116\116\112\115\58\47\47\100\105\115\99\111\114\100\46\103\103\47\82\87\112\87\109\100\52\71",
-    ["\71\69\78"] = "\71\101\110\101\114\97\116\111\114"
-}
+--// RAYFIELD UI INITIALIZATION
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
---// UI LOAD
-local _0x_l = loadstring(game:HttpGet(_0x_s["\85\73"]))()
-local _0x_w = _0x_l.CreateLib("\68\65\82\75\32\72\85\66\32\86\73\80", "\68\97\114\107\84\104\101\109\101")
+local Window = Rayfield:CreateWindow({
+   Name = "\68\65\82\75\32\72\85\66\32\124\32\80\82\73\86\65\84\69",
+   LoadingTitle = "\68\65\82\75\32\72\85\66",
+   LoadingSubtitle = "by ilovedog",
+   ConfigurationSaving = { Enabled = false }
+})
 
---// TAB AUTO FARM
-local _0x_t1 = _0x_w:NewTab("\65\117\116\111\32\70\97\114\109")
-local _0x_s1 = _0x_t1:NewSection("\71\101\110\101\114\97\116\111\114\32\70\97\114\109\101\114")
+--// TAB: MAIN
+local Tab = Window:CreateTab("\65\117\116\111\32\70\97\114\109", 4483362458) -- Main Tab
 
-_0x_s1:NewToggle("\65\117\116\111\32\82\101\112\97\105\114", "", function(v) _0x_g["\65\70"] = v end)
-_0x_s1:NewSlider("\83\112\101\101\100", "", 10, 2, function(v) _0x_g["\71\101\110\84"] = v end)
+Tab:CreateToggle({
+   Name = "Auto Repair Generators",
+   CurrentValue = false,
+   Callback = function(Value)
+      getgenv().AutoFarm = Value
+   end,
+})
 
---// TAB SETTINGS
-local _0x_t2 = _0x_w:NewTab("\83\101\116\116\105\110\103\115")
-local _0x_s2 = _0x_t2:NewSection("\83\121\115\116\101\109")
+Tab:CreateSlider({
+   Name = "Repair Time (Seconds)",
+   Range = {1, 10},
+   Increment = 1,
+   Suffix = "s",
+   CurrentValue = 2,
+   Callback = function(Value)
+      getgenv().GenDelay = Value
+   end,
+})
 
-_0x_s2:NewButton("\70\80\83\32\66\111\111\115\116", "", function()
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("\66\97\115\101\80\97\114\116") then v.Color = Color3.new(1,1,1) v.Material = Enum.Material.SmoothPlastic end
-    end
-end)
+--// TAB: SETTINGS
+local SettingsTab = Window:CreateTab("\83\101\116\116\105\110\103\115", 4483362458)
 
-_0x_s2:NewToggle("\65\110\116\105\45\65\70\75", "", function(v) _0x_g["\65\75"] = v end)
+SettingsTab:CreateButton({
+   Name = "FPS Boost",
+   Callback = function()
+      for _, v in pairs(workspace:GetDescendants()) do
+         if v:IsA("BasePart") then v.Color = Color3.new(1,1,1) v.Material = Enum.Material.SmoothPlastic end
+      end
+   end,
+})
 
---// TAB INFO
-local _0x_t3 = _0x_w:NewTab("\73\110\102\111")
-local _0x_s3 = _0x_t3:NewSection("\67\114\101\100\105\116\115")
-_0x_s3:NewLabel("\83\99\114\105\112\116\32\98\121\58\32\105\108\111\118\101\100\111\103")
-_0x_s3:NewLabel("\73\100\101\97\32\98\121\58\32\72\85\89\75\79\71\73\65\85")
-_0x_s3:NewButton("\67\111\112\121\32\68\105\115\99\111\114\100", "", function() setclipboard(_0x_s["\68\67"]) end)
+SettingsTab:CreateToggle({
+   Name = "Anti-AFK",
+   CurrentValue = false,
+   Callback = function(Value)
+      getgenv().AntiAFK = Value
+   end,
+})
 
---// OPTIMIZED CORE LOGIC
+--// TAB: INFO
+local InfoTab = Window:CreateTab("\73\110\102\111", 4483362458)
+InfoTab:CreateSection("Credits")
+InfoTab:CreateLabel("Script by: ilovedog")
+InfoTab:CreateLabel("Idea by: HUYKOGIAU")
+InfoTab:CreateButton({
+   Name = "Copy Discord Link",
+   Callback = function()
+      setclipboard("https://discord.gg/RWpWmd4G")
+      Rayfield:Notify({Title = "Success", Content = "Copied to clipboard!", Duration = 3})
+   end,
+})
+
+--// CORE LOGIC (OPTIMIZED)
 task.spawn(function()
     while true do
-        task.wait(1.2)
-        if _0x_g["\65\70"] and _0x_p.Character and _0x_p.Character:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116") then
+        task.wait(1)
+        if getgenv().AutoFarm then
             pcall(function()
                 for _, v in pairs(workspace:GetChildren()) do
-                    if v.Name == _0x_s["\71\69\78"] then
+                    if v.Name == "\71\101\110\101\114\97\116\111\114" then
                         _0x_p.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 3, 0)
-                        task.wait(_0x_g["\71\101\110\84"])
+                        task.wait(getgenv().GenDelay)
+                        if not getgenv().AutoFarm then break end
                     end
                 end
             end)
@@ -83,20 +113,14 @@ task.spawn(function()
     end
 end)
 
---// ANTI-AFK
+--// ANTI-AFK CORE
 task.spawn(function()
-    while task.wait(15) do
-        if _0x_g["\65\75"] then
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):CaptureController()
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):ClickButton2(Vector2.new())
+    while task.wait(30) do
+        if getgenv().AntiAFK then
+            game:GetService("VirtualUser"):CaptureController()
+            game:GetService("VirtualUser"):ClickButton2(Vector2.new())
         end
     end
 end)
 
---// ANTI-BAN
-if hookmetamethod then
-    local _0x_o; _0x_o = hookmetamethod(game, "\95\95\110\97\109\101\99\97\108\108", function(self, ...)
-        if not checkcaller() and (getnamecallmethod() == "\75\105\99\107" or getnamecallmethod() == "\66\97\110") then return nil end
-        return _0x_o(self, ...)
-    end)
-end
+Rayfield:Notify({Title = "DARK HUB", Content = "Welcome, " .. _0x_p.Name, Duration = 5})
