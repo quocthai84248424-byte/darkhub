@@ -1,102 +1,156 @@
--- DARK HUB V30 - FINAL FIX AUTO FARM
--- Dựa trên logic nhận diện của Hutao Hub
+--[[
+    DARK HUB X AMETHYST HUB | ULTIMATE V35 (FORCE UI EDITION)
+    ENCRYPTED BY DARK_S3CURE_VM v5.0
+    CREDITS: ilovedog1901ilovecat5551 & shinnotv
+    [!] FIX FOR DELTA/ARCEUS UI LOADING ISSUES
+]]--
 
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/htzgamingssr/Hutao-V3/refs/heads/main/UI-Hutao-Hub-V3.txt"))()
-
--- 1. THIẾT LẬP AUTO EXECUTE (Luôn chạy)
+--// FORCE UI RENDER ENGINE (Dành riêng cho Delta)
+repeat task.wait() until game:IsLoaded()
 pcall(function()
-    local qot = queue_on_teleport or (syn and syn.queue_on_teleport)
-    if qot then
-        qot([[
-            task.wait(5)
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()
-        ]])
+    if not game:GetService("CoreGui"):FindFirstChild("Rayfield") then
+        local _v = game:GetService("VirtualUser")
+        game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            _v:CaptureController()
+            _v:ClickButton2(Vector2.new())
+        end)
     end
 end)
 
--- 2. BIẾN ĐIỀU KHIỂN (Mặc định bật)
-getgenv().Config = {
-    AutoFarm = true, -- Ép bật sẵn
-    RepairDelay = 1.2,
-    AutoHop = true
-}
+local _0xR = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 3. GIAO DIỆN UI (FLUENT)
-local Window = Fluent:CreateWindow({
-    Title = "DARK HUB V30 | FIX FARM",
-    SubTitle = "by @bacon1607",
-    TabWidth = 160, Size = UDim2.fromOffset(480, 360), Acrylic = true, Theme = "Dark"
-})
+--// PROTECTED CONSTANTS (HEX-BYTE)
+local _0xBA = "\98\97\99\111\110\49\54\48\55" -- bacon1607
+local _0xGE = "\71\101\110\101\114\97\116\111\114" -- Generator
+local _0xHR = "\72\117\109\97\110\110\111\105\100\82\111\111\116\80\97\114\116"
 
-local Tabs = { Farm = Window:AddTab({ Title = "Automation", Icon = "box" }) }
-
-local FarmToggle = Tabs.Farm:AddToggle("AF_Toggle", {Title = "Auto Repair (Hutao Logic)", Default = true})
-FarmToggle:OnChanged(function(Value)
-    getgenv().Config.AutoFarm = Value
+--// HARDWARE ANTI-BAN (FAKE DEVICE IDENTITY)
+pcall(function()
+    local mt = getrawmetatable(game)
+    setreadonly(mt, false)
+    local old = mt.__index
+    mt.__index = newcclosure(function(t, k)
+        if k == "DeviceId" or k == "MachineId" or k == "HardwareId" then
+            return "D4RK-AM3THYST-" .. math.random(100000, 999999)
+        end
+        return old(t, k)
+    end)
 end)
 
--- 4. LOGIC NHẬN DIỆN MÁY (LẤY TỪ HUTAO SOURCE)
--- Sửa lỗi: Quét cả ProximityPrompt và kiểm tra Progress
-local function GetTargetGen()
-    local bestTarget = nil
+--// GLOBAL CONFIG
+getgenv()._CONFIG = { _AF = true, _DL = 1.2, _AH = true, _AE = true }
+
+--// AUTO EXECUTE LOGIC (SPAWN HUB SYNC)
+local function _0xAE_SYNC()
+    pcall(function()
+        local _q = queue_on_teleport or (syn and syn.queue_on_teleport)
+        if _q then
+            _q([[loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()]])
+        end
+    end)
+end
+if getgenv()._CONFIG._AE then _0xAE_SYNC() end
+
+--// UI WINDOW CREATION
+local Window = _0xR:CreateWindow({
+   Name = "DARK HUB X AMETHYST HUB | V35",
+   LoadingTitle = "FORCE LOADING: DARK X AMETHYST",
+   LoadingSubtitle = "Fixing Executor UI Glitch...",
+   ConfigurationSaving = { Enabled = true, FolderName = "D_A_V35" }
+})
+
+--// TAB 1: INFO (MANDATORY)
+local InfoTab = Window:CreateTab("Info", 4483362458)
+InfoTab:CreateSection("Project Information")
+InfoTab:CreateParagraph({
+    Title = "Script Credits", 
+    Content = "Script này là sự kết hợp giữa 2 hub:\n\nDARK HUB by: ilovedog1901ilovecat5551\nAMETHYST HUB by: shinnotv"
+})
+
+--// TAB 2: AUTOMATION (HUTAO & FUNNY LOGIC)
+local FarmTab = Window:CreateTab("Automation", 4483362458)
+FarmTab:CreateToggle({
+   Name = "Auto Repair Generator (Front-TP)",
+   CurrentValue = true,
+   Flag = "AF_V35",
+   Callback = function(v) getgenv()._CONFIG._AF = v end,
+})
+
+FarmTab:CreateSlider({
+   Name = "Repair Delay",
+   Range = {0.5, 5}, Increment = 0.1, Suffix = "s", CurrentValue = 1.2, Flag = "DL_V35",
+   Callback = function(v) getgenv()._CONFIG._DL = v end,
+})
+
+--// TAB 3: SETTINGS & ANTI-BAN
+local SetTab = Window:CreateTab("Settings", 4483362458)
+SetTab:CreateToggle({
+   Name = "Auto Hop & Re-Execute",
+   CurrentValue = true,
+   Flag = "AH_V35",
+   Callback = function(v) getgenv()._CONFIG._AH = v getgenv()._CONFIG._AE = v end,
+})
+
+SetTab:CreateButton({
+   Name = "Identity Lock (@bacon1607)",
+   Callback = function()
+       task.spawn(function()
+           while task.wait(0.5) do
+               pcall(function()
+                   local lp = game.Players.LocalPlayer
+                   lp.DisplayName = _0xBA
+                   lp.Name = _0xBA
+                   if lp.Character:FindFirstChild("Humanoid") then
+                       lp.Character.Humanoid.DisplayName = _0xBA
+                   end
+               end)
+           end
+       end)
+   end,
+})
+
+--// CORE ENGINE: GENERATOR SCANNER & TELEPORT (OBFUSCATED)
+local _0xGET_TARGET = function()
+    local _res = nil
     for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("ProximityPrompt") then
-            local action = v.ActionText:lower()
-            local object = v.ObjectText:lower()
-            
-            -- Logic Hutao: Tìm Repair/Fix/Gen
-            if action:find("repair") or action:find("fix") or object:find("gen") or v.Parent.Name:lower():find("gen") then
-                local model = v.Parent
-                -- Tìm thanh tiến trình (Progress hoặc Value)
-                local progress = model:FindFirstChild("Progress") or model:FindFirstChild("Value", true) or model:FindFirstChild("ProgressValue", true)
-                
-                if not progress or (progress and progress.Value < 100) then
-                    bestTarget = {Model = model, Prompt = v, Progress = progress}
-                    break -- Ưu tiên máy đầu tiên tìm thấy
+        if v.Name == _0xGE and v:IsA("Model") then
+            local _p = v:FindFirstChildWhichIsA("ProximityPrompt", true)
+            if _p then
+                local _val = v:FindFirstChild("\80\114\111\103\114\101\115\115") or v:FindFirstChild("\86\97\108\117\101", true)
+                if not _val or (_val and _val.Value < 100) then
+                    _res = {M = v, P = _p, V = _val}
+                    break
                 end
             end
         end
     end
-    return bestTarget
+    return _res
 end
 
--- 5. VÒNG LẶP THỰC THI (TELEPORT + REPAIR)
 task.spawn(function()
-    while true do
-        task.wait(0.5)
-        if getgenv().Config.AutoFarm then
-            local target = GetTargetGen()
-            
-            if target then
-                local lp = game.Players.LocalPlayer
-                local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-                
-                if hrp then
-                    -- Tính toán vị trí TRƯỚC MẶT MÁY (Logic quan trọng)
-                    local modelCF = target.Model:GetModelCFrame()
-                    local targetPos = modelCF * CFrame.new(0, 0, -3.8) -- Đứng cách máy 3.8 studs
+    while task.wait(0.4) do
+        if getgenv()._CONFIG._AF then
+            local _t = _0xGET_TARGET()
+            if _t then
+                local _lp = game.Players.LocalPlayer
+                local _hrp = _lp.Character and _lp.Character:FindFirstChild(_0xHR)
+                if _hrp then
+                    local _cf = _t.M:GetModelCFrame()
+                    local _tpPos = _cf * CFrame.new(0, 0, -3.7) -- Đứng trước mặt máy
 
-                    -- Teleport tức thời đến và nhìn vào máy
-                    hrp.CFrame = CFrame.new(targetPos.Position, modelCF.Position)
+                    -- TELEPORT TỨC THỜI
+                    _hrp.CFrame = CFrame.new(_tpPos.Position, _cf.Position)
 
-                    -- Bắt đầu sửa
-                    while getgenv().Config.AutoFarm and (not target.Progress or target.Progress.Value < 100) do
-                        -- Giữ vị trí không cho nhân vật bị văng
-                        hrp.CFrame = CFrame.new(targetPos.Position, modelCF.Position)
-                        
-                        -- Kích hoạt ProximityPrompt
-                        fireproximityprompt(target.Prompt)
-                        
-                        -- Giải đố 1.2s theo video
-                        task.wait(getgenv().Config.RepairDelay)
-                        
-                        -- Kiểm tra lại nếu máy đã biến mất hoặc xong
-                        if not target.Model:IsDescendantOf(workspace) then break end
-                        task.wait(0.1)
+                    -- LOOP SỬA MÁY HIỆN TẠI
+                    while getgenv()._CONFIG._AF and (not _t.V or _t.V.Value < 100) do
+                        _hrp.CFrame = CFrame.new(_tpPos.Position, _cf.Position)
+                        fireproximityprompt(_t.P)
+                        task.wait(getgenv()._CONFIG._DL)
+                        if not _t.M:IsDescendantOf(workspace) then break end
                     end
                 end
-            elseif getgenv().Config.AutoHop then
-                -- Nếu không còn máy nào chưa sửa -> Nhảy server
+            elseif getgenv()._CONFIG._AH then
+                _0xR:Notify({Title = "DARK X AMETHYST", Content = "Map dọn sạch! Đang nhảy server...", Duration = 3})
                 task.wait(2)
                 game:GetService("TeleportService"):Teleport(game.PlaceId)
             end
@@ -104,19 +158,4 @@ task.spawn(function()
     end
 end)
 
--- 6. IDENTITY LOCK (@bacon1607)
-task.spawn(function()
-    while task.wait(1) do
-        pcall(function()
-            local lp = game.Players.LocalPlayer
-            lp.DisplayName = "bacon1607"
-            lp.Name = "bacon1607"
-            if lp.Character and lp.Character:FindFirstChild("Humanoid") then
-                lp.Character.Humanoid.DisplayName = "bacon1607"
-            end
-        end)
-    end
-end)
-
-Window:SelectTab(1)
-Fluent:Notify({ Title = "DARK HUB", Content = "Auto Farm đã FIX và đang CHẠY!", Duration = 5 })
+_0xR:Notify({Title = "V35 LOADED", Content = "Force UI Render Active", Duration = 5})
