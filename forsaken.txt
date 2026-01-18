@@ -1,18 +1,6 @@
 --[[
-    　　　　　／＞　　フ
-    　　　　　| 　_　 _ l
-    　 　　　／` ミ＿xノ
-    　　 　 /　　　 　 |
-    　　　 /　 ヽ　　 ﾉ
-    　 　 │　　|　|　|
-    　／￣|　　 |　|　|
-    　| (￣ヽ＿_ヽ_)__)
-    　＼二つ
-    ██  ██████  ██████  
-
-    --[[
-    DARK HUB - AUTO RESUME & FULL OBFUSCATED
-    SUPPORT: DELTA, KRNL, FLUXUS, ARCEUS X
+    DARK HUB - FINAL RE-FIX (NO NIL VALUE)
+    SUPPORT: DELTA, KRNL, ARCEUS X, FLUXUS
     OWNERS: hieuzed05 & HannahPrimalMystic
 ]]--
 
@@ -25,30 +13,39 @@ local _0xAUTH = {
 local _0xP = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
 if not _0xAUTH[_0xP.Name] then _0xP:Kick("\65\99\99\101\115\115\32\68\101\110\105\101\100") return end
 
---// CONFIG SYSTEM (Lưu vào file để Auto Execute)
+--// CONFIG
 local _0xG = getgenv()
 _0xG["\65\70"] = false
 _0xG["\65\75"] = false
 _0xG["\71\68"] = 2
 
---// RAYFIELD UI WITH AUTO-SAVE
-local Rayfield = loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\115\105\114\105\117\115\46\109\101\110\117\47\114\97\121\102\105\101\108\100"))()
+--// FIX "NIL VALUE" BY CALLING RAYFIELD SAFELY
+local Rayfield
+local success, err = pcall(function()
+    Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end)
+
+if not success or not Rayfield then
+    warn("Rayfield Load Failed: " .. tostring(err))
+    return
+end
+
 local Window = Rayfield:CreateWindow({
    Name = "\68\65\82\75\32\72\85\66\32\124\32\80\82\73\86\65\84\69",
    LoadingTitle = "\68\65\82\75\32\72\85\66",
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "\68\97\114\107\72\117\98\67\111\110\102\105\103", -- Thư mục DarkHubConfig
-      FileName = "\109\97\105\110\95\115\101\116\116\105\110\103" -- file main_setting
+      FolderName = "\68\97\114\107\72\117\98\67\111\110\102\105\103",
+      FileName = "\109\97\105\110\95\115\101\116\116\105\110\103"
    }
 })
 
---// TAB: AUTO FARM
+--// TAB: MAIN FARM
 local MainTab = Window:CreateTab("\65\117\116\111\32\70\97\114\109", 4483362458)
-local FarmToggle = MainTab:CreateToggle({
+MainTab:CreateToggle({
    Name = "Auto Repair Generators",
    CurrentValue = false,
-   Flag = "\70\97\114\109\70\108\97\103", -- Flag để lưu trạng thái
+   Flag = "FarmToggle",
    Callback = function(v) _0xG["\65\70"] = v end,
 })
 
@@ -58,27 +55,18 @@ MainTab:CreateSlider({
    Increment = 1,
    Suffix = "s",
    CurrentValue = 2,
-   Flag = "\83\112\101\101\100\70\108\97\103",
+   Flag = "SpeedSlider",
    Callback = function(v) _0xG["\71\68"] = v end,
 })
 
---// TAB: SETTINGS
+--// TAB: SETTINGS (Auto Resume & Fake Name)
 local SettTab = Window:CreateTab("\83\101\116\116\105\110\103\115", 4483362458)
 
 SettTab:CreateToggle({
-   Name = "Auto Save & Resume",
+   Name = "Auto Save Config",
    CurrentValue = true,
-   Flag = "\65\117\116\111\83\97\118\101",
-   Callback = function(v) 
-       -- Tính năng này mặc định được Rayfield xử lý qua ConfigurationSaving
-   end,
-})
-
-SettTab:CreateToggle({
-   Name = "Anti-AFK",
-   CurrentValue = false,
-   Flag = "\65\70\75\70\108\97\103",
-   Callback = function(v) _0xG["\65\75"] = v end,
+   Flag = "AutoSave",
+   Callback = function() end,
 })
 
 SettTab:CreateButton({
@@ -88,24 +76,31 @@ SettTab:CreateButton({
    end,
 })
 
+SettTab:CreateToggle({
+   Name = "Anti-AFK",
+   CurrentValue = false,
+   Flag = "AntiAFK",
+   Callback = function(v) _0xG["\65\75"] = v end,
+})
+
 --// TAB: INFO
 local InfoTab = Window:CreateTab("\73\110\102\111", 4483362458)
 InfoTab:CreateLabel("Script by: ilovedog")
 InfoTab:CreateLabel("Idea by: HUYKOGIAU")
 
---// CORE LOGIC (RESUMABLE)
+--// CORE LOGIC
 task.spawn(function()
     while true do
         task.wait(1.5)
         if _0xG["\65\70"] then
             pcall(function()
                 local char = _0xP.Character
-                local root = char and char:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116")
+                local root = char and char:FindFirstChild("HumanoidRootPart")
                 if root then
                     for _, v in pairs(workspace:GetDescendants()) do
-                        if (v.Name:find("\71\101\110") or v.Name:find("\103\101\110")) and v:IsA("\66\97\115\101\80\97\114\116") then
+                        if (v.Name:find("Gen") or v.Name:find("gen")) and v:IsA("BasePart") then
                             root.CFrame = v.CFrame * CFrame.new(0, 3, 0)
-                            local pr = v:FindFirstChildOfClass("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116") or v.Parent:FindFirstChildOfClass("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116")
+                            local pr = v:FindFirstChildOfClass("ProximityPrompt") or v.Parent:FindFirstChildOfClass("ProximityPrompt")
                             if pr then fireproximityprompt(pr) end
                             task.wait(_0xG["\71\68"])
                         end
@@ -116,40 +111,11 @@ task.spawn(function()
     end
 end)
 
---// ANTI-AFK SYSTEM
-task.spawn(function()
-    while task.wait(20) do
-        if _0xG["\65\75"] then
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):CaptureController()
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):ClickButton2(Vector2.new())
-        end
-    end
-end)
-
---// AUTO LOAD CONFIG
+--// LOAD CONFIG & RESUME
 Rayfield:LoadConfiguration()
-Rayfield:Notify({Title = "DARK HUB", Content = "Config Restored & Script Ready!", Duration = 5})
 
-                            local pr = v:FindFirstChildOfClass("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116") or v.Parent:FindFirstChildOfClass("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116")
-                            if pr then fireproximityprompt(pr) end
-                            task.wait(_0xG["\71\68"])
-                            if not _0xG["\65\70"] then break end
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
---// ANTI-AFK SYSTEM
-task.spawn(function()
-    while task.wait(20) do
-        if _0xG["\65\75"] then
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):CaptureController()
-            game:GetService("\86\105\114\116\117\97\108\85\115\101\114"):ClickButton2(Vector2.new())
-        end
-    end
-end)
-
-Rayfield:Notify({Title = "DARK HUB", Content = "Successfully Authenticated!", Duration = 5})
+Rayfield:Notify({
+    Title = "DARK HUB LOADED",
+    Content = "Settings Restored Automatically",
+    Duration = 5
+})
