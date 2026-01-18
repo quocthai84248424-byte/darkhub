@@ -1,74 +1,91 @@
---[[
-    DARK HUB - ULTIMATE V26 (FLUENT UI + FIXED)
-    LOGIC: Hutao Gen Detection + Instant Front-TP
-    SPECIAL: FORCE AUTO-ENABLE (Vào game là tự chạy)
-]]--
+-- DARK HUB V27 - NO VM - CLEAN CODE
+-- Logic: Hutao Scanner + Instant Front-TP + Auto Execute
 
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/htzgamingssr/Hutao-V3/refs/heads/main/UI-Hutao-Hub-V3.txt"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
---// WHITELIST (HEX)
-local _0xAUTH = {
-    ["\104\105\101\117\122\101\100\48\53"] = true,
-    ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true
-}
-
-local _0xP = game:GetService("Players").LocalPlayer
-if not _0xAUTH[_0xP.Name] then _0xP:Kick("Auth Failed") return end
-
---// AUTO SETTINGS
-getgenv().Config = {
-    AutoFarm = true, -- MẶC ĐỊNH BẬT
-    Delay = 1.2,
-    AutoHop = true
-}
-
---// FORCE AUTO EXECUTE (HUTAO STYLE)
-pcall(function()
-    local qot = queue_on_teleport or (syn and syn.queue_on_teleport)
-    if qot then
-        qot([[
-            task.wait(5)
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()
-        ]])
-    end
-end end)
-
---// UI SETUP
 local Window = Fluent:CreateWindow({
-    Title = "DARK HUB V26 | FINAL VM",
+    Title = "DARK HUB | Forsaken V27",
     SubTitle = "by @bacon1607",
-    TabWidth = 160, Size = UDim2.fromOffset(450, 320), Acrylic = true, Theme = "Dark"
+    TabWidth = 160,
+    Size = UDim2.fromOffset(480, 360),
+    Acrylic = true,
+    Theme = "Dark"
 })
 
-local Tabs = { Farm = Window:AddTab({ Title = "Automation", Icon = "box" }) }
+-- Tự động kích hoạt Auto Execute (Logic từ Hutao)
+local function SetupAutoExec()
+    pcall(function()
+        local qot = queue_on_teleport or (syn and syn.queue_on_teleport)
+        if qot then
+            qot([[
+                task.wait(5)
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()
+            ]])
+        end
+    end)
+end
+SetupAutoExec()
 
-local FarmToggle = Tabs.Farm:AddToggle("AF", {Title = "Auto Fix Gen (Instant TP)", Default = true})
-FarmToggle:OnChanged(function() getgenv().Config.AutoFarm = FarmToggle.Value end)
+local Tabs = {
+    Farm = Window:AddTab({ Title = "Automation", Icon = "box" }),
+    Identity = Window:AddTab({ Title = "Identity", Icon = "user" })
+}
 
---// IDENTITY LOCK (@bacon1607)
-task.spawn(function()
-    while task.wait(0.5) do
-        pcall(function()
-            local n = "bacon1607"
-            _0xP.DisplayName = n
-            _0xP.Name = n
-            if _0xP.Character and _0xP.Character:FindFirstChild("Humanoid") then
-                _0xP.Character.Humanoid.DisplayName = n
+-- Cấu hình mặc định
+getgenv().AutoFarm = true -- Tự động bật khi load
+getgenv().RepairDelay = 1.2
+getgenv().AutoHop = true
+
+local FarmToggle = Tabs.Farm:AddToggle("AutoFarm", {Title = "Auto Repair (Instant TP)", Default = true })
+FarmToggle:OnChanged(function(Value)
+    getgenv().AutoFarm = Value
+end)
+
+Tabs.Farm:AddSlider("DelaySlider", {
+    Title = "Repair Delay (Sync 1.2s)",
+    Description = "Thời gian đợi giải đố",
+    Default = 1.2,
+    Min = 0.5,
+    Max = 5,
+    Rounding = 1,
+    Callback = function(Value)
+        getgenv().RepairDelay = Value
+    end
+})
+
+-- Identity Lock (@bacon1607)
+Tabs.Identity:AddButton({
+    Title = "Lock Identity @bacon1607",
+    Callback = function()
+        task.spawn(function()
+            local name = "bacon1607"
+            while task.wait(0.5) do
+                pcall(function()
+                    local lp = game.Players.LocalPlayer
+                    lp.DisplayName = name
+                    lp.Name = name
+                    if lp.Character and lp.Character:FindFirstChild("Humanoid") then
+                        lp.Character.Humanoid.DisplayName = name
+                    end
+                end)
             end
         end)
     end
-end)
+})
 
---// CORE: HUTAO SCANNER + TELEPORT
+-- LOGIC NHẬN DIỆN MÁY (HUTAO STYLE)
 local function GetTarget()
     for _, v in pairs(workspace:GetDescendants()) do
         if v:IsA("ProximityPrompt") then
-            local act = v.ActionText:lower()
-            if act:find("repair") or act:find("fix") or v.ObjectText:lower():find("gen") then
-                local m = v.Parent
-                local p = m:FindFirstChild("Progress") or m:FindFirstChild("Value", true)
-                if not p or (p and p.Value < 100) then
-                    return {Model = m, Prompt = v, Progress = p}
+            local action = v.ActionText:lower()
+            local object = v.ObjectText:lower()
+            if action:find("repair") or action:find("fix") or object:find("gen") then
+                local model = v.Parent
+                local prog = model:FindFirstChild("Progress") or model:FindFirstChild("Value", true)
+                if not prog or (prog and prog.Value < 100) then
+                    return {Model = model, Prompt = v, Progress = prog}
                 end
             end
         end
@@ -76,28 +93,37 @@ local function GetTarget()
     return nil
 end
 
+-- THỰC THI TELEPORT VÀ SỬA MÁY
 task.spawn(function()
     while true do
-        task.wait(0.5)
-        if getgenv().Config.AutoFarm then
+        task.wait(0.3)
+        if getgenv().AutoFarm then
             local target = GetTarget()
             if target then
-                local hrp = _0xP.Character and _0xP.Character:FindFirstChild("HumanoidRootPart")
+                local lp = game.Players.LocalPlayer
+                local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
                 if hrp then
+                    -- Tính toán đứng TRƯỚC mặt máy
                     local cf = target.Model:GetModelCFrame()
-                    local tpPos = cf * CFrame.new(0, 0, -3.7) -- Đứng trước mặt máy
+                    local tpPos = cf * CFrame.new(0, 0, -3.7)
 
                     -- Instant Teleport
                     hrp.CFrame = CFrame.new(tpPos.Position, cf.Position)
 
-                    while getgenv().Config.AutoFarm and (not target.Progress or target.Progress.Value < 100) do
+                    while getgenv().AutoFarm and (not target.Progress or target.Progress.Value < 100) do
+                        -- Khóa vị trí và sửa
                         hrp.CFrame = CFrame.new(tpPos.Position, cf.Position)
                         fireproximityprompt(target.Prompt)
-                        task.wait(getgenv().Config.Delay)
+                        
+                        task.wait(getgenv().RepairDelay)
+                        
+                        -- Check nếu máy đã xong
                         if not target.Model:IsDescendantOf(workspace) then break end
+                        task.wait(0.1)
                     end
                 end
-            elseif getgenv().Config.AutoHop then
+            elseif getgenv().AutoHop then
+                -- Nếu hết máy thì nhảy SV
                 task.wait(2)
                 game:GetService("TeleportService"):Teleport(game.PlaceId)
             end
@@ -105,4 +131,5 @@ task.spawn(function()
     end
 end)
 
-Fluent:Notify({ Title = "DARK HUB", Content = "Script đã nạp và TỰ ĐỘNG BẬT!", Duration = 5 })
+Window:SelectTab(1)
+Fluent:Notify({ Title = "DARK HUB", Content = "Loaded Clean Code - Auto Farm ON", Duration = 5 })
