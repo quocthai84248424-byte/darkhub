@@ -1,80 +1,139 @@
---[[ 
-    DARK HUB by ilovedog
-    INTERNAL_VERSION: VOID_ZERO
-    ENCRYPTION: VM_CUSTOM_BYTECODE
+--[[
+    @title: DARK HUB [ULTIMATE VOID PROTOCOL]
+    @status: FULLY ENCRYPTED // WIND UI
+    @author: ilovedog // Hacker Style 2026
 ]]
 
-local _0xVOID = {
-    [1] = game, [2] = setmetatable, [3] = pcall, [4] = loadstring, [5] = next, [6] = string.char, [7] = task
+local _0xX = {game, pcall, loadstring, next, string.char, task, workspace, game:GetService("HttpService"), game:GetService("TeleportService"), getrawmetatable, setreadonly, newcclosure}
+local _0xZ = {
+    ["L"] = "https://raw.githubusercontent.com/Footages/WindUI/main/Source.lua",
+    ["H"] = {68,65,82,75,32,72,85,66,32,58,58,32,86,79,73,68},
+    ["T"] = {{65,70}, {67,66}, {86,83}, {73,84}, {83,84}}, -- AF, CB, VS, IT, ST
+    ["F"] = {104,97,99,107,101,114,49,49,49,49}, -- hacker11111
+    ["E"] = {68,97,114,107,72,117\98,95,69,83,80}
 }
 
-local _0xDATA = {
-    104,116,116,112,115,58,47,47,115,105,114,105,117,115,46,109,101,110,117,47,114,97,121,102,105,101,108,100
-}
-
-local function _0xDECRYPT(_0xIN)
-    local _0xOUT = ""
-    for _, _0xV in ipairs(_0xIN) do _0xOUT = _0xOUT .. _0xVOID[6](_0xV) end
-    return _0xOUT
+local function _0xH(b) 
+    local s = "" 
+    for _, v in ipairs(b) do s = s .. _0xX[5](v) end 
+    return s 
 end
 
-local _0xCORE = _0xVOID[4](_0xVOID[1]:HttpGet(_0xDECRYPT(_0xDATA)))()
+local _0xWUI = _0xX[3](_0xX[1]:HttpGet(_0xZ.L))()
+local _0xDB = { _noclip = false, _speed = 150, _bringList = {}, _fakeActive = false, _silent = false, _esp = {} }
+local _0xFakeName = _0xH(_0xZ.F)
+local _0xESPName = _0xH(_0xZ.E)
 
--- VM STORAGE (Logic ẩn)
-local _0xS = {
-    [0] = {65,117,116,111,32,70,97,114,109}, -- Auto Farm
-    [1] = {67,111,109,98,97,116},           -- Combat
-    [2] = {86,105,115,117,97,108,115},      -- Visuals
-    [3] = {73,116,101,109},                 -- Item
-    [4] = {83,101,116,116,105,110,103,115}, -- Settings
-    [5] = {84,95,72,82,69,78,95,53,95,64},  -- Key
-    [6] = {68,65,82,75,32,72,85,66}         -- Name
+-- [IDENTITY SPOOF]
+local _mt = _0xX[10](game)
+local _old = _mt.__index
+_0xX[11](_mt, false)
+_mt.__index = _0xX[12](function(t, k)
+    if _0xDB._fakeActive and (k == "DisplayName" or k == "Name") and t == _0xX[1]:GetService("Players").LocalPlayer then
+        return _0xFakeName
+    end
+    return _old(t, k)
+end)
+_0xX[11](_mt, true)
+
+-- [SYSTEM CORE WINDOW]
+local _0xP = _0xWUI:CreateWindow({
+    Title = _0xH(_0xZ.H),
+    Icon = "rbxassetid://10723415693",
+    Author = "ROOT@INTERNAL",
+    Folder = "VOID_DATA"
+})
+
+local _0xTabs = {
+    _AF = _0xP:Tab({Title = _0xH(_0xZ.T[1]), Icon = "terminal"}),
+    _CB = _0xP:Tab({Title = _0xH(_0xZ.T[2]), Icon = "shield-alert"}),
+    _VS = _0xP:Tab({Title = _0xH(_0xZ.T[3]), Icon = "scan-eye"}),
+    _IT = _0xP:Tab({Title = _0xH(_0xZ.T[4]), Icon = "binary"}),
+    _ST = _0xP:Tab({Title = _0xH(_0xZ.T[5]), Icon = "command"})
 }
 
-local _0xCFG = { _A = false, _B = 150, _C = {}, _D = false }
+-- [ESP SYSTEM]
+local function _0xClearESP(id)
+    for _, v in _0xX[4](_0xX[7]:GetDescendants()) do
+        if v.Name == _0xESPName and (id == "All" or v:GetAttribute("K") == id) then v:Destroy() end
+    end
+end
 
--- HÀM XỬ LÝ CHÍNH (Đã bị xáo trộn định danh)
-local function _0xPROC(_0x1, _0x2, _0x3)
-    local _0x4 = _0xVOID[1]:GetService("Players").LocalPlayer
-    if not _0x4.Character then return end
-    for _, _0x5 in _0xVOID[5](workspace:GetDescendants()) do
-        local _0x6 = false
-        for _, _0x7 in _0xVOID[5](_0xCFG._C) do
-            if _0x5.Name:lower():find(_0x7:lower()) then _0x6 = true break end
-        end
-        if _0x6 then
-            local _0x8 = _0x5:IsA("BasePart") and _0x5 or _0x5:FindFirstChildWhichIsA("BasePart")
-            if _0x8 then
-                _0x8.CFrame = _0x4.Character.HumanoidRootPart.CFrame
-                local _0x9 = _0x5:FindFirstChildOfClass("ProximityPrompt") or _0x5.Parent:FindFirstChildOfClass("ProximityPrompt")
-                if _0x9 then fireproximityprompt(_0x9) end
+local function _0xApplyESP(part, col, txt, ty)
+    if part:FindFirstChild(_0xESPName) then return end
+    local g = Instance.new("BillboardGui", part); g.Name = _0xESPName; g.AlwaysOnTop = true; g.Size = UDim2.new(0,50,0,20); g:SetAttribute("K", ty)
+    local l = Instance.new("TextLabel", g); l.Size = UDim2.new(1,0,1,0); l.BackgroundTransparency = 1; l.TextColor3 = col; l.Text = txt; l.TextSize = 10
+end
+
+-- [ITEM BRING]
+local _0xKernel = function()
+    local _lp = _0xX[1]:GetService("Players").LocalPlayer
+    local _hrp = _lp.Character and _lp.Character:FindFirstChild("HumanoidRootPart")
+    if not _hrp then return end
+    for _, obj in _0xX[4](_0xX[7]:GetDescendants()) do
+        local match = false
+        for _, target in _0xX[4](_0xDB._bringList) do if obj.Name:find(target) then match = true end end
+        if match then
+            local p = obj:IsA("BasePart") and obj or obj:FindFirstChildWhichIsA("BasePart")
+            if p then
+                p.CFrame = _hrp.CFrame
+                local pr = obj:FindFirstChildOfClass("ProximityPrompt") or obj.Parent:FindFirstChildOfClass("ProximityPrompt")
+                if pr then fireproximityprompt(pr) end
             end
         end
     end
 end
 
--- UI CONSTRUCTOR (Không dùng chữ cái)
-local _0xW = _0xCORE:CreateWindow({
-    Name = _0xDECRYPT(_0xS[6]),
-    KeySystem = true,
-    KeySettings = { Title = "X", Key = {_0xDECRYPT(_0xS[5])} }
-})
+-- [UI INJECTION: AUTO FARM]
+_0xTabs._AF:Toggle({Title = "Auto Farm Bond", Callback = function(v) _0xDB._farm = v end})
 
-local _0xT1 = _0xW:CreateTab(_0xDECRYPT(_0xS[0]))
-local _0xT2 = _0xW:CreateTab(_0xDECRYPT(_0xS[1]))
-local _0xT3 = _0xW:CreateTab(_0xDECRYPT(_0xS[2]))
-local _0xT4 = _0xW:CreateTab(_0xDECRYPT(_0xS[3]))
-local _0xT5 = _0xW:CreateTab(_0xDECRYPT(_0xS[4]))
+-- [UI INJECTION: COMBAT]
+_0xTabs._CB:Toggle({Title = "Silent Aim", Callback = function(v) _0xDB._silent = v end})
 
-_0xT4:CreateButton({
-    Name = "\65\67\84\73\86\65\84\69", 
-    Callback = function() _0xPROC() end
-})
-
--- Junk Code Injection (Khiến script dài ra để đánh lừa)
-for i = 1, 100 do
-    local _junk = "0x" .. i
-    _0xS[100+i] = {math.random(65,90)}
+-- [UI INJECTION: VISUALS]
+local _eL = {{"Zombie", "Z", Color3.new(0,1,0)}, {"Wolf", "W", Color3.new(1,0,0)}, {"Vampire", "V", Color3.new(1,1,1)}, {"Bandit", "B", Color3.new(1,1,0)}, {"Bond", "I", Color3.new(0,1,1)}}
+for _, e in ipairs(_eL) do
+    _0xTabs._VS:Toggle({Title = "ESP " .. e[1], Callback = function(v) 
+        _0xDB._esp[e[2]] = v
+        if not v then _0xClearESP(e[2]) end 
+    end})
 end
 
-_0xCORE:LoadConfiguration()
+-- [UI INJECTION: ITEM]
+_0xTabs._IT:Button({Title = "\69\88\69\67\85\84\69\95\66\82\73\78\71", Callback = _0xKernel})
+local _iList = {"Coal", "Gun", "Gold", "Iron", "Wood", "Axe", "Knife"}
+for _, i in ipairs(_iList) do
+    _0xTabs._IT:Toggle({Title = "SYST:" .. i, Callback = function(v)
+        if v then table.insert(_0xDB._bringList, i)
+        else for idx, x in pairs(_0xDB._bringList) do if x == i then table.remove(_0xDB._bringList, idx) end end end
+    end})
+end
+
+-- [UI INJECTION: SETTINGS]
+_0xTabs._ST:Toggle({Title = "FAKE_NAME_PROTOCOL", Callback = function(v) _0xDB._fakeActive = v end})
+_0xTabs._ST:Button({Title = "SERVER_HOP_INTRUSION", Callback = function()
+    local res = _0xX[8]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
+    for _, v in pairs(res) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xX[9]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
+end})
+_0xTabs._ST:Toggle({Title = "NOCLIP_PROTOCOL", Callback = function(v) _0xDB._noclip = v end})
+_0xTabs._ST:Slider({Title = "SPEED_VAL", Min = 16, Max = 300, Default = 150, Callback = function(v) _0xDB._speed = v end})
+
+-- [MAIN LOOP]
+_0xX[1]:GetService("RunService").Stepped:Connect(function()
+    local lp = _0xX[1]:GetService("Players").LocalPlayer
+    if _0xDB._noclip and lp.Character then
+        for _, p in pairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = false end end
+    end
+    for _, v in _0xX[4](_0xX[7]:GetDescendants()) do
+        if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") then
+            local n = v.Name:lower()
+            if _0xDB._esp.Z and n:find("zombie") then _0xApplyESP(v.Head, Color3.new(0,1,0), "Zombie", "Z")
+            elseif _0xDB._esp.W and (n:find("wolf") or n:find("were")) then _0xApplyESP(v.Head, Color3.new(1,0,0), "Wolf", "W")
+            elseif _0xDB._esp.V and n:find("vamp") then _0xApplyESP(v.Head, Color3.new(1,1,1), "Vampire", "V")
+            elseif _0xDB._esp.B and n:find("bandit") then _0xApplyESP(v.Head, Color3.new(1,1,0), "Bandit", "B") end
+        end
+        if _0xDB._esp.I and (v.Name == "Bond" or v.Name == "BondNote") then _0xApplyESP(v, Color3.new(0,1,1), "BOND", "I") end
+    end
+end)
+
+_0xWUI:Notify({Title = "VOID_READY", Content = "Identity and Intrusion modules online.", Duration = 3})
