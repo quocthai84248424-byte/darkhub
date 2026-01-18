@@ -14,7 +14,6 @@ local _0xITEM = {
     ["Bom"] = "\66\111\109\98", ["Mặt nạ"] = "\77\97\115\107", ["Dầu của boss Tesla"] = "\84\101\115\108\97\79\105\108"
 }
 
--- [WINDOW VỚI KEY SYSTEM]
 local Window = OrionLib:MakeWindow({
     Name = "DARK HUB :: VOID", 
     HidePremium = true, 
@@ -32,13 +31,11 @@ local Window = OrionLib:MakeWindow({
     }
 })
 
--- [TABS BÊN TRÁI]
 local T1 = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 local T2 = Window:MakeTab({Name = "Farm", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 local T3 = Window:MakeTab({Name = "Visuals", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 local T4 = Window:MakeTab({Name = "Settings", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 
--- [FEATURES]
 T1:AddToggle({Name = "Kích hoạt Bring Item", Default = false, Callback = function(v) _0xCONF.B = v end})
 T1:AddDropdown({Name = "Vật phẩm", Default = "None", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xCONF.SB = o end})
 
@@ -56,7 +53,6 @@ T4:AddButton({Name = "COPY DISCORD (GET KEY)", Callback = function() setclipboar
 T4:AddButton({Name = "ACTIVATE FLY", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end) end})
 T4:AddButton({Name = "DESTROY GUI", Callback = function() OrionLib:Destroy() end})
 
--- [LOGIC LÕI - ĐÃ FIX 100% KHÔNG LỖI]
 game:GetService("RunService").Stepped:Connect(function()
     if _0xCONF.NC and L_Player.Character then
         for _, v in pairs(L_Player.Character:GetDescendants()) do
