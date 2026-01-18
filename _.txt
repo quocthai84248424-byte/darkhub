@@ -32,7 +32,7 @@ local Window = _0xL:CreateWindow({
    KeySystem = true,
    KeySettings = {
       Title = "Security Check",
-      Subtitle = "Discord: https://discord.gg/HfVYnr8z",
+      Subtitle = "Discord: DARK HUB",
       Note = "Vào Discord để lấy Key!",
       Key = {"AUTOCLICLFULL22"}
    }
