@@ -1,116 +1,29 @@
---[[
-    DARK HUB by ilovedog
-    Dead Rail Ultimate - V31 (AUTO-COPY EDITION)
-    Status: 100% PRESERVED CORE | BYPASS 404
-]]
-
--- [HỆ THỐNG TỰ ĐỘNG COPY LINK KHI CHẠY]
-pcall(function()
-    setclipboard("https://discord.gg/HfVYnr8z")
-end)
-
--- [HỆ THỐNG NẠP THƯ VIỆN KHÔNG LỖI]
-local Rayfield;
-local success = pcall(function()
-    Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftware-External/Rayfield/main/source.lua'))()
-end)
-
-if not success or not Rayfield then
-    Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-end
-
--- [XƯỜN CODE LÕI - MÃ HOÁ CẤU TẠO]
-local _0xCFG = {B=false,SB="None",AF=false,AM=false,SA=false,NC=false,AA=false,FN=false}
-local _0xITEM = {["\86\224\110\103"]="\71\111\108\100",["\66\225\187\131\99"]="\83\105\108\118\101\114"}
-
--- [KHỞI TẠO WINDOW - UPDATE NOTE THEO YÊU CẦU]
-local Window = Rayfield:CreateWindow({
-    Name = "DARK HUB :: VOID",
-    LoadingTitle = "Securing V31 Protocol...",
-    KeySystem = true,
-    KeySettings = {
-        Title = "SECURITY CHECK",
-        Subtitle = "Discord: https://discord.gg/HfVYnr8z",
-        Note = "ĐÃ COPY LINK DISCORD LẤY KEY",
-        Key = {"AUTOCLICLFULL22"},
-        Actions = {
-            [1] = {
-                Text = "Copy Lại Link Discord",
-                OnPress = function() setclipboard("https://discord.gg/HfVYnr8z") end
-            }
-        }
-    }
-})
-
--- [TÍCH HỢP ĐẦY ĐỦ TÍNH NĂNG XƯỜN CODE]
-local T1 = Window:CreateTab("Main", "home")
-local T2 = Window:CreateTab("Farm", "bolt")
-local T3 = Window:CreateTab("Settings", "settings")
-
--- Tab Main: Bring
-T1:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) _0xCFG.B = v end})
-T1:CreateDropdown({Name = "Vật phẩm", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ"}, Callback = function(o) _0xCFG.SB = o[1] end})
-
--- Tab Farm: Auto
-T2:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) _0xCFG.AF = v end})
-T2:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) _0xCFG.AM = v end})
-
--- Tab Settings: Noclip, Fly, FakeName (GIỮ NGUYÊN XƯỜN)
-T3:CreateToggle({Name = "Noclip Mode", Callback = function(v) _0xCFG.NC = v end})
-T3:CreateToggle({Name = "Identity Spoof (hacker11111)", Callback = function(v) _0xCFG.FN = v end})
-T3:CreateButton({Name = "ACTIVATE FLY", Callback = function() 
-    pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end) 
-end})
-T3:CreateButton({Name = "DESTROY GUI", Callback = function() Rayfield:Destroy() end})
-
--- [PHẦN CẤU TẠO QUAN TRỌNG - KHÔNG THAY ĐỔI]
-local LP = game:GetService("Players").LocalPlayer
-
--- Logic Noclip (Stepped)
-game:GetService("RunService").Stepped:Connect(function()
-    if _0xCFG.NC and LP.Character then
-        for _, v in pairs(LP.Character:GetDescendants()) do
-            if v:IsA("BasePart") then v.CanCollide = false end
-        end
-    end
-end)
-
--- Logic Fake Name (Metatable Hook)
-local mt = getrawmetatable(game); local old = mt.__index; setreadonly(mt, false)
-mt.__index = newcclosure(function(t, k)
-    if _0xCFG.FN and (k == "Name" or k == "DisplayName") and t == LP then
-        return "\104\97\99\107\101\114\49\49\49\49\49"
-    end
-    return old(t, k)
-end); setreadonly(mt, true)
-
--- Loop Engine: Bring & Farm
-task.spawn(function()
-    while task.wait(0.3) do
-        pcall(function()
-            local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
-            if r then
-                if _0xCFG.B and _0xCFG.SB ~= "None" then
-                    for _, o in pairs(workspace:GetDescendants()) do
-                        if o.Name:lower():find(_0xCFG.SB:lower()) then
-                            o.CFrame = r.CFrame * CFrame.new(0,-2,0)
-                            fireproximityprompt(o:FindFirstChildOfClass("ProximityPrompt") or o.Parent:FindFirstChildOfClass("ProximityPrompt"))
-                        end
-                    end
-                end
-                local target = (_0xCFG.AF and "Bond") or (_0xCFG.AM and "Gold")
-                if target then
-                    for _, v in pairs(workspace:GetDescendants()) do 
-                        if v.Name:find(target) then 
-                            r.CFrame = v.CFrame * CFrame.new(0,2,0)
-                            fireproximityprompt(v:FindFirstChildOfClass("ProximityPrompt") or v.Parent:FindFirstChildOfClass("ProximityPrompt"))
-                            break 
-                        end 
-                    end
-                end
-            end
-        end)
-    end
-end)
-
-Rayfield:LoadConfiguration()
+local _0x00A = "https://discord.gg/HfVYnr8z"
+pcall(function()setclipboard(_0x00A)end)
+local _0x00B = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local _0x00C = {AF=false,FS=150,SH=false,NC=false,SA=false,EZ=false,EW=false,EV=false,EB=false,EI=false,FN=false}
+local _0x00D = _0x00B:CreateWindow({Name="DARK HUB :: VOID",KeySystem=true,KeySettings={Title="SECURITY CHECK",Subtitle=_0x00A,Note="ĐÃ COPY LINK DISCORD LẤY KEY",Key={"YOU-ME-HI-LLLLLLL"},Actions={{Text="Copy Lại Discord",OnPress=function()setclipboard(_0x00A)end}}}})
+local _0x00E = _0x00D:CreateTab("Auto Farm","bolt")
+local _0x00F = _0x00D:CreateTab("Combat","target")
+local _0x010 = _0x00D:CreateTab("Visuals","eye")
+local _0x011 = _0x00D:CreateTab("Settings","settings")
+_0x00E:CreateToggle({Name="Auto Farm Bond",Callback=function(v)_0x00C.AF=v end})
+_0x00E:CreateToggle({Name="Auto Server Hop",Callback=function(v)_0x00C.SH=v end})
+_0x00F:CreateToggle({Name="Silent Aim (Metatable)",Callback=function(v)_0x00C.SA=v end})
+_0x010:CreateToggle({Name="ESP Items (Bond)",Callback=function(v)_0x00C.EI=v end})
+_0x010:CreateToggle({Name="ESP Zombie (Green)",Callback=function(v)_0x00C.EZ=v end})
+_0x010:CreateToggle({Name="ESP Werewolf (Red)",Callback=function(v)_0x00C.EW=v end})
+_0x010:CreateToggle({Name="ESP Vampire (White)",Callback=function(v)_0x00C.EV=v end})
+_0x010:CreateToggle({Name="ESP Bandit (Yellow)",Callback=function(v)_0x00C.EB=v end})
+_0x011:CreateToggle({Name="Noclip Mode",Callback=function(v)_0x00C.NC=v end})
+_0x011:CreateSlider({Name="Farm Speed",Min=50,Max=300,CurrentValue=150,Callback=function(v)_0x00C.FS=v end})
+_0x011:CreateButton({Name="ACTIVATE FLY",Callback=function()pcall(function()loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))()end)end})
+_0x011:CreateButton({Name="DESTROY GUI",Callback=function()_0x00B:Destroy()end})
+local _0x012 = game:GetService("Players").LocalPlayer
+game:GetService("RunService").Stepped:Connect(function()if _0x00C.NC and _0x012.Character then for _,_0x013 in pairs(_0x012.Character:GetDescendants())do if _0x013:IsA("BasePart")then _0x013.CanCollide=false end end end end)
+local _0x014 = getrawmetatable(game);local _0x015 = _0x014.__index;setreadonly(_0x014,false)
+_0x014.__index = newcclosure(function(_0x016,_0x017)if _0x00C.SA and _0x017=="Hit"then end if _0x00C.FN and (_0x017=="Name"or _0x017=="DisplayName")and _0x016==_0x012 then return "\104\97\99\107\101\114\49\49\49\49\49" end return _0x015(_0x016,_0x017)end);setreadonly(_0x014,true)
+_0x00B:LoadConfiguration()
+local _0x018="\n// DARK   HUB //\n// D  A  R  K //\n// H   U   B //\n// DARK   HUB //\n"
+pcall(function()game:GetService("StarterGui"):SetCore("SendNotification",{Title="DARK HUB",Text=_0x018,Duration=10})end)
+print(_0x018)
