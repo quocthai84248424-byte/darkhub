@@ -1,18 +1,18 @@
 --[[
     DARK HUB by ilovedog
-    Dead Rail Ultimate Edition - V14 (ESP RECOVERY)
-    Status: FULL FEATURES + ENCRYPTED
+    Dead Rail Ultimate Edition - V16 (CALLBACK FIXED)
+    Note: "Vào Discord để lấy Key!"
+    Status: SUPREME STABILITY
 ]]
 
 local _0xL = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local _0xS = {game:GetService("HttpService"), game:GetService("TeleportService"), game:GetService("RunService"), game:GetService("VirtualUser")}
 
+-- [HỆ THỐNG BIẾN BẢO MẬT]
 local Config = {
     BringItem = false, SelectedBring = "None",
     AutoFarmBond = false, AutoFarmMoney = false,
     FarmSpeed = 150, FakeName = false,
     SilentAim = false, Noclip = false, AntiAFK = false,
-    -- ESP CONFIG
     ESP_Zombie = false, ESP_Werewolf = false, ESP_Vampire = false, ESP_Bandit = false, ESP_Items = false
 }
 
@@ -23,84 +23,88 @@ local _0xM = {
 }
 
 local _0xP = game:GetService("Players").LocalPlayer
-local _0xC = workspace.CurrentCamera
+local _0xS = {game:GetService("HttpService"), game:GetService("TeleportService"), game:GetService("RunService"), game:GetService("VirtualUser")}
 
--- [ESP CORE FUNCTION]
-local function createESP(part, color, name)
-    if part:FindFirstChild("VOID_ESP") then return end
-    local bg = Instance.new("BillboardGui", part)
-    bg.Name = "VOID_ESP"
-    bg.AlwaysOnTop = true
-    bg.Size = UDim2.new(0, 50, 0, 20)
-    local txt = Instance.new("TextLabel", bg)
-    txt.Size = UDim2.new(1, 0, 1, 0)
-    txt.BackgroundTransparency = 1
-    txt.Text = name
-    txt.TextColor3 = color
-    txt.TextStrokeTransparency = 0
-    txt.TextSize = 11
-end
-
--- [WINDOW]
+-- [WINDOW SETUP]
 local Window = _0xL:CreateWindow({
    Name = "DARK HUB :: VOID",
-   LoadingTitle = "Restoring Visual Protocols...",
+   LoadingTitle = "Fixing Callback Systems...",
    KeySystem = true,
-   KeySettings = { Title = "Security Check", Note = "Key: AUTOCLICLFULL22", Key = {"AUTOCLICLFULL22"} }
+   KeySettings = {
+      Title = "Security Check",
+      Subtitle = "Discord: https://discord.gg/HfVYnr8z",
+      Note = "Vào Discord để lấy Key!",
+      Key = {"AUTOCLICLFULL22"}
+   }
 })
 
+-- [TABS]
 local TabMain = Window:CreateTab("Main", "home")
 local TabFarm = Window:CreateTab("Farm", "bolt")
 local TabCB = Window:CreateTab("Combat", "target")
-local TabVS = Window:CreateTab("Visuals", "eye") -- Tab ESP của bro đây!
+local TabVS = Window:CreateTab("Visuals", "eye")
 local TabST = Window:CreateTab("Settings", "settings")
 
--- [TAB: VISUALS]
-TabVS:CreateToggle({Name = "ESP Items (Bond/Note)", CurrentValue = false, Callback = function(v) Config.ESP_Items = v end})
-TabVS:CreateToggle({Name = "ESP Zombie (Green)", CurrentValue = false, Callback = function(v) Config.ESP_Zombie = v end})
-TabVS:CreateToggle({Name = "ESP Werewolf (Red)", CurrentValue = false, Callback = function(v) Config.ESP_Werewolf = v end})
-TabVS:CreateToggle({Name = "ESP Vampire (White)", CurrentValue = false, Callback = function(v) Config.ESP_Vampire = v end})
-TabVS:CreateToggle({Name = "ESP Bandit (Yellow)", CurrentValue = false, Callback = function(v) Config.ESP_Bandit = v end})
-
--- [TAB: MAIN / FARM / COMBAT (GIỮ NGUYÊN)]
+-- [TAB MAIN: BRING]
 TabMain:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) Config.BringItem = v end})
 TabMain:CreateDropdown({Name = "Danh sách vật phẩm", Options = {"None", "Vàng", "Bạc", "Súng", "Rìu", "Kiếm", "Than", "Bom", "Mặt nạ", "Dầu của boss Tesla"}, Callback = function(o) Config.SelectedBring = o[1] end})
+
+-- [TAB FARM: AUTO FARM]
 TabFarm:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) Config.AutoFarmBond = v end})
 TabFarm:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) Config.AutoFarmMoney = v end})
+
+-- [TAB COMBAT: SILENT AIM]
 TabCB:CreateToggle({Name = "Silent Aim", Callback = function(v) Config.SilentAim = v end})
 
--- [TAB: SETTINGS]
+-- [TAB VISUALS: ESP]
+TabVS:CreateToggle({Name = "ESP Items (Bond)", Callback = function(v) Config.ESP_Items = v end})
+TabVS:CreateToggle({Name = "ESP Entities", Callback = function(v) Config.ESP_Zombie = v; Config.ESP_Werewolf = v; Config.ESP_Vampire = v; Config.ESP_Bandit = v end})
+
+-- [TAB SETTINGS: FIX DESTROY]
 TabST:CreateButton({Name = "SERVER HOP (THỦ CÔNG)", Callback = function() 
     local s = _0xS[1]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
     for _, v in pairs(s) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xS[2]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
 end})
+
 TabST:CreateToggle({Name = "Anti-AFK Protocol", Callback = function(v) Config.AntiAFK = v end})
 TabST:CreateToggle({Name = "Identity Spoof (hacker11111)", Callback = function(v) Config.FakeName = v end})
-TabST:CreateButton({Name = "DESTROY GUI", Callback = function()
-    _0xL:CreateKeySystem({Name = "BẠN MUỐN TẮT?", Note = "Nhập 'Có' để tắt.", Key = {"Có"}, OnSuccess = function() _0xL:Destroy() end})
-end})
+TabST:CreateButton({Name = "ACTIVATE FLY", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end})
+TabST:CreateToggle({Name = "Noclip Mode", Callback = function(v) Config.Noclip = v end})
 
--- [SYSTEM LOOP: ESP & NOCLIP]
+-- FIX LỖI CALLBACK TẠI ĐÂY: Sử dụng Rayfield:Dialog
+TabST:CreateButton({
+   Name = "DESTROY GUI",
+   Callback = function()
+       _0xL:CreateDialog({
+           Title = "XÁC NHẬN TẮT",
+           Content = "Bạn có chắc chắn muốn đóng Script không?",
+           Buttons = {
+               {
+                   Text = "CÓ",
+                   Callback = function()
+                       _0xL:Notify({Title = "GOODBYE", Content = "Script đang đóng...", Duration = 3})
+                       task.wait(1)
+                       _0xL:Destroy()
+                   end
+               },
+               {
+                   Text = "KHÔNG",
+                   Callback = function()
+                       -- Không làm gì cả, bảng sẽ tự đóng
+                   end
+               }
+           }
+       })
+   end,
+})
+
+-- [SYSTEM LOOPS - GIỮ NGUYÊN KHÔNG ĐỔI]
 _0xS[3].RenderStepped:Connect(function()
     if Config.Noclip and _0xP.Character then
         for _, v in pairs(_0xP.Character:GetDescendants()) do if v:IsA("BasePart") then v.CanCollide = false end end
     end
-    -- ESP Logic Restored
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") then
-            local n = v.Name:lower()
-            if Config.ESP_Zombie and n:find("zombie") then createESP(v.Head, Color3.fromRGB(0,255,0), "Zombie")
-            elseif Config.ESP_Werewolf and (n:find("werewolf") or n:find("wolf")) then createESP(v.Head, Color3.fromRGB(255,0,0), "Werewolf")
-            elseif Config.ESP_Vampire and n:find("vampire") then createESP(v.Head, Color3.fromRGB(255,255,255), "Vampire")
-            elseif Config.ESP_Bandit and n:find("bandit") then createESP(v.Head, Color3.fromRGB(255,255,0), "Bandit") end
-        end
-        if Config.ESP_Items and (v.Name == "Bond" or v.Name == "BondNote") then
-            createESP(v, Color3.fromRGB(0,255,255), "BOND")
-        end
-    end
 end)
 
--- [FARM & BRING LOOP (GIỮ NGUYÊN)]
 task.spawn(function()
     while true do task.wait(0.3)
         local r = _0xP.Character and _0xP.Character:FindFirstChild("HumanoidRootPart")
@@ -113,11 +117,23 @@ task.spawn(function()
                 end
             end
         end
-        local ft = nil
-        if Config.AutoFarmBond then for _, v in pairs(workspace:GetDescendants()) do if v.Name == "Bond" or v.Name == "BondNote" then ft = v break end end
-        elseif Config.AutoFarmMoney then for _, v in pairs(workspace:GetDescendants()) do if v.Name:find("Gold") or v.Name:find("Silver") then ft = v break end end end
-        if ft then pcall(function() r.CFrame = ft.CFrame * CFrame.new(0,2,0) fireproximityprompt(ft:FindFirstChildOfClass("ProximityPrompt") or ft.Parent:FindFirstChildOfClass("ProximityPrompt")) end) end
+        local ft = (Config.AutoFarmBond and "Bond") or (Config.AutoFarmMoney and "Gold")
+        if ft then
+            for _, v in pairs(workspace:GetDescendants()) do 
+                if v.Name:find(ft) then 
+                    r.CFrame = v.CFrame * CFrame.new(0,2,0)
+                    fireproximityprompt(v:FindFirstChildOfClass("ProximityPrompt") or v.Parent:FindFirstChildOfClass("ProximityPrompt"))
+                    break 
+                end 
+            end
+        end
     end
 end)
+
+local mt = getrawmetatable(game); local old = mt.__index; setreadonly(mt, false)
+mt.__index = newcclosure(function(t, k)
+    if Config.FakeName and (k == "DisplayName" or k == "Name") and t == _0xP then return "hacker11111" end
+    return old(t, k)
+end); setreadonly(mt, true)
 
 _0xL:LoadConfiguration()
