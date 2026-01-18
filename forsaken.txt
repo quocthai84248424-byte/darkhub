@@ -1,7 +1,9 @@
--- DARK HUB V28 - FIX UI NOT LOADING
--- Tích hợp Logic Hutao + Teleport Trước Mặt + Auto Execute
+-- DARK HUB V30 - FINAL FIX AUTO FARM
+-- Dựa trên logic nhận diện của Hutao Hub
 
--- 1. TỰ ĐỘNG KÍCH HOẠT AUTO EXECUTE (Ghi nhớ để server sau tự chạy)
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/htzgamingssr/Hutao-V3/refs/heads/main/UI-Hutao-Hub-V3.txt"))()
+
+-- 1. THIẾT LẬP AUTO EXECUTE (Luôn chạy)
 pcall(function()
     local qot = queue_on_teleport or (syn and syn.queue_on_teleport)
     if qot then
@@ -12,95 +14,89 @@ pcall(function()
     end
 end)
 
--- 2. KHỞI TẠO SETTINGS MẶC ĐỊNH (Tự bật Farm luôn)
-getgenv().AutoFarm = true
-getgenv().RepairDelay = 1.2
-getgenv().AutoHop = true
+-- 2. BIẾN ĐIỀU KHIỂN (Mặc định bật)
+getgenv().Config = {
+    AutoFarm = true, -- Ép bật sẵn
+    RepairDelay = 1.2,
+    AutoHop = true
+}
 
--- 3. LOAD THƯ VIỆN UI RAYFIELD (Dễ lên nhất)
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-local Window = Rayfield:CreateWindow({
-   Name = "DARK HUB V28 | @bacon1607",
-   Icon = 0,
-   LoadingTitle = "Đang khởi chạy...",
-   LoadingSubtitle = "by hieuzed05 & Hannah",
-   ConfigurationSaving = { Enabled = false }
+-- 3. GIAO DIỆN UI (FLUENT)
+local Window = Fluent:CreateWindow({
+    Title = "DARK HUB V30 | FIX FARM",
+    SubTitle = "by @bacon1607",
+    TabWidth = 160, Size = UDim2.fromOffset(480, 360), Acrylic = true, Theme = "Dark"
 })
 
-local MainTab = Window:CreateTab("Main", 4483362458)
+local Tabs = { Farm = Window:AddTab({ Title = "Automation", Icon = "box" }) }
 
-local Toggle = MainTab:CreateToggle({
-   Name = "Auto Fix Gen (Instant TP)",
-   CurrentValue = true,
-   Flag = "FarmToggle",
-   Callback = function(Value)
-      getgenv().AutoFarm = Value
-   end,
-})
+local FarmToggle = Tabs.Farm:AddToggle("AF_Toggle", {Title = "Auto Repair (Hutao Logic)", Default = true})
+FarmToggle:OnChanged(function(Value)
+    getgenv().Config.AutoFarm = Value
+end)
 
--- 4. IDENTITY LOCK (@bacon1607)
-MainTab:CreateButton({
-   Name = "Lock Name @bacon1607",
-   Callback = function()
-      task.spawn(function()
-         local n = "bacon1607"
-         while task.wait(0.5) do
-            pcall(function()
-                local p = game.Players.LocalPlayer
-                p.DisplayName = n
-                p.Name = n
-                if p.Character and p.Character:FindFirstChild("Humanoid") then
-                    p.Character.Humanoid.DisplayName = n
-                end
-            end)
-         end
-      end)
-   end,
-})
-
--- 5. LOGIC NHẬN DIỆN MÁY (HUTAO SCANNER)
-local function GetTarget()
+-- 4. LOGIC NHẬN DIỆN MÁY (LẤY TỪ HUTAO SOURCE)
+-- Sửa lỗi: Quét cả ProximityPrompt và kiểm tra Progress
+local function GetTargetGen()
+    local bestTarget = nil
     for _, v in pairs(workspace:GetDescendants()) do
         if v:IsA("ProximityPrompt") then
-            local act = v.ActionText:lower()
-            local obj = v.ObjectText:lower()
-            if act:find("repair") or act:find("fix") or obj:find("gen") then
+            local action = v.ActionText:lower()
+            local object = v.ObjectText:lower()
+            
+            -- Logic Hutao: Tìm Repair/Fix/Gen
+            if action:find("repair") or action:find("fix") or object:find("gen") or v.Parent.Name:lower():find("gen") then
                 local model = v.Parent
-                local prog = model:FindFirstChild("Progress") or model:FindFirstChild("Value", true)
-                if not prog or (prog and prog.Value < 100) then
-                    return {Model = model, Prompt = v, Progress = prog}
+                -- Tìm thanh tiến trình (Progress hoặc Value)
+                local progress = model:FindFirstChild("Progress") or model:FindFirstChild("Value", true) or model:FindFirstChild("ProgressValue", true)
+                
+                if not progress or (progress and progress.Value < 100) then
+                    bestTarget = {Model = model, Prompt = v, Progress = progress}
+                    break -- Ưu tiên máy đầu tiên tìm thấy
                 end
             end
         end
     end
-    return nil
+    return bestTarget
 end
 
--- 6. THỰC THI TELEPORT TRƯỚC MẶT MÁY
+-- 5. VÒNG LẶP THỰC THI (TELEPORT + REPAIR)
 task.spawn(function()
     while true do
         task.wait(0.5)
-        if getgenv().AutoFarm then
-            local target = GetTarget()
+        if getgenv().Config.AutoFarm then
+            local target = GetTargetGen()
+            
             if target then
-                local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                local lp = game.Players.LocalPlayer
+                local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+                
                 if hrp then
-                    -- Tính toán vị trí trước mặt máy (Offset -3.7)
-                    local cf = target.Model:GetModelCFrame()
-                    local tpPos = cf * CFrame.new(0, 0, -3.7)
+                    -- Tính toán vị trí TRƯỚC MẶT MÁY (Logic quan trọng)
+                    local modelCF = target.Model:GetModelCFrame()
+                    local targetPos = modelCF * CFrame.new(0, 0, -3.8) -- Đứng cách máy 3.8 studs
 
-                    -- Teleport tức thời
-                    hrp.CFrame = CFrame.new(tpPos.Position, cf.Position)
+                    -- Teleport tức thời đến và nhìn vào máy
+                    hrp.CFrame = CFrame.new(targetPos.Position, modelCF.Position)
 
-                    while getgenv().AutoFarm and (not target.Progress or target.Progress.Value < 100) do
-                        hrp.CFrame = CFrame.new(tpPos.Position, cf.Position) -- Giữ vị trí
+                    -- Bắt đầu sửa
+                    while getgenv().Config.AutoFarm and (not target.Progress or target.Progress.Value < 100) do
+                        -- Giữ vị trí không cho nhân vật bị văng
+                        hrp.CFrame = CFrame.new(targetPos.Position, modelCF.Position)
+                        
+                        -- Kích hoạt ProximityPrompt
                         fireproximityprompt(target.Prompt)
-                        task.wait(getgenv().RepairDelay)
+                        
+                        -- Giải đố 1.2s theo video
+                        task.wait(getgenv().Config.RepairDelay)
+                        
+                        -- Kiểm tra lại nếu máy đã biến mất hoặc xong
                         if not target.Model:IsDescendantOf(workspace) then break end
+                        task.wait(0.1)
                     end
                 end
-            elseif getgenv().AutoHop then
+            elseif getgenv().Config.AutoHop then
+                -- Nếu không còn máy nào chưa sửa -> Nhảy server
                 task.wait(2)
                 game:GetService("TeleportService"):Teleport(game.PlaceId)
             end
@@ -108,4 +104,19 @@ task.spawn(function()
     end
 end)
 
-Rayfield:Notify({Title = "DARK HUB", Content = "Script nạp thành công!", Duration = 5})
+-- 6. IDENTITY LOCK (@bacon1607)
+task.spawn(function()
+    while task.wait(1) do
+        pcall(function()
+            local lp = game.Players.LocalPlayer
+            lp.DisplayName = "bacon1607"
+            lp.Name = "bacon1607"
+            if lp.Character and lp.Character:FindFirstChild("Humanoid") then
+                lp.Character.Humanoid.DisplayName = "bacon1607"
+            end
+        end)
+    end
+end)
+
+Window:SelectTab(1)
+Fluent:Notify({ Title = "DARK HUB", Content = "Auto Farm đã FIX và đang CHẠY!", Duration = 5 })
