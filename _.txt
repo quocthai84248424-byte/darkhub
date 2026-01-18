@@ -1,101 +1,98 @@
 --[[
     DARK HUB by ilovedog
-    Dead Rail Ultimate - V27 (CORE PROTECTED)
-    Status: 100% Features | Anti-Skid
+    Dead Rail Ultimate - V28 (SUPREME FIXED)
+    Status: 100% FIXED 404 & NIL ERROR
 ]]
 
-local _0x564F4944 = "\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\39\104\116\116\112\115\58\47\47\115\105\114\105\117\115\46\109\101\110\117\47\114\97\121\102\105\101\108\100\39\41\41\40\41"
-local _0xLib = loadstring(_0x564F4944)()
+-- [HỆ THỐNG ÉP UI & SỬA LỖI NIL]
+local _0xLib;
+local _0xSuccess = pcall(function()
+    -- Thử tải từ link mirror ổn định nhất
+    _0xLib = loadstring(game:HttpGet('https://raw.githubusercontent.com/SiriusSoftware-External/Rayfield/main/source.lua'))()
+end)
 
--- [HỆ THỐNG BIẾN ĐÃ ĐƯỢC KHOÁ]
-local _0xVAR = {
-    _0xB = false, _0xSB = "None", _0xAF = false, _0xAM = false,
-    _0xSA = false, _0xNC = false, _0xAA = false, _0xFN = false,
-    _0xEI = false, _0xEE = false
-}
+if not _0xSuccess or not _0xLib then
+    -- Link dự phòng 2 nếu link 1 bị lỗi 404
+    _0xLib = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+end
 
-local _0xS = {
+-- [MÃ HOÁ CẤU TẠO LÕI]
+local _0xCFG = {B=false,SB="None",AF=false,AM=false,SA=false,NC=false,AA=false,FN=false,EI=false,EE=false}
+local _0xSTR = {
     ["\86\224\110\103"] = "\71\111\108\100", 
     ["\66\225\187\131\99"] = "\83\105\108\118\101\114",
-    ["\83\117\110\103"] = "\71\117\110"
+    ["\104\97\99\107\101\114\49\49\49\49\49"] = "\104\97\99\107\101\114\49\49\49\49\49"
 }
 
--- [WINDOW VỚI KEY SYSTEM]
-local _0xW = _0xLib:CreateWindow({
+-- [KHỞI TẠO WINDOW - ÉP HIỂN THỊ]
+local Window = _0xLib:CreateWindow({
     Name = "DARK HUB :: VOID",
+    LoadingTitle = "FORCING CORE PROTOCOL V28...",
     KeySystem = true,
     KeySettings = {
         Title = "SECURITY CHECK",
         Subtitle = "Discord: https://discord.gg/HfVYnr8z",
-        Note = "NHẤN NÚT ĐỂ LẤY KEY!",
+        Note = "NHẤN NÚT ACTIONS ĐỂ LẤY LINK!",
         Key = {"AUTOCLICLFULL22"},
-        Actions = {{Text = "Copy Discord", OnPress = function() setclipboard("https://discord.gg/HfVYnr8z") end}}
+        Actions = {{Text = "Copy Discord Link", OnPress = function() setclipboard("https://discord.gg/HfVYnr8z") end}}
     }
 })
 
--- [TẠO TABS - TÍCH HỢP ĐẦY ĐỦ]
-local _0xT1 = _0xW:CreateTab("Main", "home")
-local _0xT2 = _0xW:CreateTab("Farm", "bolt")
-local _0xT3 = _0xW:CreateTab("Combat", "target")
-local _0xT4 = _0xW:CreateTab("Visuals", "eye")
-local _0xT5 = _0xW:CreateTab("Settings", "settings")
+-- [TỔ HỢP TABS CHỨC NĂNG]
+local T1 = Window:CreateTab("Main", "home")
+local T2 = Window:CreateTab("Farm", "bolt")
+local T3 = Window:CreateTab("Visuals", "eye")
+local T4 = Window:CreateTab("Settings", "settings")
 
--- [MÃ HOÁ LOGIC TRONG TOGGLE]
-_0xT1:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) _0xVAR._0xB = v end})
-_0xT1:CreateDropdown({Name = "Vật phẩm", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xVAR._0xSB = o[1] end})
+-- [MAIN & FARM INTEGRATION]
+T1:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) _0xCFG.B = v end})
+T1:CreateDropdown({Name = "Vật phẩm", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xCFG.SB = o[1] end})
+T2:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) _0xCFG.AF = v end})
+T2:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) _0xCFG.AM = v end})
 
-_0xT2:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) _0xVAR._0xAF = v end})
-_0xT2:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) _0xVAR._0xAM = v end})
+-- [SETTINGS - MÃ HOÁ LÕI CHẠY NGẦM]
+T4:CreateToggle({Name = "Noclip Mode", Callback = function(v) _0xCFG.NC = v end})
+T4:CreateToggle({Name = "Identity Spoof", Callback = function(v) _0xCFG.FN = v end})
+T4:CreateButton({Name = "ACTIVATE FLY", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end) end})
+T4:CreateButton({Name = "DESTROY GUI", Callback = function() _0xLib:Destroy() end})
 
-_0xT5:CreateToggle({Name = "Noclip Mode", Callback = function(v) _0xVAR._0xNC = v end})
-_0xT5:CreateToggle({Name = "Identity Spoof", Callback = function(v) _0xVAR._0xFN = v end})
-_0xT5:CreateButton({Name = "ACTIVATE FLY", Callback = function() pcall(function() loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\88\78\69\79\70\70\47\70\108\121\71\117\105\86\51\47\109\97\105\110\47\70\108\121\71\117\105\86\51\46\108\117\97"))() end) end})
-_0xT5:CreateButton({Name = "DESTROY GUI", Callback = function() _0xLib:Destroy() end})
+-- [BẢO MẬT CẤU TẠO LÕI (METATABLE & RUNSERVICE)]
+local LP = game:GetService("Players").LocalPlayer
 
--- [PHẦN QUAN TRỌNG: CẤU TẠO LÕI ĐÃ MÃ HOÁ]
-local _0xP = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
-
--- Logic Noclip (Stepped Protection)
-game:GetService("\82\117\110\83\101\114\118\105\93\101").Stepped:Connect(function()
-    if _0xVAR._0xNC and _0xP.Character then
-        for _, v in pairs(_0xP.Character:GetDescendants()) do
-            if v:IsA("\66\97\115\101\80\97\114\116") then v.CanCollide = false end
+game:GetService("RunService").Stepped:Connect(function()
+    if _0xCFG.NC and LP.Character then
+        for _, v in pairs(LP.Character:GetDescendants()) do
+            if v:IsA("BasePart") then v.CanCollide = false end
         end
     end
 end)
 
--- Logic Fake Name (Metatable Hooking)
-local _0xMT = getrawmetatable(game)
-local _0xOLD = _0xMT.__index
-setreadonly(_0xMT, false)
-_0xMT.__index = newcclosure(function(t, k)
-    if _0xVAR._0xFN and (k == "\78\97\109\101" or k == "\68\105\115\112\108\97\121\78\97\109\101") and t == _0xP then
+local mt = getrawmetatable(game); local old = mt.__index; setreadonly(mt, false)
+mt.__index = newcclosure(function(t, k)
+    if _0xCFG.FN and (k == "Name" or k == "DisplayName") and t == LP then
         return "\104\97\99\107\101\114\49\49\49\49\49"
     end
-    return _0xOLD(t, k)
-end)
-setreadonly(_0xMT, true)
+    return old(t, k)
+end); setreadonly(mt, true)
 
--- Logic Bring & Farm Engine (Dã nén)
+-- Bring/Farm Loop (Protected)
 task.spawn(function()
     while task.wait(0.3) do
         pcall(function()
-            local r = _0xP.Character and _0xP.Character:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116")
+            local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
             if r then
-                if _0xVAR._0xB and _0xVAR._0xSB ~= "None" then
-                    -- Logic Bring mã hoá ngầm
+                if _0xCFG.B and _0xCFG.SB ~= "None" then
                     for _, o in pairs(workspace:GetDescendants()) do
-                        if o.Name:lower():find(_0xVAR._0xSB:lower()) then
+                        if o.Name:lower():find(_0xCFG.SB:lower()) then
                             o.CFrame = r.CFrame * CFrame.new(0,-2,0)
                             fireproximityprompt(o:FindFirstChildOfClass("ProximityPrompt") or o.Parent:FindFirstChildOfClass("ProximityPrompt"))
                         end
                     end
                 end
-                -- Logic Farm mã hoá ngầm
-                local ft = (_0xVAR._0xAF and "Bond") or (_0xVAR._0xAM and "Gold")
-                if ft then
+                local target = (_0xCFG.AF and "Bond") or (_0xCFG.AM and "Gold")
+                if target then
                     for _, v in pairs(workspace:GetDescendants()) do 
-                        if v.Name:find(ft) then 
+                        if v.Name:find(target) then 
                             r.CFrame = v.CFrame * CFrame.new(0,2,0)
                             fireproximityprompt(v:FindFirstChildOfClass("ProximityPrompt") or v.Parent:FindFirstChildOfClass("ProximityPrompt"))
                             break 
@@ -106,5 +103,3 @@ task.spawn(function()
         end)
     end
 end)
-
-_0xLib:LoadConfiguration()
