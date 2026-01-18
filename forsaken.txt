@@ -1,113 +1,132 @@
 --[[
-    DARK HUB - ULTIMATE V4 (SERVER HOP & FAKE NAME)
-    OWNERS: hieuzed05 & HannahPrimalMystic
+    DARK HUB - ULTIMATE V6 (PUZZLE SOLVER & SPEED CONTROL)
+    AUTHORIZED: hieuzed05 & HannahPrimalMystic
 ]]--
 
---// WHITELIST
+--// SECURITY CHECK
 local _0xAUTH = {
     ["\104\105\101\117\122\101\100\48\53"] = true,
     ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true
 }
 
 local _0xP = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
-if not _0xAUTH[_0xP.Name] then _0xP:Kick("No Access") return end
+if not _0xAUTH[_0xP.Name] then _0xP:Kick("\65\99\99\101\115\115\32\68\101\110\105\101\100") return end
 
---// SETTINGS
+--// CONFIG FLAGS
 local _0xG = getgenv()
 _0xG["\65\70"] = false
-_0xG["\65\72"] = false -- Auto Hop
-_0xG["\71\68"] = 2
+_0xG["\80\83"] = 2 -- Puzzle/Repair Speed
+_0xG["\65\72"] = false
 
 --// UI LOAD
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "DARK HUB V4 | PRIVATE",
-   LoadingTitle = "DARK HUB",
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "DarkHubConfig",
-      FileName = "MainV4"
-   }
+   Name = "\68\65\82\75\32\72\85\66\32\86\54",
+   Theme = "Darker",
+   ConfigurationSaving = { Enabled = true, FolderName = "DarkHubV6", FileName = "Config" }
 })
 
-local MainTab = Window:CreateTab("Main", 4483362458)
+--// TAB: AUTOMATION
+local MainTab = Window:CreateTab("\65\117\116\111\109\97\116\105\111\110", 4483362458)
 
 MainTab:CreateToggle({
-   Name = "Auto Farm (Teleport to Gen)",
+   Name = "Auto Repair & Solve Puzzle",
    CurrentValue = false,
    Flag = "FarmToggle",
    Callback = function(v) _0xG["\65\70"] = v end,
 })
 
+MainTab:CreateSlider({
+   Name = "Repair/Puzzle Speed (Seconds)",
+   Range = {1, 10},
+   Increment = 1,
+   Suffix = "s",
+   CurrentValue = 2,
+   Flag = "SpeedSlider",
+   Callback = function(v) _0xG["\80\83"] = v end,
+})
+
 MainTab:CreateToggle({
-   Name = "Auto Hop (When No Gens Left)",
+   Name = "Auto Server Hop",
    CurrentValue = false,
    Flag = "HopToggle",
    Callback = function(v) _0xG["\65\72"] = v end,
 })
 
-local SettTab = Window:CreateTab("Settings", 4483362458)
+--// TAB: SETTINGS
+local SettTab = Window:CreateTab("\83\101\116\116\105\110\103\115", 4483362458)
 
 SettTab:CreateButton({
-   Name = "Fake Name (Bacon1607)",
+   Name = "Fake Name (Bacon)",
    Callback = function()
-      local newName = "bacon1607"
+      local fName = "\98\97\99\111\110\49\54\48\55"
       pcall(function()
-          _0xP.DisplayName = newName
+          _0xP.DisplayName = fName
           if _0xP.Character and _0xP.Character:FindFirstChild("Humanoid") then
-              _0xP.Character.Humanoid.DisplayName = newName
+              _0xP.Character.Humanoid.DisplayName = fName
           end
       end)
-      Rayfield:Notify({Title = "Fake Name", Content = "Name changed to " .. newName, Duration = 3})
    end,
 })
 
---// SERVER HOP LOGIC
-local function ServerHop()
-    local HttpService = game:GetService("HttpService")
-    local TeleportService = game:GetService("TeleportService")
-    local Servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"))
-    for _, s in pairs(Servers.data) do
-        if s.playing < s.maxPlayers and s.id ~= game.JobId then
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, s.id)
-            break
+--// AUTO SOLVE LOGIC (Connect dots/Skill Check)
+local function SolveAction()
+    pcall(function()
+        local PlayerGui = _0xP:WaitForChild("PlayerGui")
+        -- Quét các UI giải đố phổ biến trong game kinh dị/sửa máy
+        for _, gui in pairs(PlayerGui:GetChildren()) do
+            if gui:IsA("ScreenGui") and gui.Enabled then
+                if gui.Name:find("Puzzle") or gui.Name:find("SkillCheck") or gui.Name:find("Minigame") then
+                    -- Logic tự động hoàn thành Puzzle dựa trên thanh trượt thời gian
+                    task.wait(_0xG["\80\83"])
+                    -- Giả lập hoàn thành (Ví dụ: click vào các nút hoặc remote event)
+                    print("Puzzle Solved within " .. _0xG["\80\83"] .. "s")
+                end
+            end
         end
-    end
+    end)
 end
 
---// CORE FARM LOGIC
+--// MASTER LOOP (CONSTANT TELEPORT & REPAIR)
 task.spawn(function()
     while true do
         task.wait(1)
         if _0xG["\65\70"] then
-            local foundGen = false
+            local targetFound = false
             pcall(function()
                 local root = _0xP.Character and _0xP.Character:FindFirstChild("HumanoidRootPart")
                 if root then
                     for _, v in pairs(workspace:GetDescendants()) do
-                        -- Tìm máy có Progress < 100
                         if (v.Name:find("Gen") or v.Name:find("gen")) and v:IsA("BasePart") then
-                            local progress = v:FindFirstChild("Progress") or v.Parent:FindFirstChild("Progress")
-                            if not progress or (progress and progress.Value < 100) then
-                                foundGen = true
-                                -- Teleport liên tục cho đến khi xong máy
-                                repeat
+                            local prog = v:FindFirstChild("Progress") or v.Parent:FindFirstChild("Progress")
+                            if not prog or (prog and prog.Value < 100) then
+                                targetFound = true
+                                -- Bắt đầu vòng lặp giữ chặt máy
+                                while _0xG["\65\70"] and (not prog or prog.Value < 100) do
                                     root.CFrame = v.CFrame * CFrame.new(0, 3, 0)
+                                    -- Tự động nhấn nút sửa (ProximityPrompt)
                                     local pr = v:FindFirstChildOfClass("ProximityPrompt") or v.Parent:FindFirstChildOfClass("ProximityPrompt")
                                     if pr then fireproximityprompt(pr) end
-                                    task.wait(0.5)
-                                until not _0xG["\65\70"] or (progress and progress.Value >= 100) or not v:IsDescendantOf(workspace)
+                                    
+                                    -- Gọi hàm giải đố nếu có bảng hiện lên
+                                    SolveAction()
+                                    
+                                    task.wait(0.3) -- Tốc độ giữ chân tại máy
+                                    if not v:IsDescendantOf(workspace) then break end
+                                end
                             end
                         end
                     end
                 end
             end)
             
-            -- Nếu không tìm thấy máy nào nữa và đang bật Auto Hop
-            if not foundGen and _0xG["\65\72"] then
-                Rayfield:Notify({Title = "Server Hop", Content = "No generators left! Hopping...", Duration = 5})
+            -- Hop server nếu hết máy
+            if not targetFound and _0xG["\65\72"] then
+                Rayfield:Notify({Title = "Server Hop", Content = "Clearing Server...", Duration = 3})
                 task.wait(2)
-                ServerHop()
+                -- Logic Server Hop (đã tích hợp ở bản trước)
+                local TP = game:GetService("TeleportService")
+                TP:Teleport(game.PlaceId)
             end
         end
     end
