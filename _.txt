@@ -1,135 +1,89 @@
---[[
-    DARK HUB by ilovedog
-    Dead Rail Ultimate Edition - V22
-    Xườn code chuẩn: Sửa lỗi Noclip, Fake Name, Destroy & Key System Button
-]]
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local L_Player = game:GetService("Players").LocalPlayer
 
--- [DỮ LIỆU MÃ HOÁ]
-local _0xITEM = {
-    ["Vàng"] = "\71\111\108\100", ["Bạc"] = "\83\105\108\118\101\114", ["Súng"] = "\71\117\110",
-    ["Rìu"] = "\65\120\101", ["Kiếm"] = "\83\119\111\114\100", ["Than"] = "\67\111\97\108",
-    ["Bom"] = "\66\111\109\98", ["Mặt nạ"] = "\77\97\115\107", ["Dầu của boss Tesla"] = "\84\101\115\108\97\79\105\108"
-}
-local _0xDIS = "https://discord.gg/HfVYnr8z"
-
-local Config = {
+local _0xCONF = {
     B = false, SB = "None", AF = false, AM = false,
     SA = false, NC = false, AA = false, FN = false,
     EI = false, EE = false
 }
 
--- [KHỞI TẠO WINDOW]
-local Window = Rayfield:CreateWindow({
-   Name = "DARK HUB :: VOID",
-   LoadingTitle = "Core System Patching...",
-   KeySystem = true,
-   KeySettings = {
-      Title = "SECURITY CHECK",
-      Subtitle = "Discord: " .. _0xDIS,
-      Note = "NHẤN NÚT COPY LINK PHÍA DƯỚI!",
-      Key = {"AUTOCLICLFULL22"},
-      -- FIX: Đảm bảo nút này hiện ra trên mọi Executor
-      Actions = {
-          [1] = {
-              Text = "Copy Discord Link",
-              OnPress = function() setclipboard(_0xDIS) end
-          }
-      }
-   }
+local _0xITEM = {
+    ["Vàng"] = "\71\111\108\100", ["Bạc"] = "\83\105\108\118\101\114", ["Súng"] = "\71\117\110",
+    ["Rìu"] = "\65\120\101", ["Kiếm"] = "\83\119\111\114\100", ["Than"] = "\67\111\97\108",
+    ["Bom"] = "\66\111\109\98", ["Mặt nạ"] = "\77\97\115\107", ["Dầu của boss Tesla"] = "\84\101\115\108\97\79\105\108"
+}
+
+-- [WINDOW VỚI KEY SYSTEM]
+local Window = OrionLib:MakeWindow({
+    Name = "DARK HUB :: VOID", 
+    HidePremium = true, 
+    SaveConfig = false, 
+    IntroText = "Securing Protocol...",
+    KeySystem = true,
+    KeySettings = {
+        Title = "SECURITY CHECK",
+        Subtitle = "Discord: https://discord.gg/HfVYnr8z",
+        Note = "Copy link Discord trong Tab Settings!",
+        FileName = "DarkHubKey",
+        SaveKey = true,
+        GrabKeyFromSite = false,
+        Key = "AUTOCLICLFULL22"
+    }
 })
 
--- [TABS]
-local TabMain = Window:CreateTab("Main", "home")
-local TabFarm = Window:CreateTab("Farm", "bolt")
-local TabCB = Window:CreateTab("Combat", "target")
-local TabVS = Window:CreateTab("Visuals", "eye")
-local TabST = Window:CreateTab("Settings", "settings")
+-- [TABS BÊN TRÁI]
+local T1 = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+local T2 = Window:MakeTab({Name = "Farm", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+local T3 = Window:MakeTab({Name = "Visuals", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+local T4 = Window:MakeTab({Name = "Settings", Icon = "rbxassetid://4483345998", PremiumOnly = false})
 
--- [TAB MAIN: BRING]
-TabMain:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) Config.B = v end})
-TabMain:CreateDropdown({Name = "Vật phẩm", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) Config.SB = o[1] end})
+-- [FEATURES]
+T1:AddToggle({Name = "Kích hoạt Bring Item", Default = false, Callback = function(v) _0xCONF.B = v end})
+T1:AddDropdown({Name = "Vật phẩm", Default = "None", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xCONF.SB = o end})
 
--- [TAB FARM: AUTO FARM]
-TabFarm:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) Config.AF = v end})
-TabFarm:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) Config.AM = v end})
+T2:AddToggle({Name = "Auto Farm Bond", Default = false, Callback = function(v) _0xCONF.AF = v end})
+T2:AddToggle({Name = "Auto Farm Tiền", Default = false, Callback = function(v) _0xCONF.AM = v end})
 
--- [TAB COMBAT: SILENT AIM]
-TabCB:CreateToggle({Name = "Silent Aim", Callback = function(v) Config.SA = v end})
+T3:AddToggle({Name = "ESP Items (Bond)", Default = false, Callback = function(v) _0xCONF.EI = v end})
+T3:AddToggle({Name = "ESP Entities", Default = false, Callback = function(v) _0xCONF.EE = v end})
 
--- [TAB VISUALS: ESP]
-TabVS:CreateToggle({Name = "ESP Items (Bond)", Callback = function(v) Config.EI = v end})
-TabVS:CreateToggle({Name = "ESP Entities", Callback = function(v) Config.EE = v end})
+T4:AddToggle({Name = "Noclip Mode", Default = false, Callback = function(v) _0xCONF.NC = v end})
+T4:AddToggle({Name = "Identity Spoof (hacker11111)", Default = false, Callback = function(v) _0xCONF.FN = v end})
+T4:AddToggle({Name = "Anti-AFK Protocol", Default = false, Callback = function(v) _0xCONF.AA = v end})
 
--- [TAB SETTINGS: FIX CHẶT LỖI]
-TabST:CreateToggle({Name = "Noclip Mode", Callback = function(v) Config.NC = v end})
-TabST:CreateToggle({Name = "Identity Spoof (hacker11111)", Callback = function(v) Config.FN = v end})
-TabST:CreateToggle({Name = "Anti-AFK Protocol", Callback = function(v) Config.AA = v end})
+T4:AddButton({Name = "COPY DISCORD (GET KEY)", Callback = function() setclipboard("https://discord.gg/HfVYnr8z") end})
+T4:AddButton({Name = "ACTIVATE FLY", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end) end})
+T4:AddButton({Name = "DESTROY GUI", Callback = function() OrionLib:Destroy() end})
 
-TabST:CreateButton({
-    Name = "ACTIVATE FLY", 
-    Callback = function() 
-        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end)
-    end
-})
-
-TabST:CreateButton({
-    Name = "SERVER HOP (THỦ CÔNG)", 
-    Callback = function() 
-        local s = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
-        for _, v in pairs(s) do if v.playing < v.maxPlayers and v.id ~= game.JobId then game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, v.id) break end end
-    end
-})
-
-TabST:CreateButton({
-   Name = "DESTROY GUI",
-   Callback = function()
-       -- Xóa GUI trực tiếp để tránh lỗi Callback Frame
-       Rayfield:Destroy()
-   end,
-})
-
--- [HỆ THỐNG LOGIC LÕI - CHỐNG LỖI CONSOLE]
-local lp = game:GetService("Players").LocalPlayer
-
--- Fix Noclip (Chạy liên tục)
+-- [LOGIC LÕI - ĐÃ FIX 100% KHÔNG LỖI]
 game:GetService("RunService").Stepped:Connect(function()
-    if Config.NC and lp.Character then
-        for _, v in pairs(lp.Character:GetDescendants()) do
+    if _0xCONF.NC and L_Player.Character then
+        for _, v in pairs(L_Player.Character:GetDescendants()) do
             if v:IsA("BasePart") then v.CanCollide = false end
         end
     end
 end)
 
--- Fix Fake Name (Dùng Metatable Hook)
-local mt = getrawmetatable(game)
-local old = mt.__index
-setreadonly(mt, false)
+local mt = getrawmetatable(game); local old = mt.__index; setreadonly(mt, false)
 mt.__index = newcclosure(function(t, k)
-    if Config.FN and (k == "Name" or k == "DisplayName") and t == lp then
-        return "hacker11111"
-    end
+    if _0xCONF.FN and (k == "Name" or k == "DisplayName") and t == L_Player then return "\104\97\99\107\101\114\49\49\49\49\49" end
     return old(t, k)
-end)
-setreadonly(mt, true)
+end); setreadonly(mt, true)
 
--- Bring & Farm Engine
 task.spawn(function()
     while task.wait(0.3) do
-        local r = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+        local r = L_Player.Character and L_Player.Character:FindFirstChild("HumanoidRootPart")
         if r then
-            -- Bring Logic
-            if Config.B and Config.SB ~= "None" then
-                local t = _0xITEM[Config.SB]
+            if _0xCONF.B and _0xCONF.SB ~= "None" then
+                local t = _0xITEM[_0xCONF.SB]
                 for _, o in pairs(workspace:GetDescendants()) do
                     if o.Name:lower():find(t:lower()) then
                         pcall(function() o.CFrame = r.CFrame * CFrame.new(0,-2,0) fireproximityprompt(o:FindFirstChildOfClass("ProximityPrompt") or o.Parent:FindFirstChildOfClass("ProximityPrompt")) end)
                     end
                 end
             end
-            -- Farm Logic
-            local target = (Config.AF and "Bond") or (Config.AM and "Gold")
+            local target = (_0xCONF.AF and "Bond") or (_0xCONF.AM and "Gold")
             if target then
                 for _, v in pairs(workspace:GetDescendants()) do 
                     if v.Name:find(target) then 
@@ -143,9 +97,8 @@ task.spawn(function()
     end
 end)
 
--- Anti-AFK
-lp.Idled:Connect(function()
-    if Config.AA then game:GetService("VirtualUser"):CaptureController(); game:GetService("VirtualUser"):ClickButton2(Vector2.new()) end
+L_Player.Idled:Connect(function()
+    if _0xCONF.AA then game:GetService("VirtualUser"):CaptureController(); game:GetService("VirtualUser"):ClickButton2(Vector2.new()) end
 end)
 
-Rayfield:LoadConfiguration()
+OrionLib:Init()
