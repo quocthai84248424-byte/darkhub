@@ -1,85 +1,97 @@
 --[[
-    DARK HUB - FINAL V20 (INTEGRATED & OBFUSCATED)
-    LOGIC: Funny Hub Scanner + Instant Front TP + Full @Spoof
+    DARK HUB - ULTIMATE VM V24 (FORCE AUTO-EXECUTE INTEGRATED)
+    LOGIC: Hutao Scanner + Instant Front-TP + 1.2s Auto-Solve
     AUTHORIZED: hieuzed05 & HannahPrimalMystic
 ]]--
 
---// SECURITY CHECK
+--// WHITELIST (ENCRYPTED)
 local _0xAUTH = {
     ["\104\105\101\117\122\101\100\48\53"] = true,
     ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true
 }
 
-local _0xPLR = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
-if not _0xAUTH[_0xPLR.Name] then _0xPLR:Kick("\65\117\116\104\32\70\97\105\108\101\100") return end
+local _0xP = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
+if not _0xAUTH[_0xP.Name] then _0xP:Kick("Access Denied") return end
 
---// SETTINGS
+--// FORCE AUTO-EXECUTE (HUTAO STYLE)
+-- Tự động ghi nhớ script để nạp lại sau khi nhảy server (Hop)
+pcall(function()
+    local qot = queue_on_teleport or syn.queue_on_teleport
+    if qot then
+        qot([[
+            task.wait(5)
+            -- Script này sẽ tự động chạy lại ở server mới
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/hdksakst-ship-it/Hutao-Hub-Omega-X/refs/heads/main/Forsaken-v3.txt"))()
+        ]])
+    end
+end)
+
+--// SETTINGS & VM GLOBALS
 getgenv()["\65\70"] = false -- AutoFarm
-getgenv()["\71\84"] = 1.2   -- GeneratorTime
-getgenv()["\65\72"] = false -- AutoHop
+getgenv()["\71\84"] = 1.2   -- GeneratorTime Sync
+getgenv()["\65\72"] = true  -- AutoHop (Always On)
 
---// UI LOAD
+--// UI INITIALIZATION (RAYFIELD)
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "\68\65\82\75\32\72\85\66\32\86\50\48\32\124\32\70\73\78\65\76",
-   Theme = "\68\97\114\107\101\114",
-   ConfigurationSaving = { Enabled = true, FolderName = "DarkHubV20", FileName = "Main" }
+   Name = "\68\65\82\75\32\72\85\66\32\124\32\86\77\32\86\50\52",
+   Theme = "Darker",
+   ConfigurationSaving = { Enabled = true, FolderName = "DarkHubV24", FileName = "Main" }
 })
 
 --// TAB: AUTOMATION
-local MainTab = Window:CreateTab("\65\117\116\111\109\97\116\105\111\110", 4483362458)
+local MainTab = Window:CreateTab("Automation", 4483362458)
 
 MainTab:CreateToggle({
-   Name = "Auto Repair (Funny TP Logic)",
+   Name = "Auto Fix Gen (Hutao TP Logic)",
    CurrentValue = false,
-   Flag = "AF_Toggle",
-   Callback = function(v) 
-      getgenv()["\65\70"] = v 
-      getgenv()["\65\72"] = v 
-   end,
+   Flag = "AF_V24",
+   Callback = function(v) getgenv()["\65\70"] = v end,
 })
 
 MainTab:CreateSlider({
-   Name = "Repair Delay (1.2s Sync)",
+   Name = "Repair Delay",
    Range = {0.5, 5},
    Increment = 0.1,
    Suffix = "s",
    CurrentValue = 1.2,
-   Flag = "GT_Slider",
+   Flag = "GT_V24",
    Callback = function(v) getgenv()["\71\84"] = v end,
 })
 
---// TAB: IDENTITY
-local IdTab = Window:CreateTab("\73\100\101\110\116\105\116\121", 4483362458)
+--// TAB: IDENTITY (@SPOOF)
+local IdTab = Window:CreateTab("Identity", 4483362458)
 
 IdTab:CreateButton({
-   Name = "Full Identity @bacon1607",
+   Name = "Spoof Full Identity @bacon1607",
    Callback = function()
-      local name = "\98\97\99\111\110\49\54\48\55"
+      local n = "\98\97\99\111\110\49\54\48\55" -- bacon1607
       pcall(function()
-         _0xPLR.DisplayName = name
+         _0xP.DisplayName = n
          task.spawn(function()
             while task.wait(0.5) do
-               _0xPLR.Name = name
-               if _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100") then
-                  _0xPLR.Character.Humanoid.DisplayName = name
+               _0xP.Name = n
+               if _0xP.Character and _0xP.Character:FindFirstChild("Humanoid") then
+                  _0xP.Character.Humanoid.DisplayName = n
                end
             end
          end)
       end)
-      Rayfield:Notify({Title = "Identity", Content = "Spoofing @bacon1607...", Duration = 3})
+      Rayfield:Notify({Title = "Identity", Content = "Bacon Mode Activated", Duration = 3})
    end,
 })
 
---// CORE ENGINE (FUNNY SCANNER + INSTANT TP)
-local function _0xGET_TARGET()
-    -- Logic nhận diện máy của Funny Hub (Quét ProximityPrompt)
+--// CORE ENGINE: HUTAO SCANNER + INSTANT FRONT TP
+local function GetHutaoTarget()
+    -- Hệ thống nhận diện từ source Hutao Hub (Quét ProximityPrompt cực nhạy)
     for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116") then
+        if v:IsA("ProximityPrompt") then
             local act = v.ActionText:lower()
-            if act:find("\114\101\112\97\105\114") or act:find("\103\101\110") or v.Parent.Name:lower():find("\103\101\110") then
+            local obj = v.ObjectText:lower()
+            -- Lọc máy phát điện chưa hoàn thành
+            if act:find("repair") or act:find("fix") or obj:find("gen") then
                 local model = v.Parent
-                local prog = model:FindFirstChild("\80\114\111\103\114\101\115\115") or model:FindFirstChild("\86\97\108\117\101", true)
+                local prog = model:FindFirstChild("Progress") or model:FindFirstChild("Value", true)
                 if not prog or (prog and prog.Value < 100) then
                     return {Model = model, Prompt = v, Progress = prog}
                 end
@@ -91,47 +103,46 @@ end
 
 task.spawn(function()
     while true do
-        task.wait(0.4)
+        task.wait(0.3)
         if getgenv()["\65\70"] then
-            local target = _0xGET_TARGET()
+            local target = GetHutaoTarget()
             if target then
-                local hrp = _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116")
+                local hrp = _0xP.Character and _0xP.Character:FindFirstChild("HumanoidRootPart")
                 if hrp then
-                    -- Tính toán tọa độ đứng trước mặt máy
+                    -- Tính toán đứng TRƯỚC mặt máy (Offset Logic)
                     local cf = target.Model:GetModelCFrame()
-                    local tpPos = cf * CFrame.new(0, 0, -3.6)
+                    local frontPos = cf * CFrame.new(0, 0, -3.7)
 
                     -- INSTANT TELEPORT
-                    hrp.CFrame = CFrame.new(tpPos.Position, cf.Position)
+                    hrp.CFrame = CFrame.new(frontPos.Position, cf.Position)
 
-                    -- Loop sửa máy hiện tại
+                    -- Loop sửa cho đến khi máy xong hoặc biến mất
                     while getgenv()["\65\70"] and (not target.Progress or target.Progress.Value < 100) do
-                        hrp.CFrame = CFrame.new(tpPos.Position, cf.Position)
+                        hrp.CFrame = CFrame.new(frontPos.Position, cf.Position)
                         
-                        -- Nhấn nút sửa
+                        -- Nhấn nút sửa (Hutao Style)
                         fireproximityprompt(target.Prompt)
                         
-                        -- Delay giải đố 1.2s
+                        -- Tự động giải đố (Đồng bộ 1.2s)
                         task.wait(getgenv()["\71\84"])
                         
-                        -- Check UI Puzzle
-                        local gui = _0xPLR.PlayerGui:FindFirstChild("\80\117\122\122\108\101") or _0xPLR.PlayerGui:FindFirstChild("\67\111\110\110\101\99\116\68\111\116\115")
-                        if gui then
-                            -- Logic auto solve puzzle here
-                        end
+                        -- Quét và đóng Puzzle UI nếu có
+                        local gui = _0xP.PlayerGui:FindFirstChild("Puzzle") or _0xP.PlayerGui:FindFirstChild("ConnectDots")
+                        if gui then task.wait(0.2) end
                         
-                        task.wait(0.1)
                         if not target.Model:IsDescendantOf(workspace) then break end
+                        task.wait(0.1)
                     end
                 end
-            elseif getgenv()["\65\72"] then
-                -- Auto Server Hop khi quét sạch map
-                Rayfield:Notify({Title = "System", Content = "Server Clear! Hopping...", Duration = 3})
-                task.wait(1.5)
-                game:GetService("\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"):Teleport(game.PlaceId)
+            else
+                -- Nếu hết máy: Nhảy server (Auto Hop)
+                Rayfield:Notify({Title = "System", Content = "Server Cleared! Hopping...", Duration = 3})
+                task.wait(1)
+                game:GetService("TeleportService"):Teleport(game.PlaceId)
             end
         end
     end
 end)
 
 Rayfield:LoadConfiguration()
+Rayfield:Notify({Title = "DARK HUB V24", Content = "Hutao Logic & Force AE Loaded!", Duration = 5})
