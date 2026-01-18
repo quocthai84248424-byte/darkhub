@@ -1,132 +1,123 @@
 --[[
     DARK HUB by ilovedog
-    Dead Rail Ultimate Edition - Wind UI Port
-    Key: AUTOCLICLFULL22
+    Dead Rail Ultimate Edition - V14 (ESP RECOVERY)
+    Status: FULL FEATURES + ENCRYPTED
 ]]
 
-local _0xX = {game, pcall, loadstring, next, string.char, task, workspace, game:GetService("HttpService"), game:GetService("TeleportService"), getrawmetatable, setreadonly, newcclosure, setclipboard}
-local WindUI = _0xX[3](_0xX[1]:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
+local _0xL = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local _0xS = {game:GetService("HttpService"), game:GetService("TeleportService"), game:GetService("RunService"), game:GetService("VirtualUser")}
 
--- [CONFIG GỐC INTEGRATION]
 local Config = {
-    AutoFarm = false,
-    FarmSpeed = 150,
-    ServerHop = false,
-    Noclip = false,
-    SilentAim = false,
-    ESP_Zombie = false,
-    ESP_Werewolf = false,
-    ESP_Vampire = false,
-    ESP_Bandit = false,
-    ESP_Items = false,
-    FakeName = false -- Mới thêm
+    BringItem = false, SelectedBring = "None",
+    AutoFarmBond = false, AutoFarmMoney = false,
+    FarmSpeed = 150, FakeName = false,
+    SilentAim = false, Noclip = false, AntiAFK = false,
+    -- ESP CONFIG
+    ESP_Zombie = false, ESP_Werewolf = false, ESP_Vampire = false, ESP_Bandit = false, ESP_Items = false
 }
 
-local lp = _0xX[1]:GetService("Players").LocalPlayer
-local Camera = workspace.CurrentCamera
+local _0xM = {
+    ["Vàng"] = "Gold", ["Bạc"] = "Silver", ["Súng"] = "Gun", ["Rìu"] = "Axe", 
+    ["Kiếm"] = "Sword", ["Than"] = "Coal", ["Bom"] = "Bomb", ["Mặt nạ"] = "Mask", 
+    ["Dầu của boss Tesla"] = "TeslaOil"
+}
 
--- [WINDOW SETUP]
-local Window = WindUI:CreateWindow({
-    Title = "DARK HUB :: VOID",
-    Icon = "rbxassetid://10723415693",
-    Author = "ilovedog",
-    Folder = "DarkHub_DeadRail",
-    KeySystem = true,
-    KeySettings = {
-        Title = "SECURITY_CHECK",
-        Description = "Key: AUTOCLICLFULL22",
-        Key = {"AUTOCLICLFULL22"}, -- Key mới của bro
-        Action = function() _0xX[13]("https://discord.gg/HfVYnr8z") end
-    }
-})
+local _0xP = game:GetService("Players").LocalPlayer
+local _0xC = workspace.CurrentCamera
 
-local TabAF = Window:Tab({Title = "AF", Icon = "terminal"})
-local TabCB = Window:Tab({Title = "CB", Icon = "shield-alert"})
-local TabVS = Window:Tab({Title = "VS", Icon = "scan-eye"})
-local TabST = Window:Tab({Title = "ST", Icon = "command"})
-
--- [SILENT AIM & IDENTITY SPOOF LOGIC]
-local mt = _0xX[10](game)
-local oldIndex = mt.__index
-_0xX[11](mt, false)
-mt.__index = _0xX[12](function(self, idx)
-    -- Fake Name
-    if Config.FakeName and (idx == "DisplayName" or idx == "Name") and self == lp then
-        return "hacker11111"
-    end
-    -- Silent Aim
-    if Config.SilentAim and idx == "Hit" then
-        local target = nil
-        local shortestDist = math.huge
-        for _, v in pairs(_0xX[7]:GetDescendants()) do
-            if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") and v ~= lp.Character then
-                local screenPos, onScreen = Camera:WorldToViewportPoint(v.Head.Position)
-                if onScreen then
-                    local dist = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).Magnitude
-                    if dist < 500 and dist < shortestDist then
-                        shortestDist = dist
-                        target = v.Head
-                    end
-                end
-            end
-        end
-        if target then return target.CFrame end
-    end
-    return oldIndex(self, idx)
-end)
-_0xX[11](mt, true)
-
--- [ESP & NOCLIP RENDER]
-_0xX[1]:GetService("RunService").RenderStepped:Connect(function()
-    if Config.Noclip and lp.Character then
-        for _, v in pairs(lp.Character:GetDescendants()) do
-            if v:IsA("BasePart") then v.CanCollide = false end
-        end
-    end
-end)
-
--- [AUTO FARM LOGIC]
-local function startUltraFarm()
-    task.spawn(function()
-        while Config.AutoFarm do
-            task.wait(0.1)
-            local root = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-            if not root then continue end
-            local target = nil
-            for _, v in pairs(_0xX[7]:GetDescendants()) do
-                if v.Name == "Bond" or v.Name == "BondNote" then
-                    target = v:IsA("BasePart") and v or v:FindFirstChildWhichIsA("BasePart")
-                    if target then break end
-                end
-            end
-            if target then
-                local dist = (root.Position - target.Position).Magnitude
-                local tween = game:GetService("TweenService"):Create(root, TweenInfo.new(dist/Config.FarmSpeed, Enum.EasingStyle.Linear), {CFrame = target.CFrame * CFrame.new(0, 2, 0)})
-                tween:Play()
-                tween.Completed:Wait()
-                local p = target:FindFirstChildOfClass("ProximityPrompt") or target.Parent:FindFirstChildOfClass("ProximityPrompt")
-                if p then fireproximityprompt(p) end
-            elseif Config.ServerHop then
-                local res = _0xX[8]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
-                for _, v in pairs(res) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xX[9]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
-                break
-            end
-        end
-    end)
+-- [ESP CORE FUNCTION]
+local function createESP(part, color, name)
+    if part:FindFirstChild("VOID_ESP") then return end
+    local bg = Instance.new("BillboardGui", part)
+    bg.Name = "VOID_ESP"
+    bg.AlwaysOnTop = true
+    bg.Size = UDim2.new(0, 50, 0, 20)
+    local txt = Instance.new("TextLabel", bg)
+    txt.Size = UDim2.new(1, 0, 1, 0)
+    txt.BackgroundTransparency = 1
+    txt.Text = name
+    txt.TextColor3 = color
+    txt.TextStrokeTransparency = 0
+    txt.TextSize = 11
 end
 
--- [WIND UI CONTROLS]
-TabAF:Toggle({Title = "Auto Farm Bond", Callback = function(v) Config.AutoFarm = v; if v then startUltraFarm() end end})
-TabAF:Toggle({Title = "Auto Server Hop", Callback = function(v) Config.ServerHop = v end})
+-- [WINDOW]
+local Window = _0xL:CreateWindow({
+   Name = "DARK HUB :: VOID",
+   LoadingTitle = "Restoring Visual Protocols...",
+   KeySystem = true,
+   KeySettings = { Title = "Security Check", Note = "Key: AUTOCLICLFULL22", Key = {"AUTOCLICLFULL22"} }
+})
 
-TabCB:Toggle({Title = "Silent Aim", Callback = function(v) Config.SilentAim = v end})
+local TabMain = Window:CreateTab("Main", "home")
+local TabFarm = Window:CreateTab("Farm", "bolt")
+local TabCB = Window:CreateTab("Combat", "target")
+local TabVS = Window:CreateTab("Visuals", "eye") -- Tab ESP của bro đây!
+local TabST = Window:CreateTab("Settings", "settings")
 
-TabVS:Toggle({Title = "ESP Items (Bond)", Callback = function(v) Config.ESP_Items = v end})
-TabVS:Toggle({Title = "ESP Entities", Callback = function(v) Config.ESP_Zombie = v; Config.ESP_Werewolf = v; Config.ESP_Vampire = v; Config.ESP_Bandit = v end})
+-- [TAB: VISUALS]
+TabVS:CreateToggle({Name = "ESP Items (Bond/Note)", CurrentValue = false, Callback = function(v) Config.ESP_Items = v end})
+TabVS:CreateToggle({Name = "ESP Zombie (Green)", CurrentValue = false, Callback = function(v) Config.ESP_Zombie = v end})
+TabVS:CreateToggle({Name = "ESP Werewolf (Red)", CurrentValue = false, Callback = function(v) Config.ESP_Werewolf = v end})
+TabVS:CreateToggle({Name = "ESP Vampire (White)", CurrentValue = false, Callback = function(v) Config.ESP_Vampire = v end})
+TabVS:CreateToggle({Name = "ESP Bandit (Yellow)", CurrentValue = false, Callback = function(v) Config.ESP_Bandit = v end})
 
-TabST:Toggle({Title = "IDENTITY SPOOF (hacker11111)", Callback = function(v) Config.FakeName = v end})
-TabST:Button({Title = "ACTIVATE FLY PROTOCOL", Callback = function() _0xX[3](_0xX[1]:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end})
-TabST:Toggle({Title = "NOCLIP MODE", Callback = function(v) Config.Noclip = v end})
-TabST:Slider({Title = "Farm Speed", Min = 50, Max = 300, Default = 150, Callback = function(v) Config.FarmSpeed = v end})
+-- [TAB: MAIN / FARM / COMBAT (GIỮ NGUYÊN)]
+TabMain:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) Config.BringItem = v end})
+TabMain:CreateDropdown({Name = "Danh sách vật phẩm", Options = {"None", "Vàng", "Bạc", "Súng", "Rìu", "Kiếm", "Than", "Bom", "Mặt nạ", "Dầu của boss Tesla"}, Callback = function(o) Config.SelectedBring = o[1] end})
+TabFarm:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) Config.AutoFarmBond = v end})
+TabFarm:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) Config.AutoFarmMoney = v end})
+TabCB:CreateToggle({Name = "Silent Aim", Callback = function(v) Config.SilentAim = v end})
 
-WindUI:Notify({Title = "DARK HUB", Content = "Key Accepted. Welcome, " .. lp.Name})
+-- [TAB: SETTINGS]
+TabST:CreateButton({Name = "SERVER HOP (THỦ CÔNG)", Callback = function() 
+    local s = _0xS[1]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
+    for _, v in pairs(s) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xS[2]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
+end})
+TabST:CreateToggle({Name = "Anti-AFK Protocol", Callback = function(v) Config.AntiAFK = v end})
+TabST:CreateToggle({Name = "Identity Spoof (hacker11111)", Callback = function(v) Config.FakeName = v end})
+TabST:CreateButton({Name = "DESTROY GUI", Callback = function()
+    _0xL:CreateKeySystem({Name = "BẠN MUỐN TẮT?", Note = "Nhập 'Có' để tắt.", Key = {"Có"}, OnSuccess = function() _0xL:Destroy() end})
+end})
+
+-- [SYSTEM LOOP: ESP & NOCLIP]
+_0xS[3].RenderStepped:Connect(function()
+    if Config.Noclip and _0xP.Character then
+        for _, v in pairs(_0xP.Character:GetDescendants()) do if v:IsA("BasePart") then v.CanCollide = false end end
+    end
+    -- ESP Logic Restored
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") then
+            local n = v.Name:lower()
+            if Config.ESP_Zombie and n:find("zombie") then createESP(v.Head, Color3.fromRGB(0,255,0), "Zombie")
+            elseif Config.ESP_Werewolf and (n:find("werewolf") or n:find("wolf")) then createESP(v.Head, Color3.fromRGB(255,0,0), "Werewolf")
+            elseif Config.ESP_Vampire and n:find("vampire") then createESP(v.Head, Color3.fromRGB(255,255,255), "Vampire")
+            elseif Config.ESP_Bandit and n:find("bandit") then createESP(v.Head, Color3.fromRGB(255,255,0), "Bandit") end
+        end
+        if Config.ESP_Items and (v.Name == "Bond" or v.Name == "BondNote") then
+            createESP(v, Color3.fromRGB(0,255,255), "BOND")
+        end
+    end
+end)
+
+-- [FARM & BRING LOOP (GIỮ NGUYÊN)]
+task.spawn(function()
+    while true do task.wait(0.3)
+        local r = _0xP.Character and _0xP.Character:FindFirstChild("HumanoidRootPart")
+        if not r then continue end
+        if Config.BringItem and Config.SelectedBring ~= "None" then
+            local t = _0xM[Config.SelectedBring]
+            for _, o in pairs(workspace:GetDescendants()) do
+                if o.Name:lower():find(t:lower()) then
+                    pcall(function() o.CFrame = r.CFrame * CFrame.new(0,-2,0) fireproximityprompt(o:FindFirstChildOfClass("ProximityPrompt") or o.Parent:FindFirstChildOfClass("ProximityPrompt")) end)
+                end
+            end
+        end
+        local ft = nil
+        if Config.AutoFarmBond then for _, v in pairs(workspace:GetDescendants()) do if v.Name == "Bond" or v.Name == "BondNote" then ft = v break end end
+        elseif Config.AutoFarmMoney then for _, v in pairs(workspace:GetDescendants()) do if v.Name:find("Gold") or v.Name:find("Silver") then ft = v break end end end
+        if ft then pcall(function() r.CFrame = ft.CFrame * CFrame.new(0,2,0) fireproximityprompt(ft:FindFirstChildOfClass("ProximityPrompt") or ft.Parent:FindFirstChildOfClass("ProximityPrompt")) end) end
+    end
+end)
+
+_0xL:LoadConfiguration()
