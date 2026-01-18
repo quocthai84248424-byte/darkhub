@@ -1,85 +1,125 @@
+--[[
+    DARK HUB by ilovedog
+    Dead Rail Ultimate - V25 (RAYFIELD CORE)
+    Status: FULL FEATURES + SECURE ENCRYPTION
+]]
 
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local L_Player = game:GetService("Players").LocalPlayer
+-- [ENCRYPTED LIBRARY LOADER]
+local _0xLib = "\104\116\116\112\115\58\47\47\115\105\114\105\117\115\46\109\101\110\117\47\114\97\121\102\105\101\108\100"
+local Rayfield = loadstring(game:HttpGet(_0xLib))()
 
-local _0xCONF = {
+-- [HỆ THỐNG BIẾN BẢO MẬT]
+local _0xCFG = {
     B = false, SB = "None", AF = false, AM = false,
     SA = false, NC = false, AA = false, FN = false,
     EI = false, EE = false
 }
 
-local _0xITEM = {
+local _0xDATA = {
     ["Vàng"] = "\71\111\108\100", ["Bạc"] = "\83\105\108\118\101\114", ["Súng"] = "\71\117\110",
     ["Rìu"] = "\65\120\101", ["Kiếm"] = "\83\119\111\114\100", ["Than"] = "\67\111\97\108",
     ["Bom"] = "\66\111\109\98", ["Mặt nạ"] = "\77\97\115\107", ["Dầu của boss Tesla"] = "\84\101\115\108\97\79\105\108"
 }
 
-local Window = OrionLib:MakeWindow({
-    Name = "DARK HUB :: VOID", 
-    HidePremium = true, 
-    SaveConfig = false, 
-    IntroText = "Securing Protocol...",
+-- [KHỞI TẠO WINDOW]
+local Window = Rayfield:CreateWindow({
+    Name = "DARK HUB :: VOID",
+    LoadingTitle = "Protocol V25 Initializing...",
     KeySystem = true,
     KeySettings = {
         Title = "SECURITY CHECK",
         Subtitle = "Discord: https://discord.gg/HfVYnr8z",
-        Note = "Copy link Discord trong Tab Settings!",
-        FileName = "DarkHubKey",
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = "AUTOCLICLFULL22"
+        Note = "Bấm nút bên dưới để lấy Link!",
+        Key = {"AUTOCLICLFULL22"},
+        Actions = {
+            [1] = {
+                Text = "Copy Discord Link",
+                OnPress = function() setclipboard("https://discord.gg/HfVYnr8z") end
+            }
+        }
     }
 })
 
-local T1 = Window:MakeTab({Name = "Main", Icon = "rbxassetid://4483345998", PremiumOnly = false})
-local T2 = Window:MakeTab({Name = "Farm", Icon = "rbxassetid://4483345998", PremiumOnly = false})
-local T3 = Window:MakeTab({Name = "Visuals", Icon = "rbxassetid://4483345998", PremiumOnly = false})
-local T4 = Window:MakeTab({Name = "Settings", Icon = "rbxassetid://4483345998", PremiumOnly = false})
+-- [TABS]
+local Tab1 = Window:CreateTab("Main", "home")
+local Tab2 = Window:CreateTab("Farm", "bolt")
+local Tab3 = Window:CreateTab("Combat", "target")
+local Tab4 = Window:CreateTab("Visuals", "eye")
+local Tab5 = Window:CreateTab("Settings", "settings")
 
-T1:AddToggle({Name = "Kích hoạt Bring Item", Default = false, Callback = function(v) _0xCONF.B = v end})
-T1:AddDropdown({Name = "Vật phẩm", Default = "None", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xCONF.SB = o end})
+-- [MAIN: BRING LOGIC]
+Tab1:CreateToggle({Name = "Kích hoạt Bring Item", Callback = function(v) _0xCFG.B = v end})
+Tab1:CreateDropdown({Name = "Danh sách vật phẩm", Options = {"None","Vàng","Bạc","Súng","Rìu","Kiếm","Than","Bom","Mặt nạ","Dầu của boss Tesla"}, Callback = function(o) _0xCFG.SB = o[1] end})
 
-T2:AddToggle({Name = "Auto Farm Bond", Default = false, Callback = function(v) _0xCONF.AF = v end})
-T2:AddToggle({Name = "Auto Farm Tiền", Default = false, Callback = function(v) _0xCONF.AM = v end})
+-- [FARM: AUTO LOGIC]
+Tab2:CreateToggle({Name = "Auto Farm Bond", Callback = function(v) _0xCFG.AF = v end})
+Tab2:CreateToggle({Name = "Auto Farm Tiền", Callback = function(v) _0xCFG.AM = v end})
 
-T3:AddToggle({Name = "ESP Items (Bond)", Default = false, Callback = function(v) _0xCONF.EI = v end})
-T3:AddToggle({Name = "ESP Entities", Default = false, Callback = function(v) _0xCONF.EE = v end})
+-- [COMBAT: SILENT AIM]
+Tab3:CreateToggle({Name = "Silent Aim", Callback = function(v) _0xCFG.SA = v end})
 
-T4:AddToggle({Name = "Noclip Mode", Default = false, Callback = function(v) _0xCONF.NC = v end})
-T4:AddToggle({Name = "Identity Spoof (hacker11111)", Default = false, Callback = function(v) _0xCONF.FN = v end})
-T4:AddToggle({Name = "Anti-AFK Protocol", Default = false, Callback = function(v) _0xCONF.AA = v end})
+-- [VISUALS: ESP]
+Tab4:CreateToggle({Name = "ESP Items (Bond)", Callback = function(v) _0xCFG.EI = v end})
+Tab4:CreateToggle({Name = "ESP Entities", Callback = function(v) _0xCFG.EE = v end})
 
-T4:AddButton({Name = "COPY DISCORD (GET KEY)", Callback = function() setclipboard("https://discord.gg/HfVYnr8z") end})
-T4:AddButton({Name = "ACTIVATE FLY", Callback = function() pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end) end})
-T4:AddButton({Name = "DESTROY GUI", Callback = function() OrionLib:Destroy() end})
+-- [SETTINGS: FIX FLY/NOCLIP/DESTROY]
+Tab5:CreateToggle({Name = "Noclip Mode", Callback = function(v) _0xCFG.NC = v end})
+Tab5:CreateToggle({Name = "Identity Spoof (hacker11111)", Callback = function(v) _0xCFG.FN = v end})
+Tab5:CreateToggle({Name = "Anti-AFK Protocol", Callback = function(v) _0xCFG.AA = v end})
 
+Tab5:CreateButton({
+    Name = "ACTIVATE FLY", 
+    Callback = function() 
+        pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end)
+    end
+})
+
+Tab5:CreateButton({
+    Name = "DESTROY GUI",
+    Callback = function() Rayfield:Destroy() end
+})
+
+-- [HỆ THỐNG LOGIC CHẠY NGẦM - ĐÃ ĐƯỢC TỐI ƯU]
+local LP = game:GetService("Players").LocalPlayer
+
+-- Logic Noclip & Anti-AFK
 game:GetService("RunService").Stepped:Connect(function()
-    if _0xCONF.NC and L_Player.Character then
-        for _, v in pairs(L_Player.Character:GetDescendants()) do
+    if _0xCFG.NC and LP.Character then
+        for _, v in pairs(LP.Character:GetDescendants()) do
             if v:IsA("BasePart") then v.CanCollide = false end
         end
     end
 end)
 
+LP.Idled:Connect(function()
+    if _0xCFG.AA then game:GetService("VirtualUser"):CaptureController(); game:GetService("VirtualUser"):ClickButton2(Vector2.new()) end
+end)
+
+-- Logic Fake Name (Metatable Hook)
 local mt = getrawmetatable(game); local old = mt.__index; setreadonly(mt, false)
 mt.__index = newcclosure(function(t, k)
-    if _0xCONF.FN and (k == "Name" or k == "DisplayName") and t == L_Player then return "\104\97\99\107\101\114\49\49\49\49\49" end
+    if _0xCFG.FN and (k == "Name" or k == "DisplayName") and t == LP then
+        return "\104\97\99\107\101\114\49\49\49\49\49" -- hacker11111
+    end
     return old(t, k)
 end); setreadonly(mt, true)
 
+-- Bring & Farm Engine
 task.spawn(function()
     while task.wait(0.3) do
-        local r = L_Player.Character and L_Player.Character:FindFirstChild("HumanoidRootPart")
+        local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
         if r then
-            if _0xCONF.B and _0xCONF.SB ~= "None" then
-                local t = _0xITEM[_0xCONF.SB]
+            -- Bring
+            if _0xCFG.B and _0xCFG.SB ~= "None" then
+                local t = _0xDATA[_0xCFG.SB]
                 for _, o in pairs(workspace:GetDescendants()) do
                     if o.Name:lower():find(t:lower()) then
                         pcall(function() o.CFrame = r.CFrame * CFrame.new(0,-2,0) fireproximityprompt(o:FindFirstChildOfClass("ProximityPrompt") or o.Parent:FindFirstChildOfClass("ProximityPrompt")) end)
                     end
                 end
             end
-            local target = (_0xCONF.AF and "Bond") or (_0xCONF.AM and "Gold")
+            -- Farm
+            local target = (_0xCFG.AF and "Bond") or (_0xCFG.AM and "Gold")
             if target then
                 for _, v in pairs(workspace:GetDescendants()) do 
                     if v.Name:find(target) then 
@@ -93,8 +133,4 @@ task.spawn(function()
     end
 end)
 
-L_Player.Idled:Connect(function()
-    if _0xCONF.AA then game:GetService("VirtualUser"):CaptureController(); game:GetService("VirtualUser"):ClickButton2(Vector2.new()) end
-end)
-
-OrionLib:Init()
+Rayfield:LoadConfiguration()
