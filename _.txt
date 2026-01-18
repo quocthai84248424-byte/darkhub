@@ -1,16 +1,18 @@
 --[[
-    @title: DARK HUB [ULTIMATE VOID PROTOCOL]
-    @status: FULLY ENCRYPTED // WIND UI
-    @author: ilovedog // Hacker Style 2026
+    @title: DARK HUB [VOID PROTOCOL V6 - FINAL]
+    @status: FULLY ENCRYPTED // WIND UI INTEGRATED
+    @author: ilovedog // ROOT@ACCESS
 ]]
 
-local _0xX = {game, pcall, loadstring, next, string.char, task, workspace, game:GetService("HttpService"), game:GetService("TeleportService"), getrawmetatable, setreadonly, newcclosure}
+local _0xX = {game, pcall, loadstring, next, string.char, task, workspace, game:GetService("HttpService"), game:GetService("TeleportService"), getrawmetatable, setreadonly, newcclosure, setclipboard}
 local _0xZ = {
     ["L"] = "https://raw.githubusercontent.com/Footages/WindUI/main/Source.lua",
     ["H"] = {68,65,82,75,32,72,85,66,32,58,58,32,86,79,73,68},
-    ["T"] = {{65,70}, {67,66}, {86,83}, {73,84}, {83,84}}, -- AF, CB, VS, IT, ST
+    ["D"] = {104,116,116,112,115,58,47,47,100,105,115,99,111,114,100,46,103,103,47,72,102\86\89\110\114\56\122}, -- Discord
+    ["K"] = {65,85,84,79,67,76,73,67,76,70,85,76,76,50,50}, -- AUTOCLICLFULL22
     ["F"] = {104,97,99,107,101,114,49,49,49,49}, -- hacker11111
-    ["E"] = {68,97,114,107,72,117\98,95,69,83,80}
+    ["E"] = {68,97,114,107,72,117,98,95,69,83,80},
+    ["T"] = {{65,70}, {67,66}, {86,83}, {73,84}, {83,84}} -- AF, CB, VS, IT, ST
 }
 
 local function _0xH(b) 
@@ -20,109 +22,108 @@ local function _0xH(b)
 end
 
 local _0xWUI = _0xX[3](_0xX[1]:HttpGet(_0xZ.L))()
-local _0xDB = { _noclip = false, _speed = 150, _bringList = {}, _fakeActive = false, _silent = false, _esp = {} }
-local _0xFakeName = _0xH(_0xZ.F)
-local _0xESPName = _0xH(_0xZ.E)
+local _0xDB = { _noclip = false, _speed = 150, _bringList = {}, _fakeActive = false, _silent = false, _esp = {}, _farm = false }
+local _0xKey = _0xH(_0xZ.K)
+local _0xDiscord = _0xH(_0xZ.D)
 
--- [IDENTITY SPOOF]
+-- [KEY SYSTEM MODULE]
+local _0xWin = _0xWUI:CreateWindow({
+    Title = _0xH(_0xZ.H),
+    Icon = "rbxassetid://10723415693",
+    Author = "ROOT@INTERNAL",
+    Folder = "VOID_DATA",
+    KeySystem = true,
+    KeySettings = {
+        Title = "SYST_AUTH_REQUIRED",
+        Description = "Join Discord for Key Access",
+        Key = {_0xKey},
+        Action = function() _0xX[13](_0xDiscord) end
+    }
+})
+
+-- [TABS DEPLOYMENT]
+local _0xTabs = {
+    _AF = _0xWin:Tab({Title = _0xH(_0xZ.T[1]), Icon = "terminal"}),
+    _CB = _0xWin:Tab({Title = _0xH(_0xZ.T[2]), Icon = "shield-alert"}),
+    _VS = _0xWin:Tab({Title = _0xH(_0xZ.T[3]), Icon = "scan-eye"}),
+    _IT = _0xWin:Tab({Title = _0xH(_0xZ.T[4]), Icon = "binary"}),
+    _ST = _0xWin:Tab({Title = _0xH(_0xZ.T[5]), Icon = "command"})
+}
+
+-- [IDENTITY SPOOF KERNEL]
 local _mt = _0xX[10](game)
 local _old = _mt.__index
 _0xX[11](_mt, false)
 _mt.__index = _0xX[12](function(t, k)
     if _0xDB._fakeActive and (k == "DisplayName" or k == "Name") and t == _0xX[1]:GetService("Players").LocalPlayer then
-        return _0xFakeName
+        return _0xH(_0xZ.F)
     end
     return _old(t, k)
 end)
 _0xX[11](_mt, true)
 
--- [SYSTEM CORE WINDOW]
-local _0xP = _0xWUI:CreateWindow({
-    Title = _0xH(_0xZ.H),
-    Icon = "rbxassetid://10723415693",
-    Author = "ROOT@INTERNAL",
-    Folder = "VOID_DATA"
-})
-
-local _0xTabs = {
-    _AF = _0xP:Tab({Title = _0xH(_0xZ.T[1]), Icon = "terminal"}),
-    _CB = _0xP:Tab({Title = _0xH(_0xZ.T[2]), Icon = "shield-alert"}),
-    _VS = _0xP:Tab({Title = _0xH(_0xZ.T[3]), Icon = "scan-eye"}),
-    _IT = _0xP:Tab({Title = _0xH(_0xZ.T[4]), Icon = "binary"}),
-    _ST = _0xP:Tab({Title = _0xH(_0xZ.T[5]), Icon = "command"})
-}
-
--- [ESP SYSTEM]
-local function _0xClearESP(id)
-    for _, v in _0xX[4](_0xX[7]:GetDescendants()) do
-        if v.Name == _0xESPName and (id == "All" or v:GetAttribute("K") == id) then v:Destroy() end
-    end
+-- [ESP & BRING LOGIC]
+local function _0xApplyESP(p, c, t, k)
+    if p:FindFirstChild(_0xH(_0xZ.E)) then return end
+    local g = Instance.new("BillboardGui", p); g.Name = _0xH(_0xZ.E); g.AlwaysOnTop = true; g.Size = UDim2.new(0,50,0,20); g:SetAttribute("K", k)
+    local l = Instance.new("TextLabel", g); l.Size = UDim2.new(1,0,1,0); l.BackgroundTransparency = 1; l.TextColor3 = c; l.Text = t; l.TextSize = 10; l.TextStrokeTransparency = 0
 end
 
-local function _0xApplyESP(part, col, txt, ty)
-    if part:FindFirstChild(_0xESPName) then return end
-    local g = Instance.new("BillboardGui", part); g.Name = _0xESPName; g.AlwaysOnTop = true; g.Size = UDim2.new(0,50,0,20); g:SetAttribute("K", ty)
-    local l = Instance.new("TextLabel", g); l.Size = UDim2.new(1,0,1,0); l.BackgroundTransparency = 1; l.TextColor3 = col; l.Text = txt; l.TextSize = 10
-end
-
--- [ITEM BRING]
 local _0xKernel = function()
-    local _lp = _0xX[1]:GetService("Players").LocalPlayer
-    local _hrp = _lp.Character and _lp.Character:FindFirstChild("HumanoidRootPart")
-    if not _hrp then return end
+    local lp = _0xX[1]:GetService("Players").LocalPlayer
+    local root = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+    if not root then return end
     for _, obj in _0xX[4](_0xX[7]:GetDescendants()) do
         local match = false
-        for _, target in _0xX[4](_0xDB._bringList) do if obj.Name:find(target) then match = true end end
+        for _, target in _0xX[4](_0xDB._bringList) do if obj.Name:lower():find(target:lower()) then match = true end end
         if match then
             local p = obj:IsA("BasePart") and obj or obj:FindFirstChildWhichIsA("BasePart")
-            if p then
-                p.CFrame = _hrp.CFrame
-                local pr = obj:FindFirstChildOfClass("ProximityPrompt") or obj.Parent:FindFirstChildOfClass("ProximityPrompt")
-                if pr then fireproximityprompt(pr) end
-            end
+            if p then p.CFrame = root.CFrame; local pr = obj:FindFirstChildOfClass("ProximityPrompt") or obj.Parent:FindFirstChildOfClass("ProximityPrompt"); if pr then fireproximityprompt(pr) end end
         end
     end
 end
 
--- [UI INJECTION: AUTO FARM]
+-- [TAB 1: AUTO FARM]
 _0xTabs._AF:Toggle({Title = "Auto Farm Bond", Callback = function(v) _0xDB._farm = v end})
 
--- [UI INJECTION: COMBAT]
-_0xTabs._CB:Toggle({Title = "Silent Aim", Callback = function(v) _0xDB._silent = v end})
+-- [TAB 2: COMBAT]
+_0xTabs._CB:Toggle({Title = "Silent Aim (Head)", Callback = function(v) _0xDB._silent = v end})
 
--- [UI INJECTION: VISUALS]
+-- [TAB 3: VISUALS]
 local _eL = {{"Zombie", "Z", Color3.new(0,1,0)}, {"Wolf", "W", Color3.new(1,0,0)}, {"Vampire", "V", Color3.new(1,1,1)}, {"Bandit", "B", Color3.new(1,1,0)}, {"Bond", "I", Color3.new(0,1,1)}}
 for _, e in ipairs(_eL) do
     _0xTabs._VS:Toggle({Title = "ESP " .. e[1], Callback = function(v) 
         _0xDB._esp[e[2]] = v
-        if not v then _0xClearESP(e[2]) end 
+        if not v then for _, x in pairs(_0xX[7]:GetDescendants()) do if x.Name == _0xH(_0xZ.E) and x:GetAttribute("K") == e[2] then x:Destroy() end end end
     end})
 end
 
--- [UI INJECTION: ITEM]
-_0xTabs._IT:Button({Title = "\69\88\69\67\85\84\69\95\66\82\73\78\71", Callback = _0xKernel})
-local _iList = {"Coal", "Gun", "Gold", "Iron", "Wood", "Axe", "Knife"}
-for _, i in ipairs(_iList) do
+-- [TAB 4: ITEM BRING]
+_0xTabs._IT:Button({Title = "EXECUTE_BRING_PROTOCOL", Callback = _0xKernel})
+local _items = {"Coal", "Gun", "Gold", "Iron", "Wood", "Axe", "Knife", "Silver"}
+for _, i in ipairs(_items) do
     _0xTabs._IT:Toggle({Title = "SYST:" .. i, Callback = function(v)
-        if v then table.insert(_0xDB._bringList, i)
-        else for idx, x in pairs(_0xDB._bringList) do if x == i then table.remove(_0xDB._bringList, idx) end end end
+        if v then table.insert(_0xDB._bringList, i) else for idx, x in pairs(_0xDB._bringList) do if x == i then table.remove(_0xDB._bringList, idx) end end end
     end})
 end
 
--- [UI INJECTION: SETTINGS]
+-- [TAB 5: SETTINGS & SPOOF]
+_0xTabs._ST:Section({Title = "IDENTITY_CONTROL"})
 _0xTabs._ST:Toggle({Title = "FAKE_NAME_PROTOCOL", Callback = function(v) _0xDB._fakeActive = v end})
+_0xTabs._ST:Section({Title = "SYSTEM_COMMANDS"})
 _0xTabs._ST:Button({Title = "SERVER_HOP_INTRUSION", Callback = function()
     local res = _0xX[8]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
     for _, v in pairs(res) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xX[9]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
 end})
 _0xTabs._ST:Toggle({Title = "NOCLIP_PROTOCOL", Callback = function(v) _0xDB._noclip = v end})
-_0xTabs._ST:Slider({Title = "SPEED_VAL", Min = 16, Max = 300, Default = 150, Callback = function(v) _0xDB._speed = v end})
+_0xTabs._ST:Slider({Title = "WALK_SPEED", Min = 16, Max = 300, Default = 150, Callback = function(v) _0xDB._speed = v end})
 
--- [MAIN LOOP]
+-- [FINAL RENDER PROTOCOL]
 _0xX[1]:GetService("RunService").Stepped:Connect(function()
     local lp = _0xX[1]:GetService("Players").LocalPlayer
-    if _0xDB._noclip and lp.Character then
-        for _, p in pairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = false end end
+    if lp.Character then
+        if _0xDB._noclip then for _, p in pairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = false end end end
+        if _0xDB._speed ~= 16 then lp.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = _0xDB._speed end
     end
     for _, v in _0xX[4](_0xX[7]:GetDescendants()) do
         if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") then
@@ -136,4 +137,4 @@ _0xX[1]:GetService("RunService").Stepped:Connect(function()
     end
 end)
 
-_0xWUI:Notify({Title = "VOID_READY", Content = "Identity and Intrusion modules online.", Duration = 3})
+_0xWUI:Notify({Title = "SYST_LOADED", Content = "Welcome back, hacker11111.", Duration = 3})
