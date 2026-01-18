@@ -1,140 +1,132 @@
 --[[
-    @title: DARK HUB [VOID PROTOCOL V6 - FINAL]
-    @status: FULLY ENCRYPTED // WIND UI INTEGRATED
-    @author: ilovedog // ROOT@ACCESS
+    DARK HUB by ilovedog
+    Dead Rail Ultimate Edition - Wind UI Port
+    Key: AUTOCLICLFULL22
 ]]
 
 local _0xX = {game, pcall, loadstring, next, string.char, task, workspace, game:GetService("HttpService"), game:GetService("TeleportService"), getrawmetatable, setreadonly, newcclosure, setclipboard}
-local _0xZ = {
-    ["L"] = "https://raw.githubusercontent.com/Footages/WindUI/main/Source.lua",
-    ["H"] = {68,65,82,75,32,72,85,66,32,58,58,32,86,79,73,68},
-    ["D"] = {104,116,116,112,115,58,47,47,100,105,115,99,111,114,100,46,103,103,47,72,102\86\89\110\114\56\122}, -- Discord
-    ["K"] = {65,85,84,79,67,76,73,67,76,70,85,76,76,50,50}, -- AUTOCLICLFULL22
-    ["F"] = {104,97,99,107,101,114,49,49,49,49}, -- hacker11111
-    ["E"] = {68,97,114,107,72,117,98,95,69,83,80},
-    ["T"] = {{65,70}, {67,66}, {86,83}, {73,84}, {83,84}} -- AF, CB, VS, IT, ST
+local WindUI = _0xX[3](_0xX[1]:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/main.lua"))()
+
+-- [CONFIG GỐC INTEGRATION]
+local Config = {
+    AutoFarm = false,
+    FarmSpeed = 150,
+    ServerHop = false,
+    Noclip = false,
+    SilentAim = false,
+    ESP_Zombie = false,
+    ESP_Werewolf = false,
+    ESP_Vampire = false,
+    ESP_Bandit = false,
+    ESP_Items = false,
+    FakeName = false -- Mới thêm
 }
 
-local function _0xH(b) 
-    local s = "" 
-    for _, v in ipairs(b) do s = s .. _0xX[5](v) end 
-    return s 
-end
+local lp = _0xX[1]:GetService("Players").LocalPlayer
+local Camera = workspace.CurrentCamera
 
-local _0xWUI = _0xX[3](_0xX[1]:HttpGet(_0xZ.L))()
-local _0xDB = { _noclip = false, _speed = 150, _bringList = {}, _fakeActive = false, _silent = false, _esp = {}, _farm = false }
-local _0xKey = _0xH(_0xZ.K)
-local _0xDiscord = _0xH(_0xZ.D)
-
--- [KEY SYSTEM MODULE]
-local _0xWin = _0xWUI:CreateWindow({
-    Title = _0xH(_0xZ.H),
+-- [WINDOW SETUP]
+local Window = WindUI:CreateWindow({
+    Title = "DARK HUB :: VOID",
     Icon = "rbxassetid://10723415693",
-    Author = "ROOT@INTERNAL",
-    Folder = "VOID_DATA",
+    Author = "ilovedog",
+    Folder = "DarkHub_DeadRail",
     KeySystem = true,
     KeySettings = {
-        Title = "SYST_AUTH_REQUIRED",
-        Description = "Join Discord for Key Access",
-        Key = {_0xKey},
-        Action = function() _0xX[13](_0xDiscord) end
+        Title = "SECURITY_CHECK",
+        Description = "Key: AUTOCLICLFULL22",
+        Key = {"AUTOCLICLFULL22"}, -- Key mới của bro
+        Action = function() _0xX[13]("https://discord.gg/HfVYnr8z") end
     }
 })
 
--- [TABS DEPLOYMENT]
-local _0xTabs = {
-    _AF = _0xWin:Tab({Title = _0xH(_0xZ.T[1]), Icon = "terminal"}),
-    _CB = _0xWin:Tab({Title = _0xH(_0xZ.T[2]), Icon = "shield-alert"}),
-    _VS = _0xWin:Tab({Title = _0xH(_0xZ.T[3]), Icon = "scan-eye"}),
-    _IT = _0xWin:Tab({Title = _0xH(_0xZ.T[4]), Icon = "binary"}),
-    _ST = _0xWin:Tab({Title = _0xH(_0xZ.T[5]), Icon = "command"})
-}
+local TabAF = Window:Tab({Title = "AF", Icon = "terminal"})
+local TabCB = Window:Tab({Title = "CB", Icon = "shield-alert"})
+local TabVS = Window:Tab({Title = "VS", Icon = "scan-eye"})
+local TabST = Window:Tab({Title = "ST", Icon = "command"})
 
--- [IDENTITY SPOOF KERNEL]
-local _mt = _0xX[10](game)
-local _old = _mt.__index
-_0xX[11](_mt, false)
-_mt.__index = _0xX[12](function(t, k)
-    if _0xDB._fakeActive and (k == "DisplayName" or k == "Name") and t == _0xX[1]:GetService("Players").LocalPlayer then
-        return _0xH(_0xZ.F)
+-- [SILENT AIM & IDENTITY SPOOF LOGIC]
+local mt = _0xX[10](game)
+local oldIndex = mt.__index
+_0xX[11](mt, false)
+mt.__index = _0xX[12](function(self, idx)
+    -- Fake Name
+    if Config.FakeName and (idx == "DisplayName" or idx == "Name") and self == lp then
+        return "hacker11111"
     end
-    return _old(t, k)
+    -- Silent Aim
+    if Config.SilentAim and idx == "Hit" then
+        local target = nil
+        local shortestDist = math.huge
+        for _, v in pairs(_0xX[7]:GetDescendants()) do
+            if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") and v ~= lp.Character then
+                local screenPos, onScreen = Camera:WorldToViewportPoint(v.Head.Position)
+                if onScreen then
+                    local dist = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).Magnitude
+                    if dist < 500 and dist < shortestDist then
+                        shortestDist = dist
+                        target = v.Head
+                    end
+                end
+            end
+        end
+        if target then return target.CFrame end
+    end
+    return oldIndex(self, idx)
 end)
-_0xX[11](_mt, true)
+_0xX[11](mt, true)
 
--- [ESP & BRING LOGIC]
-local function _0xApplyESP(p, c, t, k)
-    if p:FindFirstChild(_0xH(_0xZ.E)) then return end
-    local g = Instance.new("BillboardGui", p); g.Name = _0xH(_0xZ.E); g.AlwaysOnTop = true; g.Size = UDim2.new(0,50,0,20); g:SetAttribute("K", k)
-    local l = Instance.new("TextLabel", g); l.Size = UDim2.new(1,0,1,0); l.BackgroundTransparency = 1; l.TextColor3 = c; l.Text = t; l.TextSize = 10; l.TextStrokeTransparency = 0
-end
-
-local _0xKernel = function()
-    local lp = _0xX[1]:GetService("Players").LocalPlayer
-    local root = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-    if not root then return end
-    for _, obj in _0xX[4](_0xX[7]:GetDescendants()) do
-        local match = false
-        for _, target in _0xX[4](_0xDB._bringList) do if obj.Name:lower():find(target:lower()) then match = true end end
-        if match then
-            local p = obj:IsA("BasePart") and obj or obj:FindFirstChildWhichIsA("BasePart")
-            if p then p.CFrame = root.CFrame; local pr = obj:FindFirstChildOfClass("ProximityPrompt") or obj.Parent:FindFirstChildOfClass("ProximityPrompt"); if pr then fireproximityprompt(pr) end end
+-- [ESP & NOCLIP RENDER]
+_0xX[1]:GetService("RunService").RenderStepped:Connect(function()
+    if Config.Noclip and lp.Character then
+        for _, v in pairs(lp.Character:GetDescendants()) do
+            if v:IsA("BasePart") then v.CanCollide = false end
         end
-    end
-end
-
--- [TAB 1: AUTO FARM]
-_0xTabs._AF:Toggle({Title = "Auto Farm Bond", Callback = function(v) _0xDB._farm = v end})
-
--- [TAB 2: COMBAT]
-_0xTabs._CB:Toggle({Title = "Silent Aim (Head)", Callback = function(v) _0xDB._silent = v end})
-
--- [TAB 3: VISUALS]
-local _eL = {{"Zombie", "Z", Color3.new(0,1,0)}, {"Wolf", "W", Color3.new(1,0,0)}, {"Vampire", "V", Color3.new(1,1,1)}, {"Bandit", "B", Color3.new(1,1,0)}, {"Bond", "I", Color3.new(0,1,1)}}
-for _, e in ipairs(_eL) do
-    _0xTabs._VS:Toggle({Title = "ESP " .. e[1], Callback = function(v) 
-        _0xDB._esp[e[2]] = v
-        if not v then for _, x in pairs(_0xX[7]:GetDescendants()) do if x.Name == _0xH(_0xZ.E) and x:GetAttribute("K") == e[2] then x:Destroy() end end end
-    end})
-end
-
--- [TAB 4: ITEM BRING]
-_0xTabs._IT:Button({Title = "EXECUTE_BRING_PROTOCOL", Callback = _0xKernel})
-local _items = {"Coal", "Gun", "Gold", "Iron", "Wood", "Axe", "Knife", "Silver"}
-for _, i in ipairs(_items) do
-    _0xTabs._IT:Toggle({Title = "SYST:" .. i, Callback = function(v)
-        if v then table.insert(_0xDB._bringList, i) else for idx, x in pairs(_0xDB._bringList) do if x == i then table.remove(_0xDB._bringList, idx) end end end
-    end})
-end
-
--- [TAB 5: SETTINGS & SPOOF]
-_0xTabs._ST:Section({Title = "IDENTITY_CONTROL"})
-_0xTabs._ST:Toggle({Title = "FAKE_NAME_PROTOCOL", Callback = function(v) _0xDB._fakeActive = v end})
-_0xTabs._ST:Section({Title = "SYSTEM_COMMANDS"})
-_0xTabs._ST:Button({Title = "SERVER_HOP_INTRUSION", Callback = function()
-    local res = _0xX[8]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
-    for _, v in pairs(res) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xX[9]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
-end})
-_0xTabs._ST:Toggle({Title = "NOCLIP_PROTOCOL", Callback = function(v) _0xDB._noclip = v end})
-_0xTabs._ST:Slider({Title = "WALK_SPEED", Min = 16, Max = 300, Default = 150, Callback = function(v) _0xDB._speed = v end})
-
--- [FINAL RENDER PROTOCOL]
-_0xX[1]:GetService("RunService").Stepped:Connect(function()
-    local lp = _0xX[1]:GetService("Players").LocalPlayer
-    if lp.Character then
-        if _0xDB._noclip then for _, p in pairs(lp.Character:GetDescendants()) do if p:IsA("BasePart") then p.CanCollide = false end end end
-        if _0xDB._speed ~= 16 then lp.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = _0xDB._speed end
-    end
-    for _, v in _0xX[4](_0xX[7]:GetDescendants()) do
-        if v:FindFirstChild("Humanoid") and v:FindFirstChild("Head") then
-            local n = v.Name:lower()
-            if _0xDB._esp.Z and n:find("zombie") then _0xApplyESP(v.Head, Color3.new(0,1,0), "Zombie", "Z")
-            elseif _0xDB._esp.W and (n:find("wolf") or n:find("were")) then _0xApplyESP(v.Head, Color3.new(1,0,0), "Wolf", "W")
-            elseif _0xDB._esp.V and n:find("vamp") then _0xApplyESP(v.Head, Color3.new(1,1,1), "Vampire", "V")
-            elseif _0xDB._esp.B and n:find("bandit") then _0xApplyESP(v.Head, Color3.new(1,1,0), "Bandit", "B") end
-        end
-        if _0xDB._esp.I and (v.Name == "Bond" or v.Name == "BondNote") then _0xApplyESP(v, Color3.new(0,1,1), "BOND", "I") end
     end
 end)
 
-_0xWUI:Notify({Title = "SYST_LOADED", Content = "Welcome back, hacker11111.", Duration = 3})
+-- [AUTO FARM LOGIC]
+local function startUltraFarm()
+    task.spawn(function()
+        while Config.AutoFarm do
+            task.wait(0.1)
+            local root = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+            if not root then continue end
+            local target = nil
+            for _, v in pairs(_0xX[7]:GetDescendants()) do
+                if v.Name == "Bond" or v.Name == "BondNote" then
+                    target = v:IsA("BasePart") and v or v:FindFirstChildWhichIsA("BasePart")
+                    if target then break end
+                end
+            end
+            if target then
+                local dist = (root.Position - target.Position).Magnitude
+                local tween = game:GetService("TweenService"):Create(root, TweenInfo.new(dist/Config.FarmSpeed, Enum.EasingStyle.Linear), {CFrame = target.CFrame * CFrame.new(0, 2, 0)})
+                tween:Play()
+                tween.Completed:Wait()
+                local p = target:FindFirstChildOfClass("ProximityPrompt") or target.Parent:FindFirstChildOfClass("ProximityPrompt")
+                if p then fireproximityprompt(p) end
+            elseif Config.ServerHop then
+                local res = _0xX[8]:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?limit=100")).data
+                for _, v in pairs(res) do if v.playing < v.maxPlayers and v.id ~= game.JobId then _0xX[9]:TeleportToPlaceInstance(game.PlaceId, v.id) break end end
+                break
+            end
+        end
+    end)
+end
+
+-- [WIND UI CONTROLS]
+TabAF:Toggle({Title = "Auto Farm Bond", Callback = function(v) Config.AutoFarm = v; if v then startUltraFarm() end end})
+TabAF:Toggle({Title = "Auto Server Hop", Callback = function(v) Config.ServerHop = v end})
+
+TabCB:Toggle({Title = "Silent Aim", Callback = function(v) Config.SilentAim = v end})
+
+TabVS:Toggle({Title = "ESP Items (Bond)", Callback = function(v) Config.ESP_Items = v end})
+TabVS:Toggle({Title = "ESP Entities", Callback = function(v) Config.ESP_Zombie = v; Config.ESP_Werewolf = v; Config.ESP_Vampire = v; Config.ESP_Bandit = v end})
+
+TabST:Toggle({Title = "IDENTITY SPOOF (hacker11111)", Callback = function(v) Config.FakeName = v end})
+TabST:Button({Title = "ACTIVATE FLY PROTOCOL", Callback = function() _0xX[3](_0xX[1]:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))() end})
+TabST:Toggle({Title = "NOCLIP MODE", Callback = function(v) Config.Noclip = v end})
+TabST:Slider({Title = "Farm Speed", Min = 50, Max = 300, Default = 150, Callback = function(v) Config.FarmSpeed = v end})
+
+WindUI:Notify({Title = "DARK HUB", Content = "Key Accepted. Welcome, " .. lp.Name})
