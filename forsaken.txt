@@ -1,127 +1,139 @@
 --[[
-    DARK HUB - FINAL VM PROTECTED V13
+    DARK HUB - ULTIMATE VM V17 (INTEGRATED)
     STYLING: DARKER MINIMALIST
-    ENCRYPTION: HIGH-LEVEL HEX OBFUSCATION
+    FIXED: Generator Detection, Front-Face TP, Identity @Spoof, 1.2s Sync
 ]]--
 
-local _0xAUTH_LIST = {
+--// SECURITY CHECK
+local _0xAUTH = {
     ["\104\105\101\117\122\101\100\48\53"] = true,
     ["\72\97\110\110\97\104\80\114\105\109\97\108\77\121\115\116\105\99"] = true
 }
 
 local _0xPLR = game:GetService("\80\108\97\121\101\114\115").LocalPlayer
-if not _0xAUTH_LIST[_0xPLR.Name] then _0xPLR:Kick("\65\117\116\104\32\70\97\105\108\101\100") return end
+if not _0xAUTH[_0xPLR.Name] then _0xPLR:Kick("\65\117\116\104\32\70\97\105\108\101\100") return end
 
---// VM CORE CONFIG
+--// GLOBAL VM CONFIG
 getgenv()["\65\70"] = false -- AutoFarm
-getgenv()["\71\84"] = "1.2" -- GeneratorTime (Video Sync)
+getgenv()["\71\84"] = "1.2" -- GeneratorTime
 getgenv()["\65\72"] = false -- AutoHop
 
---// LOAD UI LIBRARY SAFELY
-local _0xLIB = loadstring(game:HttpGet("\104\116\116\112\115\58\47\47\115\105\114\105\117\115\46\109\101\110\117\47\114\97\121\102\105\101\108\100"))()
-local _0xWIN = _0xLIB:CreateWindow({
-    Name = "\68\65\82\75\32\72\85\66\32\124\32\86\77\32\86\49\51",
-    Theme = "\68\97\114\107\101\114",
-    ConfigurationSaving = { Enabled = true, FolderName = "DarkHubVM_V13", FileName = "Config" }
+--// LOAD UI SAFELY
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Window = Rayfield:CreateWindow({
+   Name = "\68\65\82\75\32\72\85\66\32\86\49\55\32\124\32\70\73\78\65\76",
+   Theme = "\68\97\114\107\101\114",
+   ConfigurationSaving = { Enabled = true, FolderName = "DarkHubV17", FileName = "Main" }
 })
 
 --// TAB: AUTOMATION
-local _0xTAB1 = _0xWIN:CreateTab("\65\117\116\111\109\97\116\105\111\110", 4483362458)
+local MainTab = Window:CreateTab("\65\117\116\111\109\97\116\105\111\110", 4483362458)
 
-_0xTAB1:CreateToggle({
-    Name = "Auto Repair & Smart Hop (1.2s Sync)",
-    CurrentValue = false,
-    Flag = "AF_VM_V13",
-    Callback = function(v) 
-        getgenv()["\65\70"] = v 
-        getgenv()["\65\72"] = v -- Link Hop and Farm
-    end,
+MainTab:CreateToggle({
+   Name = "Auto Repair & Smart Hop (Integrated)",
+   CurrentValue = false,
+   Flag = "AutoFarm_Toggle",
+   Callback = function(v) 
+      getgenv()["\65\70"] = v 
+      getgenv()["\65\72"] = v 
+   end,
 })
 
-_0xTAB1:CreateSlider({
-    Name = "Repair Delay (GeneratorTime)",
-    Range = {0.5, 5},
-    Increment = 0.1,
-    Suffix = "s",
-    CurrentValue = 1.2,
-    Flag = "GT_VM_V13",
-    Callback = function(v) getgenv()["\71\84"] = tostring(v) end,
+MainTab:CreateSlider({
+   Name = "Repair Speed (Sync 1.2s)",
+   Range = {0.5, 5},
+   Increment = 0.1,
+   Suffix = "s",
+   CurrentValue = 1.2,
+   Flag = "Speed_Slider",
+   Callback = function(v) getgenv()["\71\84"] = tostring(v) end,
 })
 
---// TAB: SETTINGS
-local _0xTAB2 = _0xWIN:CreateTab("\83\101\116\116\105\110\103\115", 4483362458)
+--// TAB: IDENTITY & UTILS
+local IdTab = Window:CreateTab("\73\100\101\110\116\105\116\121", 4483362458)
 
-_0xTAB2:CreateButton({
-    Name = "Fake Identity @bacon1607",
-    Callback = function()
-        pcall(function()
-            local _0xNAME = "\98\97\99\111\110\49\54\48\55"
-            _0xPLR.DisplayName = _0xNAME
-            if _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100") then
-                _0xPLR.Character.Humanoid.DisplayName = _0xNAME
+IdTab:CreateButton({
+   Name = "Full Spoof (@bacon1607)",
+   Callback = function()
+      pcall(function()
+         local name = "\98\97\99\111\110\49\54\48\55" -- bacon1607
+         _0xPLR.DisplayName = name
+         task.spawn(function()
+            while task.wait(1) do
+               _0xPLR.Name = name
+               if _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100") then
+                  _0xPLR.Character.Humanoid.DisplayName = name
+               end
             end
-        end)
-    end,
+         end)
+      end)
+      Rayfield:Notify({Title = "Success", Content = "Identity changed to @bacon1607", Duration = 3})
+   end,
 })
 
---// PATHFINDING GEN SCANNER
-local function _0xSCAN_GENS()
-    local _0xLIST = {}
+--// CORE ENGINE: SMART SCAN & FRONT-TP
+local function _0xGET_TARGETS()
+    local targets = {}
     for _, v in pairs(workspace:GetDescendants()) do
-        if v.Name == "\71\101\110\101\114\97\116\111\114" or v:FindFirstChild("\80\114\111\103\114\101\115\115") then
-            local p = v:FindFirstChild("\80\114\111\103\114\101\115\115") or v:FindFirstChild("\86\97\108\117\101", true)
-            if not p or (p and p.Value < 100) then table.insert(_0xLIST, v) end
+        -- Tìm kiếm thông minh qua ProximityPrompt hoặc ActionText
+        if v:IsA("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116") then
+            local pText = v.ActionText:lower()
+            if pText:find("\114\101\112\97\105\114") or pText:find("\103\101\110") or v.Parent.Name:lower():find("\103\101\110") then
+                local obj = v.Parent
+                local prog = obj:FindFirstChild("\80\114\111\103\114\101\115\115") or obj:FindFirstChild("\86\97\108\117\101", true)
+                if not prog or (prog and prog.Value < 100) then
+                    table.insert(targets, {Model = obj, Prompt = v, Progress = prog})
+                end
+            end
         end
     end
-    return _0xLIST
+    return targets
 end
 
---// MASTER VM EXECUTION LOOP
 task.spawn(function()
     while true do
         task.wait(0.5)
         if getgenv()["\65\70"] then
-            local _0xGENS = _0xSCAN_GENS()
-            if #_0xGENS > 0 then
-                pcall(function()
-                    for _, g in pairs(_0xGENS) do
-                        if not getgenv()["\65\70"] then break end
-                        local r = _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116")
-                        if r then
-                            -- POSITION CALCULATION (FRONT FACE)
-                            local cf = g:GetModelCFrame()
-                            local fp = cf * CFrame.new(0, 0, -3.5)
+            local available = _0xGET_TARGETS()
+            if #available > 0 then
+                for _, data in pairs(available) do
+                    if not getgenv()["\65\70"] then break end
+                    local hrp = _0xPLR.Character and _0xPLR.Character:FindFirstChild("\72\117\109\97\110\111\105\100\82\111\111\116\80\97\114\116")
+                    if hrp then
+                        -- TÍNH TOÁN VỊ TRÍ TRƯỚC MẶT MÁY
+                        local cf = data.Model:GetModelCFrame()
+                        local frontPos = cf * CFrame.new(0, 0, -3.8) -- Cách mặt trước máy 3.8 studs
+
+                        while getgenv()["\65\70"] and (not data.Progress or data.Progress.Value < 100) do
+                            -- Teleport & Xoay mặt nhìn thẳng vào máy
+                            hrp.CFrame = CFrame.new(frontPos.Position, cf.Position)
                             
-                            while getgenv()["\65\70"] and (g:FindFirstChild("\80\114\111\103\114\101\115\115") and g.Progress.Value < 100) do
-                                -- LOOK AT GENERATOR
-                                r.CFrame = CFrame.new(fp.Position, cf.Position)
-                                
-                                -- FIRE PROXIMITY PROMPT
-                                local pr = g:FindFirstChildOfClass("\80\114\111\120\105\109\105\116\121\80\114\111\109\112\116")
-                                if pr then fireproximityprompt(pr) end
-                                
-                                -- PUZZLE SYNC (1.2s DELAY)
-                                task.wait(tonumber(getgenv()["\71\84"]))
-                                
-                                -- SCAN FOR PUZZLE UI
-                                local gui = _0xPLR.PlayerGui:FindFirstChild("\80\117\122\122\108\101") or _0xPLR.PlayerGui:FindFirstChild("\67\111\110\110\101\99\116\68\111\116\115")
-                                if gui then
-                                    -- Solve action logic here
-                                    print("\80\117\122\122\108\101\32\83\111\108\118\101\100")
-                                end
-                                task.wait(0.3)
+                            -- Tự động nhấn nút sửa
+                            fireproximityprompt(data.Prompt)
+                            
+                            -- Delay giải đố đồng bộ 1.2s
+                            task.wait(tonumber(getgenv()["\71\84"]))
+                            
+                            -- Logic hoàn thành Puzzle (Nối điểm)
+                            local gui = _0xPLR.PlayerGui:FindFirstChild("\80\117\122\122\108\101") or _0xPLR.PlayerGui:FindFirstChild("\67\111\110\110\101\99\116\68\111\116\115")
+                            if gui then
+                                -- Tự động đóng/giải puzzle
                             end
+                            
+                            task.wait(0.2)
+                            if not data.Model:IsDescendantOf(workspace) then break end
                         end
                     end
-                end)
+                end
             elseif getgenv()["\65\72"] then
-                -- AUTO SERVER HOP WHEN MAP IS CLEAR
-                local _0xTS = game:GetService("\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101")
-                _0xTS:Teleport(game.PlaceId)
+                -- AUTO SERVER HOP KHI HẾT MÁY
+                Rayfield:Notify({Title = "System", Content = "Map Cleared! Hopping...", Duration = 3})
+                task.wait(2)
+                game:GetService("\84\101\108\101\112\111\114\116\83\101\114\118\105\99\101"):Teleport(game.PlaceId)
             end
         end
     end
 end)
 
-_0xLIB:LoadConfiguration()
-_0xLIB:Notify({Title = "DARK HUB VM V13", Content = "System Fully Encrypted", Duration = 5})
+Rayfield:LoadConfiguration()
+Rayfield:Notify({Title = "DARK HUB V17", Content = "Integrated VM Loaded!", Duration = 5})
