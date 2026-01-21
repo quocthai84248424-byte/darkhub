@@ -18,8 +18,50 @@ _0xMT.__namecall = newcclosure(function(self, ...)
 end)
 setreadonly(_0xMT, true)
 
-local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/main.lua"))()
+local _0xGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local _0xMain = Instance.new("Frame", _0xGui)
+_0xMain.Size = UDim2.new(0, 300, 0, 120)
+_0xMain.Position = UDim2.new(0.5, -150, 0.5, -60)
+_0xMain.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
+_0xMain.BorderSizePixel = 0
+Instance.new("UICorner", _0xMain).CornerRadius = UDim.new(0, 10)
 
+local _0xImg = Instance.new("ImageLabel", _0xMain)
+_0xImg.Size = UDim2.new(1, 0, 1, 0)
+_0xImg.Image = _0xConfig.Image
+_0xImg.ImageTransparency = 0.9
+_0xImg.ZIndex = 0
+Instance.new("UICorner", _0xImg).CornerRadius = UDim.new(0, 10)
+
+local _0xTitle = Instance.new("TextLabel", _0xMain)
+_0xTitle.Size = UDim2.new(1, 0, 0.4, 0)
+_0xTitle.Text = "DARK HUB | Loading..."
+_0xTitle.TextColor3 = Color3.fromRGB(200, 150, 255)
+_0xTitle.BackgroundTransparency = 1
+_0xTitle.Font = Enum.Font.GothamBold
+_0xTitle.TextSize = 18
+
+local _0xBarBG = Instance.new("Frame", _0xMain)
+_0xBarBG.Size = UDim2.new(0.8, 0, 0, 8)
+_0xBarBG.Position = UDim2.new(0.1, 0, 0.65, 0)
+_0xBarBG.BackgroundColor3 = Color3.fromRGB(50, 45, 60)
+Instance.new("UICorner", _0xBarBG)
+
+local _0xBar = Instance.new("Frame", _0xBarBG)
+_0xBar.Size = UDim2.new(0, 0, 1, 0)
+_0xBar.BackgroundColor3 = Color3.fromRGB(160, 110, 255)
+Instance.new("UICorner", _0xBar)
+
+local function _0xProgress(_0xVal, _0xTxt)
+    _0xTitle.Text = _0xTxt
+    _0xBar:TweenSize(UDim2.new(_0xVal, 0, 1, 0), "Out", "Linear", 0.2)
+    task.wait(0.3)
+end
+
+_0xProgress(0.1, "Initializing Core...")
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+_0xProgress(0.3, "Building Interface...")
 local Window = Fluent:CreateWindow({
     Title = "DARK HUB | Forsaken",
     SubTitle = "by " .. _0xConfig.Author,
@@ -30,18 +72,18 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
-local function _0xFixUI()
+local function _0xApplyStyle()
     Window.Main.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
     local _0xBg = Instance.new("ImageLabel", Window.Main)
     _0xBg.Size = UDim2.new(1, 0, 1, 0)
     _0xBg.Image = _0xConfig.Image
-    _0xBg.ImageTransparency = 0.85
+    _0xBg.ImageTransparency = 0.88
     _0xBg.ZIndex = -1
-
+    
     local _0xBtn = Instance.new("ImageButton", game:GetService("CoreGui"))
     _0xBtn.Name = "DarkHubIcon"
     _0xBtn.Size = UDim2.new(0, 45, 0, 45)
-    _0xBtn.Position = UDim2.new(0.12, 0, 0.15, 0)
+    _0xBtn.Position = UDim2.new(0.05, 0, 0.2, 0)
     _0xBtn.Image = _0xConfig.Image
     _0xBtn.BackgroundTransparency = 1
     _0xBtn.Draggable = true
@@ -49,67 +91,109 @@ local function _0xFixUI()
     Instance.new("UICorner", _0xBtn).CornerRadius = UDim.new(1, 0)
     _0xBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
 end
-_0xFixUI()
+_0xApplyStyle()
 
-local Tabs = {
-    I = Window:AddTab({ Title = "Info", Icon = "info" }),
-    F = Window:AddTab({ Title = "Farm", Icon = "shovels" }),
-    M = Window:AddTab({ Title = "Main", Icon = "swords" }),
-    P = Window:AddTab({ Title = "Player", Icon = "user" }),
-    V = Window:AddTab({ Title = "Visual", Icon = "eye" }),
-    S = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
-
+local Tabs = {}
 local _0xO = Fluent.Options
 local _0xLP = game.Players.LocalPlayer
 
-Tabs.I:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
+_0xProgress(0.4, "Loading Info & Farm...")
+Tabs.Info = Window:AddTab({ Title = "Info", Icon = "info" })
+Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
-Tabs.F:AddSection("<b>survivor farm</b>")
-Tabs.F:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
-Tabs.F:AddSlider("GenDelay", {Title = "Delay Sửa Máy", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
-Tabs.F:AddToggle("RepairGen", {Title = "Repair Gen (Walk)", Default = false})
-Tabs.F:AddSection("<b>killer farm</b>")
-Tabs.F:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
-Tabs.F:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
+Tabs.Farm = Window:AddTab({ Title = "Farm", Icon = "shovels" })
+Tabs.Farm:AddSection("<b>survivor farm</b>")
+Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
+Tabs.Farm:AddSlider("GenDelay", {Title = "Delay Sửa Máy", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
+Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen (Walk)", Default = false})
+Tabs.Farm:AddSection("<b>killer farm</b>")
+Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
+Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
 
-Tabs.M:AddSection("<b>shedletsky</b>")
-Tabs.M:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
-Tabs.M:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
-Tabs.M:AddSection("<b>guest</b>")
-Tabs.M:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
-Tabs.M:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
-Tabs.M:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
-Tabs.M:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
-Tabs.M:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
-Tabs.M:AddSection("<b>two time</b>")
-Tabs.M:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
-Tabs.M:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
-Tabs.M:AddSection("<b>eliot</b>")
-Tabs.M:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
+_0xProgress(0.6, "Loading Main Logic...")
+Tabs.Main = Window:AddTab({ Title = "Main", Icon = "swords" })
+Tabs.Main:AddSection("<b>shedletsky</b>")
+Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
+Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
+Tabs.Main:AddSection("<b>guest</b>")
+Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
+Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
+Tabs.Main:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
+Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
+Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
+Tabs.Main:AddSection("<b>two time</b>")
+Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
+Tabs.Main:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
+Tabs.Main:AddSection("<b>eliot</b>")
+Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
 
-Tabs.P:AddSection("<b>profile settings</b>")
-Tabs.P:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
-Tabs.P:AddSection("<b>hitbox settings</b>")
-Tabs.P:AddSlider("HitboxSize", {Title = "Adjust Hitbox", Default = 10, Min = 10, Max = 100, Rounding = 0})
-Tabs.P:AddSection("<b>animation</b>")
-Tabs.P:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"SLASHER", "COOLKID", "1X1X1X1", "JOHN DOUGH", "NOLI", "GUEST 666"}, Default = 1})
-Tabs.P:AddButton({Title = "Select Animation", Callback = function() end})
-Tabs.P:AddSection("<b>movement</b>")
-Tabs.P:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
-Tabs.P:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
+_0xProgress(0.8, "Loading Player & Visuals...")
+Tabs.Player = Window:AddTab({ Title = "Player", Icon = "user" })
+Tabs.Player:AddSection("<b>profile</b>")
+Tabs.Player:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
+Tabs.Player:AddSection("<b>hitbox</b>")
+Tabs.Player:AddSlider("HitboxSize", {Title = "Adjust Hitbox Size", Default = 10, Min = 10, Max = 100, Rounding = 0})
+Tabs.Player:AddButton({Title = "Apply Hitbox", Callback = function() 
+    local sz = _0xO.HitboxSize.Value / 10
+    for _, v in pairs(game.Players:GetPlayers()) do
+        if v ~= _0xLP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
+            v.Character.HumanoidRootPart.Transparency = 0.6
+            v.Character.HumanoidRootPart.CanCollide = false
+        end
+    end
+end})
+Tabs.Player:AddSection("<b>animation</b>")
+Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"SLASHER", "COOLKID", "1X1X1X1", "JOHN DOUGH", "NOLI", "GUEST 666"}, Default = "SLASHER"})
+Tabs.Player:AddButton({Title = "Apply Animation", Callback = function()
+    local anims = {
+        ["SLASHER"] = "rbxassetid://0",
+        ["COOLKID"] = "rbxassetid://0",
+        ["1X1X1X1"] = "rbxassetid://0",
+        ["JOHN DOUGH"] = "rbxassetid://0",
+        ["NOLI"] = "rbxassetid://0",
+        ["GUEST 666"] = "rbxassetid://0"
+    }
+    local id = anims[_0xO.AnimSelect.Value]
+    if _0xLP.Character and _0xLP.Character:FindFirstChild("Humanoid") then
+        local animator = _0xLP.Character.Humanoid:FindFirstChildOfClass("Animator")
+        if animator then
+            for _, t in pairs(animator:GetPlayingAnimationTracks()) do t:Stop() end
+        end
+    end
+end})
+Tabs.Player:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
+Tabs.Player:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
 
-Tabs.V:AddSection("<b>esp survivor</b>")
-Tabs.V:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
-Tabs.V:AddSection("<b>esp killer</b>")
-Tabs.V:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
-Tabs.V:AddSection("<b>esp items</b>")
-Tabs.V:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
-Tabs.V:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
+Tabs.Visual = Window:AddTab({ Title = "Visual", Icon = "eye" })
+Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green)", Default = false})
+Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red)", Default = false})
+Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator", Default = false})
+Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items", Default = false})
 
-Tabs.S:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
-Tabs.S:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
-Tabs.S:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
+Tabs.Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
+Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
+Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
+
+_0xProgress(1.0, "Launching DARK HUB...")
+task.wait(0.5)
+_0xGui:Destroy()
+
+task.spawn(function()
+    while task.wait(1) do
+        local sz = _0xO.HitboxSize.Value / 10
+        if sz > 1 then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _0xLP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                    v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
+                    v.Character.HumanoidRootPart.Transparency = 0.6
+                    v.Character.HumanoidRootPart.CanCollide = false
+                end
+            end
+        end
+    end
+end)
 
 task.spawn(function()
     while task.wait() do
@@ -163,4 +247,20 @@ task.spawn(function()
     end
 end)
 
+task.spawn(function()
+    while task.wait(0.2) do
+        if _0xO.AutoFixGen.Value then
+             for _, g in pairs(workspace:GetChildren()) do
+                if g.Name == "Generator " and g:FindFirstChild("Hitbox") then
+                    _0xLP.Character.HumanoidRootPart.CFrame = g.Hitbox.CFrame * CFrame.new(0, 0, 3)
+                    task.wait(0.5)
+                    game:GetService("ReplicatedStorage").Events.Repair:FireServer(g)
+                    task.wait(_0xO.GenDelay.Value)
+                end
+            end
+        end
+    end
+end)
+
+Tabs.Info:Select()
 Fluent:Notify({Title = "DARK HUB", Content = "Script Loaded Successfully!", Duration = 5})
