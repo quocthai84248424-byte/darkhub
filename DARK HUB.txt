@@ -18,30 +18,41 @@ _0xMT.__namecall = newcclosure(function(self, ...)
 end)
 setreadonly(_0xMT, true)
 
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local Fluent = nil
+local Success, Error = pcall(function()
+    return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+end)
+
+if Success then Fluent = Error else
+    Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/main.lua"))()
+end
+
 local Window = Fluent:CreateWindow({
     Title = "DARK HUB | Forsaken",
     SubTitle = "by " .. _0xConfig.Author,
     TabWidth = 160,
-    Size = UDim2.fromOffset(600, 500),
-    Acrylic = true,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
 local function _0xLoadUI()
-    Window.Main.BackgroundColor3 = Color3.fromRGB(25, 20, 35)
+    Window.Main.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
     local _0xBg = Instance.new("ImageLabel", Window.Main)
     _0xBg.Size = UDim2.new(1, 0, 1, 0)
     _0xBg.Image = _0xConfig.Image
-    _0xBg.ImageTransparency = 0.9
+    _0xBg.ImageTransparency = 0.85
     _0xBg.ZIndex = -1
 
     local _0xBtn = Instance.new("ImageButton", game:GetService("CoreGui"))
-    _0xBtn.Size = UDim2.new(0, 50, 0, 50)
-    _0xBtn.Position = UDim2.new(0, 10, 0.5, 0)
+    _0xBtn.Name = "DarkHubIcon"
+    _0xBtn.Size = UDim2.new(0, 45, 0, 45)
+    _0xBtn.Position = UDim2.new(0.12, 0, 0.15, 0)
     _0xBtn.Image = _0xConfig.Image
     _0xBtn.BackgroundTransparency = 1
+    _0xBtn.Draggable = true
+    _0xBtn.Active = true
     Instance.new("UICorner", _0xBtn).CornerRadius = UDim.new(1, 0)
     _0xBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
 end
@@ -59,13 +70,12 @@ local Tabs = {
 local _0xOpt = Fluent.Options
 local _0xLP = game.Players.LocalPlayer
 
-Tabs.Info:AddParagraph({Title = "Script Information", Content = "Script Name: " .. _0xConfig.Name .. "\nCreated by: " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
+Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord .. "\nSupport: All Clients"})
 
 Tabs.Farm:AddSection("<b>survivor farm</b>")
 Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
-Tabs.Farm:AddSlider("GenDelay", {Title = "Delay Time", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
+Tabs.Farm:AddSlider("GenDelay", {Title = "Delay Sửa Máy", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
 Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen (Walk)", Default = false})
-
 Tabs.Farm:AddSection("<b>killer farm</b>")
 Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
 Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
@@ -73,40 +83,32 @@ Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default 
 Tabs.Main:AddSection("<b>shedletsky</b>")
 Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
 Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
-
 Tabs.Main:AddSection("<b>guest</b>")
 Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
 Tabs.Main:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
 Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
 Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
-
 Tabs.Main:AddSection("<b>two time</b>")
 Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
 Tabs.Main:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
-
 Tabs.Main:AddSection("<b>eliot</b>")
 Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
 
 Tabs.Player:AddSection("<b>profile settings</b>")
 Tabs.Player:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
-
 Tabs.Player:AddSection("<b>hitbox settings</b>")
-Tabs.Player:AddSlider("HitboxSize", {Title = "Adjust Hitbox", Default = 0, Min = 0, Max = 100, Rounding = 1})
-
-Tabs.Player:AddSection("<b>animation</b>")
+Tabs.Player:AddSlider("HitboxSize", {Title = "Adjust Hitbox", Default = 10, Min = 10, Max = 100, Rounding = 0})
+Tabs.Player:AddSection("<b>animation & speed</b>")
 Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"VIP Killer", "Guest", "Shedletsky", "Eliot", "Two Time"}, Default = 1})
-Tabs.Player:AddButton({Title = "Select Animation", Callback = function() end})
 Tabs.Player:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
 Tabs.Player:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
 
 Tabs.Visual:AddSection("<b>esp survivor</b>")
 Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
-
 Tabs.Visual:AddSection("<b>esp killer</b>")
 Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
-
-Tabs.Visual:AddSection("<b>esp item</b>")
+Tabs.Visual:AddSection("<b>esp items</b>")
 Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
 Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
 
@@ -135,12 +137,12 @@ task.spawn(function()
 
     while task.wait() do
         local Range = tonumber(_0xOpt.BlockRange.Value) or 15
-        if _0xOpt.VisualRange.Value then
+        if _0xOpt.VisualRange.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("HumanoidRootPart") then
             Ring.Parent = workspace Ring.Size = Vector3.new(0.1, Range*2, Range*2)
             Ring.Position = _0xLP.Character.HumanoidRootPart.Position - Vector3.new(0, 3, 0)
             local InRange = false
             for _, k in pairs(game.Players:GetPlayers()) do
-                if k.Team ~= _0xLP.Team and k.Character and (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude <= Range then
+                if k ~= _0xLP and k.Character and (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude <= Range then
                     InRange = true break
                 end
             end
@@ -151,7 +153,7 @@ task.spawn(function()
         
         if _0xOpt.AutoBlock.Value then
             for _, k in pairs(game.Players:GetPlayers()) do
-                if k.Team ~= _0xLP.Team and k.Character then
+                if k ~= _0xLP and k.Character then
                     local Dist = (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude
                     if Dist <= Range then
                         game:GetService("ReplicatedStorage").Events.Block:FireServer()
@@ -166,4 +168,4 @@ task.spawn(function()
     end
 end)
 
-Fluent:Notify({Title = "DARK HUB", Content = "Script Loaded Successfully!", Duration = 5})
+Fluent:Notify({Title = "DARK HUB", Content = "Global Client Support Loaded!", Duration = 5})
