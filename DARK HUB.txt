@@ -18,14 +18,7 @@ _0xMT.__namecall = newcclosure(function(self, ...)
 end)
 setreadonly(_0xMT, true)
 
-local Fluent = nil
-local Success, Error = pcall(function()
-    return loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-end)
-
-if Success then Fluent = Error else
-    Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/main.lua"))()
-end
+local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/main.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = "DARK HUB | Forsaken",
@@ -37,7 +30,7 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
-local function _0xLoadUI()
+local function _0xFixUI()
     Window.Main.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
     local _0xBg = Instance.new("ImageLabel", Window.Main)
     _0xBg.Size = UDim2.new(1, 0, 1, 0)
@@ -56,69 +49,71 @@ local function _0xLoadUI()
     Instance.new("UICorner", _0xBtn).CornerRadius = UDim.new(1, 0)
     _0xBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
 end
-_0xLoadUI()
+_0xFixUI()
 
 local Tabs = {
-    Info = Window:AddTab({ Title = "Info", Icon = "info" }),
-    Farm = Window:AddTab({ Title = "Farm", Icon = "shovels" }),
-    Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
-    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
-    Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+    I = Window:AddTab({ Title = "Info", Icon = "info" }),
+    F = Window:AddTab({ Title = "Farm", Icon = "shovels" }),
+    M = Window:AddTab({ Title = "Main", Icon = "swords" }),
+    P = Window:AddTab({ Title = "Player", Icon = "user" }),
+    V = Window:AddTab({ Title = "Visual", Icon = "eye" }),
+    S = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
-local _0xOpt = Fluent.Options
+local _0xO = Fluent.Options
 local _0xLP = game.Players.LocalPlayer
 
-Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord .. "\nSupport: All Clients"})
+Tabs.I:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
-Tabs.Farm:AddSection("<b>survivor farm</b>")
-Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
-Tabs.Farm:AddSlider("GenDelay", {Title = "Delay Sửa Máy", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
-Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen (Walk)", Default = false})
-Tabs.Farm:AddSection("<b>killer farm</b>")
-Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
-Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
+Tabs.F:AddSection("<b>survivor farm</b>")
+Tabs.F:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
+Tabs.F:AddSlider("GenDelay", {Title = "Delay Sửa Máy", Default = 1, Min = 0.1, Max = 10, Rounding = 1})
+Tabs.F:AddToggle("RepairGen", {Title = "Repair Gen (Walk)", Default = false})
+Tabs.F:AddSection("<b>killer farm</b>")
+Tabs.F:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
+Tabs.F:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
 
-Tabs.Main:AddSection("<b>shedletsky</b>")
-Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
-Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
-Tabs.Main:AddSection("<b>guest</b>")
-Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
-Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
-Tabs.Main:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
-Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
-Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
-Tabs.Main:AddSection("<b>two time</b>")
-Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
-Tabs.Main:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
-Tabs.Main:AddSection("<b>eliot</b>")
-Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
+Tabs.M:AddSection("<b>shedletsky</b>")
+Tabs.M:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
+Tabs.M:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
+Tabs.M:AddSection("<b>guest</b>")
+Tabs.M:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
+Tabs.M:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
+Tabs.M:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
+Tabs.M:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
+Tabs.M:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
+Tabs.M:AddSection("<b>two time</b>")
+Tabs.M:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
+Tabs.M:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
+Tabs.M:AddSection("<b>eliot</b>")
+Tabs.M:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
 
-Tabs.Player:AddSection("<b>profile settings</b>")
-Tabs.Player:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
-Tabs.Player:AddSection("<b>hitbox settings</b>")
-Tabs.Player:AddSlider("HitboxSize", {Title = "Adjust Hitbox", Default = 10, Min = 10, Max = 100, Rounding = 0})
-Tabs.Player:AddSection("<b>animation & speed</b>")
-Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"VIP Killer", "Guest", "Shedletsky", "Eliot", "Two Time"}, Default = 1})
-Tabs.Player:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
-Tabs.Player:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
+Tabs.P:AddSection("<b>profile settings</b>")
+Tabs.P:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
+Tabs.P:AddSection("<b>hitbox settings</b>")
+Tabs.P:AddSlider("HitboxSize", {Title = "Adjust Hitbox", Default = 10, Min = 10, Max = 100, Rounding = 0})
+Tabs.P:AddSection("<b>animation</b>")
+Tabs.P:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"SLASHER", "COOLKID", "1X1X1X1", "JOHN DOUGH", "NOLI", "GUEST 666"}, Default = 1})
+Tabs.P:AddButton({Title = "Select Animation", Callback = function() end})
+Tabs.P:AddSection("<b>movement</b>")
+Tabs.P:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
+Tabs.P:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
 
-Tabs.Visual:AddSection("<b>esp survivor</b>")
-Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
-Tabs.Visual:AddSection("<b>esp killer</b>")
-Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
-Tabs.Visual:AddSection("<b>esp items</b>")
-Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
-Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
+Tabs.V:AddSection("<b>esp survivor</b>")
+Tabs.V:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
+Tabs.V:AddSection("<b>esp killer</b>")
+Tabs.V:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
+Tabs.V:AddSection("<b>esp items</b>")
+Tabs.V:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
+Tabs.V:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
 
-Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
-Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
-Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
+Tabs.S:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
+Tabs.S:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
+Tabs.S:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
 
 task.spawn(function()
     while task.wait() do
-        if _0xOpt.FakeName.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("Head") then
+        if _0xO.FakeName.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("Head") then
             _0xLP.Character.Humanoid.DisplayName = "@hacker vip"
             for _, c in pairs(_0xLP.Character.Head:GetChildren()) do if c:IsA("BillboardGui") then c.Enabled = false end end
             local t = _0xLP.Character.Head:FindFirstChild("FTag") or Instance.new("BillboardGui", _0xLP.Character.Head)
@@ -136,8 +131,8 @@ task.spawn(function()
     Ring.Size = Vector3.new(0.1, 30, 30) Ring.Orientation = Vector3.new(0,0,90)
 
     while task.wait() do
-        local Range = tonumber(_0xOpt.BlockRange.Value) or 15
-        if _0xOpt.VisualRange.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("HumanoidRootPart") then
+        local Range = tonumber(_0xO.BlockRange.Value) or 15
+        if _0xO.VisualRange.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("HumanoidRootPart") then
             Ring.Parent = workspace Ring.Size = Vector3.new(0.1, Range*2, Range*2)
             Ring.Position = _0xLP.Character.HumanoidRootPart.Position - Vector3.new(0, 3, 0)
             local InRange = false
@@ -151,13 +146,13 @@ task.spawn(function()
             Ring.Parent = nil
         end
         
-        if _0xOpt.AutoBlock.Value then
+        if _0xO.AutoBlock.Value then
             for _, k in pairs(game.Players:GetPlayers()) do
                 if k ~= _0xLP and k.Character then
                     local Dist = (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude
                     if Dist <= Range then
                         game:GetService("ReplicatedStorage").Events.Block:FireServer()
-                        if _0xOpt.AutoPunch.Value then
+                        if _0xO.AutoPunch.Value then
                             task.wait(0.7)
                             game:GetService("ReplicatedStorage").Events.Punch:FireServer()
                         end
@@ -168,4 +163,4 @@ task.spawn(function()
     end
 end)
 
-Fluent:Notify({Title = "DARK HUB", Content = "Global Client Support Loaded!", Duration = 5})
+Fluent:Notify({Title = "DARK HUB", Content = "Script Loaded Successfully!", Duration = 5})
