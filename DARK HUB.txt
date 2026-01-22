@@ -1,73 +1,40 @@
-local _0x99 = {
-    ["\x54\x69\x74\x6c\x65"] = "DARK HUB | FREE",
-    ["\x41\x75\x74\x68"] = "ilovedog1901ilovecat5551",
-    ["\x4c\x6f\x61\x64"] = "DARK HUB | SECURED"
-}
+local _0xCheck = "\x69\x6c\x6f\x76\x65\x64\x6f\x67\x31\x39\x30\x31\x69\x6c\x6f\x76\x65\x63\x61\x74\x35\x35\x35\x31"
+local _0xTitle = "\x44\x41\x52\x4b\x20\x48\x55\x42"
+local _0xAuthor = "\x69\x6c\x6f\x76\x65\x64\x6f\x67\x31\x39\x30\x31\x69\x6c\x6f\x76\x65\x63\x61\x74\x35\x35\x35\x31"
 
-local function _0xSafe()
-    local _0xM = getrawmetatable(game)
-    local _0xN = _0xM.__namecall
-    setreadonly(_0xM, false)
-    _0xM.__namecall = newcclosure(function(self, ...)
-        local method = getnamecallmethod()
-        if not checkcaller() and (method == "Kick" or method == "Log") then return nil end
-        return _0xN(self, ...)
-    end)
-    setreadonly(_0xM, true)
-end
-pcall(_0xSafe)
-
-local _0xG = Instance.new("ScreenGui", game:GetService("CoreGui"))
-local _0xFr = Instance.new("Frame", _0xG)
-_0xFr.Size = UDim2.new(0, 320, 0, 140)
-_0xFr.Position = UDim2.new(0.5, -160, 0.5, -70)
-_0xFr.BackgroundColor3 = Color3.fromRGB(20, 15, 30)
-Instance.new("UICorner", _0xFr).CornerRadius = UDim.new(0, 12)
-
-local _0xT = Instance.new("TextLabel", _0xFr)
-_0xT.Size = UDim2.new(1, 0, 0.5, 0)
-_0xT.Text = _0x99["\x4c\x6f\x61\x64"]
-_0xT.TextColor3 = Color3.fromRGB(210, 180, 255)
-_0xT.BackgroundTransparency = 1
-_0xT.Font = Enum.Font.GothamBold
-_0xT.TextSize = 20
-
-local _0xBarBG = Instance.new("Frame", _0xFr)
-_0xBarBG.Size = UDim2.new(0.85, 0, 0, 6)
-_0xBarBG.Position = UDim2.new(0.075, 0, 0.75, 0)
-_0xBarBG.BackgroundColor3 = Color3.fromRGB(45, 40, 60)
-Instance.new("UICorner", _0xBarBG)
-
-local _0xBar = Instance.new("Frame", _0xBarBG)
-_0xBar.Size = UDim2.new(0, 0, 1, 0)
-_0xBar.BackgroundColor3 = Color3.fromRGB(180, 130, 255)
-Instance.new("UICorner", _0xBar)
-
-local function _0xP(_0xV)
-    _0xBar:TweenSize(UDim2.new(_0xV, 0, 1, 0), "Out", "Quad", 0.3)
-    task.wait(0.4)
-end
-
-_0xP(0.3)
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-_0xP(0.6)
-local _LP = game.Players.LocalPlayer
-local _0xOwnedEmojis = {"Default Wave", "Default Dance"}
-pcall(function()
-    local inv = _LP:FindFirstChild("Inventory") or _LP:FindFirstChild("Backpack")
-    if inv then
-        for _, i in pairs(inv:GetChildren()) do
-            if i:IsA("StringValue") and i.Name:lower():find("emoji") then table.insert(_0xOwnedEmojis, i.Name) end
-        end
-    end
+local _0xMT = getrawmetatable(game)
+local _0xNC = _0xMT.__namecall
+setreadonly(_0xMT, false)
+_0xMT.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    if not checkcaller() and (method == "Kick" or method == "Log" or method == "Report") then return nil end
+    return _0xNC(self, ...)
 end)
-_0xP(1.0)
-_0xG:Destroy()
-task.wait(0.8)
+setreadonly(_0xMT, true)
+
+local _0xL = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local _0xFr = Instance.new("Frame", _0xL)
+_0xFr.Size = UDim2.new(0, 300, 0, 100)
+_0xFr.Position = UDim2.new(0.5, -150, 0.5, -50)
+_0xFr.BackgroundColor3 = Color3.fromRGB(20, 15, 30)
+Instance.new("UICorner", _0xFr)
+local _0xTxt = Instance.new("TextLabel", _0xFr)
+_0xTxt.Size = UDim2.new(1, 0, 1, 0)
+_0xTxt.Text = "INITIALIZING DARK HUB..."
+_0xTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
+_0xTxt.BackgroundTransparency = 1
+_0xTxt.Font = Enum.Font.GothamBold
+task.wait(1.5)
+_0xL:Destroy()
+
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local _LP = game.Players.LocalPlayer
+local _RS = game:GetService("ReplicatedStorage")
+local _RUN = game:GetService("RunService")
 
 local Window = Fluent:CreateWindow({
-    Title = _0x99["\x54\x69\x74\x6c\x65"],
-    SubTitle = "by " .. _0x99["\x41\x75\x74\x68"],
+    Title = _0xTitle .. " | Script by " .. _0xAuthor,
+    SubTitle = "by " .. _0xAuthor,
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
@@ -86,47 +53,80 @@ local Tabs = {
 
 local _0xO = Fluent.Options
 
-Tabs.Info:AddParagraph({Title = "DARK HUB STATUS", Content = "Bảo mật: Đã kích hoạt\nTrạng thái: Hoạt động"})
+Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Created by: " .. _0xAuthor .. "\nDiscord: https://discord.gg/xawrhjKP\nStatus: Forsaken Script Loaded"})
 
-Tabs.Farm:AddSection("SURVIVOR")
-Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix (Teleport)", Default = false})
-Tabs.Farm:AddInput("GenDelay", {Title = "Fix Delay", Default = "1", Numeric = true})
+Tabs.Farm:AddSection("**SURVIVOR FARM**")
+Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
+Tabs.Farm:AddInput("GenDelay", {Title = "Delay Time", Default = "1", Numeric = true})
 Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen (Walk Mode)", Default = false})
-Tabs.Farm:AddInput("WalkGenDelay", {Title = "Repair Delay", Default = "3", Numeric = true})
-Tabs.Farm:AddToggle("DeleteUI", {Title = "Delete Puzzle UI", Default = false})
+Tabs.Farm:AddInput("WalkGenDelay", {Title = "Walk Delay Time", Default = "1", Numeric = true})
 
-Tabs.Main:AddSection("SHEDLETSKY")
-Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
+Tabs.Farm:AddSection("**KILLER FARM**")
+Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
+Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
 
-Tabs.Main:AddSection("GUEST")
-Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block", Default = false})
+Tabs.Main:AddSection("**SHEDLETSKY**")
+Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash (TP Back)", Default = false})
+Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
+
+Tabs.Main:AddSection("**GUEST**")
+Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
-Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Lock)", Default = false})
-Tabs.Main:AddInput("AimRange", {Title = "Aim Range", Default = "2", Numeric = true})
+Tabs.Main:AddToggle("VisualRange", {Title = "Visual Range Block", Default = false})
+Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
+Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (High Accuracy)", Default = false})
 
-Tabs.Main:AddSection("TWO TIME")
-Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab", Default = false})
-Tabs.Main:AddInput("BackRange", {Title = "Back Range", Default = "5", Numeric = true})
+Tabs.Main:AddSection("**TWO TIME**")
+Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (Skill 2+1)", Default = false})
+Tabs.Main:AddInput("BackRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
 
-Tabs.Main:AddSection("ELIOT")
-Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Pizza (HP < 30%)", Default = false})
+Tabs.Main:AddSection("**ELIOT**")
+Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza (HP < 30%)", Default = false})
 
-Tabs.Player:AddSection("MOVEMENT")
-Tabs.Player:AddInput("WalkSpeed", {Title = "Speed", Default = "24", Numeric = true})
-Tabs.Player:AddSection("EMOJI")
-Tabs.Player:AddDropdown("EmojiSelect", {Title = "Select Emoji", Values = _0xOwnedEmojis, Default = 1})
+Tabs.Player:AddSection("**HITBOX**")
+Tabs.Player:AddSlider("HitboxSize", {Title = "Hitbox Slider (Max 100)", Default = 10, Min = 10, Max = 100, Rounding = 0})
+
+Tabs.Player:AddSection("**ANIMATION**")
+Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"Slasher", "Coolkid", "1x1x1x1", "John Dough", "Noli", "Guest 666", "VIP Killer"}, Default = "Slasher"})
+Tabs.Player:AddButton({Title = "Select", Callback = function() end})
+
+Tabs.Player:AddSection("**MOVEMENT**")
+Tabs.Player:AddInput("WalkSpeed", {Title = "Speed (Default 24)", Default = "24", Numeric = true})
+
+Tabs.Player:AddSection("**EMOJI**")
+Tabs.Player:AddDropdown("EmojiSelect", {Title = "Select Emoji", Values = {"Dance", "Wave", "Laugh", "Point"}, Default = "Dance"})
+Tabs.Player:AddButton({Title = "Use Emoji", Callback = function() end})
+
+Tabs.Visual:AddSection("**ESP SURVIVOR**")
+Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
+Tabs.Visual:AddSection("**ESP KILLER**")
+Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
+Tabs.Visual:AddSection("**ESP GENERATOR**")
+Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
+Tabs.Visual:AddSection("**ESP ITEMS**")
+Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
+
+Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
+Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
+Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
+
+local function _0xGetGen()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v.Name == "Generator " and v:FindFirstChild("HumanoidRootPart") then return v end
+    end
+    return nil
+end
 
 task.spawn(function()
-    while task.wait(0.2) do
-        if _0xO.AutoGivePizza.Value and _LP.Character then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health < 30 and v.Character.Humanoid.Health > 0 then
-                    local d = (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude
-                    if d < 50 then
-                        workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.HumanoidRootPart.Position)
-                        game:GetService("ReplicatedStorage").Events.Skill1:FireServer(v.Character.HumanoidRootPart.Position)
-                    end
-                end
+    while task.wait() do
+        if _0xO.AutoFixGen.Value then
+            local gen = _0xGetGen()
+            if gen then
+                _LP.Character.HumanoidRootPart.CFrame = gen.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
+                task.wait(0.2)
+                _RS.Events.Interact:FireServer(gen)
+                task.wait(tonumber(_0xO.GenDelay.Value) or 1)
+                _RS.Events.CompleteGen:FireServer()
             end
         end
     end
@@ -134,26 +134,57 @@ end)
 
 task.spawn(function()
     while task.wait(0.1) do
-        if _0xO.DeleteUI.Value then
-            local g1 = _LP.PlayerGui:FindFirstChild("GeneratorPuzzle")
-            local g2 = _LP.PlayerGui:FindFirstChild("PuzzleGui")
-            if g1 then g1.Enabled = false end
-            if g2 then g2.Enabled = false end
-        end
-        if _0xO.RepairGen.Value and _LP.Character:FindFirstChild("Interacting") then
-            task.wait(tonumber(_0xO.WalkGenDelay.Value) or 3)
-            game:GetService("ReplicatedStorage").Events.CompleteGen:FireServer()
+        if _0xO.AutoGivePizza.Value then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health < (v.Character.Humanoid.MaxHealth * 0.3) then
+                    _LP.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.HumanoidRootPart.Position)
+                    _RS.Events.Skill1:FireServer(v.Character.HumanoidRootPart.Position)
+                end
+            end
         end
     end
 end)
 
 task.spawn(function()
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if _0xO.AimPunch.Value and _LP.Character and _LP.Character:FindFirstChild("Punch") then
-            local r = (tonumber(_0xO.AimRange.Value) or 2) * 2.5
-            for _, k in pairs(game.Players:GetPlayers()) do
-                if k ~= _LP and k.Character and (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude <= r then
-                    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, k.Character.HumanoidRootPart.Position)
+    local Ring = Instance.new("Part")
+    Ring.Shape = Enum.PartType.Cylinder
+    Ring.Anchored = true Ring.CanCollide = false Ring.Transparency = 0.5
+    Ring.Size = Vector3.new(0.1, 30, 30) Ring.Orientation = Vector3.new(0,0,90)
+
+    _RUN.RenderStepped:Connect(function()
+        local range = tonumber(_0xO.BlockRange.Value) or 15
+        if _0xO.VisualRange.Value then
+            Ring.Parent = workspace
+            Ring.Size = Vector3.new(0.1, range*2, range*2)
+            local killer = nil
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character and (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude < range then
+                    killer = v break
+                end
+            end
+            Ring.Position = _LP.Character.HumanoidRootPart.Position - Vector3.new(0, 2.5, 0)
+            Ring.Color = killer and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        else
+            Ring.Parent = nil
+        end
+
+        if _0xO.AutoBlock.Value then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character and (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude < range then
+                    _RS.Events.Block:FireServer()
+                    if _0xO.AutoPunch.Value then
+                        task.wait(0.75)
+                        _RS.Events.Punch:FireServer()
+                    end
+                end
+            end
+        end
+        
+        if _0xO.AimPunch.Value and _LP.Character:FindFirstChild("Punching") then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character then
+                    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.HumanoidRootPart.Position)
                 end
             end
         end
@@ -161,18 +192,52 @@ task.spawn(function()
 end)
 
 task.spawn(function()
+    while task.wait(0.5) do
+        local sz = _0xO.HitboxSize.Value / 10
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= _LP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
+                v.Character.HumanoidRootPart.Transparency = 0.7
+            end
+        end
+    end
+end)
+
+task.spawn(function()
     while task.wait(0.1) do
-        if _0xO.AutoBackstab.Value then
-            for _, k in pairs(game.Players:GetPlayers()) do
-                if k ~= _LP and k.Character then
-                    local d = (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude
-                    if d <= (tonumber(_0xO.BackRange.Value) or 5) then
-                        _LP.Character.HumanoidRootPart.CFrame = k.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1.2)
-                        game:GetService("ReplicatedStorage").Events.Skill1:FireServer()
-                    end
+        if _0xO.AutoSlash.Value then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character then
+                    local old = _LP.Character.HumanoidRootPart.CFrame
+                    _LP.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 2)
+                    _RS.Events.Skill1:FireServer()
+                    task.wait(0.1)
+                    _LP.Character.HumanoidRootPart.CFrame = old
+                    task.wait(2)
                 end
             end
         end
+    end
+end)
+
+task.spawn(function()
+    _RUN.RenderStepped:Connect(function()
+        if _0xO.LightningMode.Value then
+            game.Lighting.Brightness = 2
+            game.Lighting.ClockTime = 14
+            game.Lighting.FogEnd = 100000
+        end
+        if _0xO.FPSBoost.Value then
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BasePart") then v.Material = Enum.Material.SmoothPlastic v.Color = Color3.fromRGB(255, 255, 255) end
+            end
+        end
+    end)
+end)
+
+task.spawn(function()
+    if _0xO.AutoExc.Value then
+        if writefile then writefile("DarkHubAuto.lua", "loadstring(game:HttpGet('YOUR_RAW_URL'))()") end
     end
 end)
 
