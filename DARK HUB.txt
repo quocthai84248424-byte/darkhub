@@ -2,10 +2,11 @@ local _0xCheck = "ilovedog1901ilovecat5551"
 if _0xCheck ~= "ilovedog1901ilovecat5551" then return end
 
 local _0xConfig = {
-    Name = "DARK HUB",
+    Name = "DARK HUB | FREE",
     Author = "ilovedog1901ilovecat5551",
     Discord = "https://discord.gg/xawrhjKP",
-    Image = "rbxassetid://15284489064"
+    MainImg = "rbxassetid://18820063991",
+    IconImg = "rbxassetid://18820120015"
 }
 
 local _0xMT = getrawmetatable(game)
@@ -20,51 +21,57 @@ setreadonly(_0xMT, true)
 
 local _0xGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
 local _0xMain = Instance.new("Frame", _0xGui)
-_0xMain.Size = UDim2.new(0, 300, 0, 120)
-_0xMain.Position = UDim2.new(0.5, -150, 0.5, -60)
-_0xMain.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
+_0xMain.Size = UDim2.new(0, 320, 0, 140)
+_0xMain.Position = UDim2.new(0.5, -160, 0.5, -70)
+_0xMain.BackgroundColor3 = Color3.fromRGB(20, 15, 30)
 _0xMain.BorderSizePixel = 0
-Instance.new("UICorner", _0xMain).CornerRadius = UDim.new(0, 10)
-
-local _0xImg = Instance.new("ImageLabel", _0xMain)
-_0xImg.Size = UDim2.new(1, 0, 1, 0)
-_0xImg.Image = _0xConfig.Image
-_0xImg.ImageTransparency = 0.9
-_0xImg.ZIndex = 0
-Instance.new("UICorner", _0xImg).CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", _0xMain).CornerRadius = UDim.new(0, 12)
 
 local _0xTitle = Instance.new("TextLabel", _0xMain)
-_0xTitle.Size = UDim2.new(1, 0, 0.4, 0)
-_0xTitle.Text = "DARK HUB | Loading..."
-_0xTitle.TextColor3 = Color3.fromRGB(200, 150, 255)
+_0xTitle.Size = UDim2.new(1, 0, 0.5, 0)
+_0xTitle.Text = "DARK HUB | PREPARING..."
+_0xTitle.TextColor3 = Color3.fromRGB(210, 180, 255)
 _0xTitle.BackgroundTransparency = 1
 _0xTitle.Font = Enum.Font.GothamBold
-_0xTitle.TextSize = 18
+_0xTitle.TextSize = 20
 
 local _0xBarBG = Instance.new("Frame", _0xMain)
-_0xBarBG.Size = UDim2.new(0.8, 0, 0, 8)
-_0xBarBG.Position = UDim2.new(0.1, 0, 0.65, 0)
-_0xBarBG.BackgroundColor3 = Color3.fromRGB(50, 45, 60)
+_0xBarBG.Size = UDim2.new(0.85, 0, 0, 6)
+_0xBarBG.Position = UDim2.new(0.075, 0, 0.75, 0)
+_0xBarBG.BackgroundColor3 = Color3.fromRGB(45, 40, 60)
 Instance.new("UICorner", _0xBarBG)
 
 local _0xBar = Instance.new("Frame", _0xBarBG)
 _0xBar.Size = UDim2.new(0, 0, 1, 0)
-_0xBar.BackgroundColor3 = Color3.fromRGB(160, 110, 255)
+_0xBar.BackgroundColor3 = Color3.fromRGB(180, 130, 255)
 Instance.new("UICorner", _0xBar)
 
-local function _0xProgress(_0xVal, _0xTxt)
-    _0xTitle.Text = _0xTxt
-    _0xBar:TweenSize(UDim2.new(_0xVal, 0, 1, 0), "Out", "Linear", 0.2)
-    task.wait(0.3)
+local function _0xProg(_0xV, _0xT)
+    _0xTitle.Text = _0xT
+    _0xBar:TweenSize(UDim2.new(_0xV, 0, 1, 0), "Out", "Quad", 0.3)
+    task.wait(0.5)
 end
 
-_0xProgress(0.1, "Initializing Core...")
+_0xProg(0.1, "LOADING CORE...")
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-_0xProgress(0.3, "Building Interface...")
+_0xProg(0.3, "SCANNING EMOJIS...")
+local _0xOwnedEmojis = {"Default Wave", "Default Dance"}
+pcall(function()
+    local inv = _LP:FindFirstChild("Inventory") or _LP:FindFirstChild("Backpack")
+    if inv then
+        for _, item in pairs(inv:GetChildren()) do
+            if item:IsA("StringValue") and item.Name:lower():find("emoji") then
+                table.insert(_0xOwnedEmojis, item.Name)
+            end
+        end
+    end
+end)
+
+_0xProg(0.5, "BUILDING UI...")
 local Window = Fluent:CreateWindow({
-    Title = "DARK HUB | Forsaken",
-    SubTitle = "by " .. _0xConfig.Author,
+    Title = "script by " .. _0xConfig.Author,
+    SubTitle = "DARK HUB | FREE",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
@@ -72,34 +79,34 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
-local function _0xApplyStyle()
-    Window.Main.BackgroundColor3 = Color3.fromRGB(30, 25, 45)
+local function _0xStyle()
+    Window.Main.BackgroundColor3 = Color3.fromRGB(25, 20, 35)
     local _0xBg = Instance.new("ImageLabel", Window.Main)
     _0xBg.Size = UDim2.new(1, 0, 1, 0)
-    _0xBg.Image = _0xConfig.Image
-    _0xBg.ImageTransparency = 0.88
+    _0xBg.Image = _0xConfig.MainImg
+    _0xBg.ImageTransparency = 0.85
     _0xBg.ZIndex = -1
     
     local _0xBtn = Instance.new("ImageButton", game:GetService("CoreGui"))
-    _0xBtn.Name = "DarkHubIcon"
-    _0xBtn.Size = UDim2.new(0, 45, 0, 45)
-    _0xBtn.Position = UDim2.new(0.05, 0, 0.2, 0)
-    _0xBtn.Image = _0xConfig.Image
+    _0xBtn.Name = "DarkHubMini"
+    _0xBtn.Size = UDim2.new(0, 50, 0, 50)
+    _0xBtn.Position = UDim2.new(0.1, 0, 0.1, 0)
+    _0xBtn.Image = _0xConfig.IconImg
     _0xBtn.BackgroundTransparency = 1
     _0xBtn.Draggable = true
     _0xBtn.Active = true
     Instance.new("UICorner", _0xBtn).CornerRadius = UDim.new(1, 0)
     _0xBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
 end
-_0xApplyStyle()
+_0xStyle()
 
 local Tabs = {}
 local _0xO = Fluent.Options
-local _0xLP = game.Players.LocalPlayer
+local _LP = game.Players.LocalPlayer
 
-_0xProgress(0.4, "Loading Info & Farm...")
+_0xProg(0.7, "CONFIGURING GUEST & TWO TIME...")
 Tabs.Info = Window:AddTab({ Title = "Info", Icon = "info" })
-Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
+Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Created by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
 Tabs.Farm = Window:AddTab({ Title = "Farm", Icon = "shovels" })
 Tabs.Farm:AddSection("<b>survivor farm</b>")
@@ -110,136 +117,110 @@ Tabs.Farm:AddSection("<b>killer farm</b>")
 Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
 Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
 
-_0xProgress(0.6, "Loading Main Logic...")
 Tabs.Main = Window:AddTab({ Title = "Main", Icon = "swords" })
 Tabs.Main:AddSection("<b>shedletsky</b>")
 Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
 Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
+
 Tabs.Main:AddSection("<b>guest</b>")
 Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
 Tabs.Main:AddToggle("VisualRange", {Title = "Visual Block Range", Default = false})
 Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
-Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Max Accuracy)", Default = false})
+Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Lock On Hit)", Default = false})
+Tabs.Main:AddSlider("AimRange", {Title = "Aim Range (0-5)", Default = 2, Min = 0, Max = 5, Rounding = 1})
+
 Tabs.Main:AddSection("<b>two time</b>")
-Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
-Tabs.Main:AddInput("BackstabRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
+Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (Teleport + Skill 1)", Default = false})
+Tabs.Main:AddSlider("BackRange", {Title = "Range (0-5)", Default = 5, Min = 0, Max = 5, Rounding = 1})
+
 Tabs.Main:AddSection("<b>eliot</b>")
 Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
 
-_0xProgress(0.8, "Loading Player & Visuals...")
 Tabs.Player = Window:AddTab({ Title = "Player", Icon = "user" })
-Tabs.Player:AddSection("<b>profile</b>")
-Tabs.Player:AddToggle("FakeName", {Title = "Fake Name (@hacker vip)", Default = false})
-Tabs.Player:AddSection("<b>hitbox</b>")
-Tabs.Player:AddSlider("HitboxSize", {Title = "Adjust Hitbox Size", Default = 10, Min = 10, Max = 100, Rounding = 0})
-Tabs.Player:AddButton({Title = "Apply Hitbox", Callback = function() 
-    local sz = _0xO.HitboxSize.Value / 10
-    for _, v in pairs(game.Players:GetPlayers()) do
-        if v ~= _0xLP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-            v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
-            v.Character.HumanoidRootPart.Transparency = 0.6
-            v.Character.HumanoidRootPart.CanCollide = false
-        end
-    end
-end})
+Tabs.Player:AddSection("<b>hitbox settings</b>")
+Tabs.Player:AddSlider("HitboxSize", {Title = "Hitbox Slider", Default = 10, Min = 10, Max = 100, Rounding = 0})
 Tabs.Player:AddSection("<b>animation</b>")
 Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"SLASHER", "COOLKID", "1X1X1X1", "JOHN DOUGH", "NOLI", "GUEST 666"}, Default = "SLASHER"})
-Tabs.Player:AddButton({Title = "Apply Animation", Callback = function()
-    local anims = {
-        ["SLASHER"] = "rbxassetid://0",
-        ["COOLKID"] = "rbxassetid://0",
-        ["1X1X1X1"] = "rbxassetid://0",
-        ["JOHN DOUGH"] = "rbxassetid://0",
-        ["NOLI"] = "rbxassetid://0",
-        ["GUEST 666"] = "rbxassetid://0"
-    }
-    local id = anims[_0xO.AnimSelect.Value]
-    if _0xLP.Character and _0xLP.Character:FindFirstChild("Humanoid") then
-        local animator = _0xLP.Character.Humanoid:FindFirstChildOfClass("Animator")
-        if animator then
-            for _, t in pairs(animator:GetPlayingAnimationTracks()) do t:Stop() end
-        end
-    end
-end})
-Tabs.Player:AddInput("WalkSpeed", {Title = "WalkSpeed (Default 24)", Default = "24", Numeric = true})
-Tabs.Player:AddToggle("EmojiMode", {Title = "Use Emoji Animation", Default = false})
+Tabs.Player:AddButton({Title = "Select", Callback = function() end})
+Tabs.Player:AddSection("<b>movement</b>")
+Tabs.Player:AddInput("WalkSpeed", {Title = "Speed (Default 24)", Default = "24", Numeric = true})
+Tabs.Player:AddSection("<b>emoji</b>")
+Tabs.Player:AddDropdown("EmojiSelect", {Title = "Select Owned Emoji", Values = _0xOwnedEmojis, Default = 1})
+Tabs.Player:AddButton({Title = "Select Emoji", Callback = function() end})
+Tabs.Player:AddButton({Title = "Use Emoji", Callback = function() end})
 
 Tabs.Visual = Window:AddTab({ Title = "Visual", Icon = "eye" })
+Tabs.Visual:AddSection("<b>esp survivor</b>")
 Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green)", Default = false})
+Tabs.Visual:AddSection("<b>esp killer</b>")
 Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red)", Default = false})
-Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator", Default = false})
-Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items", Default = false})
+Tabs.Visual:AddSection("<b>esp items</b>")
+Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
+Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
 
 Tabs.Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+Tabs.Settings:AddToggle("ShowStats", {Title = "Show FPS/Ping", Default = false})
 Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
 Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
 Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
 
-_0xProgress(1.0, "Launching DARK HUB...")
+_0xProg(1.0, "COMPLETE!")
 task.wait(0.5)
 _0xGui:Destroy()
 
-task.spawn(function()
-    while task.wait(1) do
-        local sz = _0xO.HitboxSize.Value / 10
-        if sz > 1 then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _0xLP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                    v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
-                    v.Character.HumanoidRootPart.Transparency = 0.6
-                    v.Character.HumanoidRootPart.CanCollide = false
-                end
-            end
-        end
-    end
-end)
+local _0xStatGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local _0xStatLabel = Instance.new("TextLabel", _0xStatGui)
+_0xStatLabel.Size = UDim2.new(0, 200, 0, 50)
+_0xStatLabel.Position = UDim2.new(1, -210, 0, 10)
+_0xStatLabel.BackgroundTransparency = 1
+_0xStatLabel.TextColor3 = Color3.fromRGB(180, 130, 255)
+_0xStatLabel.TextXAlignment = Enum.TextXAlignment.Right
+_0xStatLabel.Font = Enum.Font.GothamBold
+_0xStatLabel.TextSize = 14
+_0xStatLabel.Visible = false
 
 task.spawn(function()
-    while task.wait() do
-        if _0xO.FakeName.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("Head") then
-            _0xLP.Character.Humanoid.DisplayName = "@hacker vip"
-            for _, c in pairs(_0xLP.Character.Head:GetChildren()) do if c:IsA("BillboardGui") then c.Enabled = false end end
-            local t = _0xLP.Character.Head:FindFirstChild("FTag") or Instance.new("BillboardGui", _0xLP.Character.Head)
-            t.Name = "FTag" t.Size = UDim2.new(0,200,0,50) t.AlwaysOnTop = true
-            local l = t:FindFirstChild("L") or Instance.new("TextLabel", t)
-            l.Name = "L" l.Size = UDim2.new(1,0,1,0) l.BackgroundTransparency = 1 l.Text = "@hacker vip" l.TextColor3 = Color3.fromRGB(255,0,0) l.Font = Enum.Font.GothamBold l.TextSize = 14
-        end
-    end
-end)
-
-task.spawn(function()
-    local Ring = Instance.new("Part")
-    Ring.Shape = Enum.PartType.Cylinder
-    Ring.Anchored = true Ring.CanCollide = false Ring.Transparency = 0.5
-    Ring.Size = Vector3.new(0.1, 30, 30) Ring.Orientation = Vector3.new(0,0,90)
-
-    while task.wait() do
-        local Range = tonumber(_0xO.BlockRange.Value) or 15
-        if _0xO.VisualRange.Value and _0xLP.Character and _0xLP.Character:FindFirstChild("HumanoidRootPart") then
-            Ring.Parent = workspace Ring.Size = Vector3.new(0.1, Range*2, Range*2)
-            Ring.Position = _0xLP.Character.HumanoidRootPart.Position - Vector3.new(0, 3, 0)
-            local InRange = false
-            for _, k in pairs(game.Players:GetPlayers()) do
-                if k ~= _0xLP and k.Character and (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude <= Range then
-                    InRange = true break
-                end
-            end
-            Ring.Color = InRange and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+    while task.wait(0.5) do
+        if _0xO.ShowStats.Value then
+            _0xStatLabel.Visible = true
+            local fps = math.floor(1/game:GetService("RunService").RenderStepped:Wait())
+            local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
+            _0xStatLabel.Text = "FPS: " .. fps .. " | PING: " .. ping .. "ms"
         else
-            Ring.Parent = nil
+            _0xStatLabel.Visible = false
         end
-        
-        if _0xO.AutoBlock.Value then
-            for _, k in pairs(game.Players:GetPlayers()) do
-                if k ~= _0xLP and k.Character then
-                    local Dist = (k.Character.HumanoidRootPart.Position - _0xLP.Character.HumanoidRootPart.Position).Magnitude
-                    if Dist <= Range then
-                        game:GetService("ReplicatedStorage").Events.Block:FireServer()
-                        if _0xO.AutoPunch.Value then
-                            task.wait(0.7)
-                            game:GetService("ReplicatedStorage").Events.Punch:FireServer()
+    end
+end)
+
+task.spawn(function()
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if _0xO.AimPunch.Value and _LP.Character then
+            local _punching = _LP.Character:FindFirstChild("Punch") or _LP.Backpack:FindFirstChild("Punch")
+            if _punching and _punching.Parent == _LP.Character then
+                local range = _0xO.AimRange.Value * 2.5
+                for _, k in pairs(game.Players:GetPlayers()) do
+                    if k ~= _LP and k.Character and k.Character:FindFirstChild("HumanoidRootPart") then
+                        local d = (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude
+                        if d <= range then
+                            workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, k.Character.HumanoidRootPart.Position)
                         end
+                    end
+                end
+            end
+        end
+    end)
+end)
+
+task.spawn(function()
+    while task.wait(0.1) do
+        if _0xO.AutoBackstab.Value then
+            for _, k in pairs(game.Players:GetPlayers()) do
+                if k ~= _LP and k.Character and k.Character:FindFirstChild("HumanoidRootPart") then
+                    local d = (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude
+                    if d <= _0xO.BackRange.Value then
+                        _LP.Character.HumanoidRootPart.CFrame = k.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1.2)
+                        game:GetService("ReplicatedStorage").Events.Skill1:FireServer()
                     end
                 end
             end
@@ -247,20 +228,5 @@ task.spawn(function()
     end
 end)
 
-task.spawn(function()
-    while task.wait(0.2) do
-        if _0xO.AutoFixGen.Value then
-             for _, g in pairs(workspace:GetChildren()) do
-                if g.Name == "Generator " and g:FindFirstChild("Hitbox") then
-                    _0xLP.Character.HumanoidRootPart.CFrame = g.Hitbox.CFrame * CFrame.new(0, 0, 3)
-                    task.wait(0.5)
-                    game:GetService("ReplicatedStorage").Events.Repair:FireServer(g)
-                    task.wait(_0xO.GenDelay.Value)
-                end
-            end
-        end
-    end
-end)
-
 Tabs.Info:Select()
-Fluent:Notify({Title = "DARK HUB", Content = "Script Loaded Successfully!", Duration = 5})
+Fluent:Notify({Title = "DARK HUB", Content = "Guest Aim Punch Updated!", Duration = 5})
