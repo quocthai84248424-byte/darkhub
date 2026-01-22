@@ -1,46 +1,54 @@
-local _0xCheck = "\x69\x6c\x6f\x76\x65\x64\x6f\x67\x31\x39\x30\x31\x69\x6c\x6f\x76\x65\x63\x61\x74\x35\x35\x35\x31"
-local _0xTitle = "\x44\x41\x52\x4b\x20\x48\x55\x42"
-local _0xAuthor = "\x69\x6c\x6f\x76\x65\x64\x6f\x67\x31\x39\x30\x31\x69\x6c\x6f\x76\x65\x63\x61\x74\x35\x35\x35\x31"
+local _0xCheck = "ilovedog1901ilovecat5551"
+local _0xConfig = {
+    Author = "ilovedog1901ilovecat5551",
+    Discord = "https://discord.gg/xawrhjKP",
+    MainImg = "rbxassetid://18820063991", -- Background Furina
+    IconImg = "rbxassetid://18820120015"  -- Icon Furina
+}
 
 local _0xMT = getrawmetatable(game)
 local _0xNC = _0xMT.__namecall
 setreadonly(_0xMT, false)
 _0xMT.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    if not checkcaller() and (method == "Kick" or method == "Log" or method == "Report") then return nil end
+    local m = getnamecallmethod()
+    if not checkcaller() and (m == "Kick" or m == "Log" or m == "Report") then return nil end
     return _0xNC(self, ...)
 end)
 setreadonly(_0xMT, true)
 
-local _0xL = Instance.new("ScreenGui", game:GetService("CoreGui"))
-local _0xFr = Instance.new("Frame", _0xL)
-_0xFr.Size = UDim2.new(0, 300, 0, 100)
-_0xFr.Position = UDim2.new(0.5, -150, 0.5, -50)
-_0xFr.BackgroundColor3 = Color3.fromRGB(20, 15, 30)
-Instance.new("UICorner", _0xFr)
-local _0xTxt = Instance.new("TextLabel", _0xFr)
-_0xTxt.Size = UDim2.new(1, 0, 1, 0)
-_0xTxt.Text = "INITIALIZING DARK HUB..."
-_0xTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-_0xTxt.BackgroundTransparency = 1
-_0xTxt.Font = Enum.Font.GothamBold
-task.wait(1.5)
-_0xL:Destroy()
-
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local _LP = game.Players.LocalPlayer
 local _RS = game:GetService("ReplicatedStorage")
-local _RUN = game:GetService("RunService")
 
 local Window = Fluent:CreateWindow({
-    Title = _0xTitle .. " | Script by " .. _0xAuthor,
-    SubTitle = "by " .. _0xAuthor,
+    Title = "DARK HUB | FORSAKEN",
+    SubTitle = "by " .. _0xConfig.Author,
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
+
+local function _0xStyle()
+    local _0xBg = Instance.new("ImageLabel", Window.Main)
+    _0xBg.Size = UDim2.new(1, 0, 1, 0)
+    _0xBg.Image = _0xConfig.MainImg
+    _0xBg.ImageTransparency = 0.8
+    _0xBg.ZIndex = -1
+    
+    local _0xBtn = Instance.new("ImageButton", game:GetService("CoreGui"))
+    _0xBtn.Name = "FurinaIcon"
+    _0xBtn.Size = UDim2.new(0, 55, 0, 55)
+    _0xBtn.Position = UDim2.new(0.05, 0, 0.15, 0)
+    _0xBtn.Image = _0xConfig.IconImg
+    _0xBtn.BackgroundTransparency = 1
+    _0xBtn.Draggable = true
+    _0xBtn.Active = true
+    Instance.new("UICorner", _0xBtn).CornerRadius = UDim.new(1, 0)
+    _0xBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
+end
+_0xStyle()
 
 local Tabs = {
     Info = Window:AddTab({ Title = "Info", Icon = "info" }),
@@ -53,7 +61,7 @@ local Tabs = {
 
 local _0xO = Fluent.Options
 
-Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Created by: " .. _0xAuthor .. "\nDiscord: https://discord.gg/xawrhjKP\nStatus: Forsaken Script Loaded"})
+Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script by: " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
 Tabs.Farm:AddSection("**SURVIVOR FARM**")
 Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
@@ -66,179 +74,93 @@ Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Defa
 Tabs.Farm:AddToggle("AutoKillV2", {Title = "Auto Kill Survivor (Walk)", Default = false})
 
 Tabs.Main:AddSection("**SHEDLETSKY**")
-Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash (TP Back)", Default = false})
+Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
 Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
 
 Tabs.Main:AddSection("**GUEST**")
-Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
+Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Fast)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
 Tabs.Main:AddToggle("VisualRange", {Title = "Visual Range Block", Default = false})
 Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
-Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (High Accuracy)", Default = false})
+Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Accurate)", Default = false})
 
 Tabs.Main:AddSection("**TWO TIME**")
-Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (Skill 2+1)", Default = false})
-Tabs.Main:AddInput("BackRange", {Title = "Backstab Range (0-5)", Default = "5", Numeric = true})
+Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (2+1)", Default = false})
+Tabs.Main:AddInput("BackRange", {Title = "Back Range (0-5)", Default = "5", Numeric = true})
 
 Tabs.Main:AddSection("**ELIOT**")
-Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza (HP < 30%)", Default = false})
-
-Tabs.Player:AddSection("**HITBOX**")
-Tabs.Player:AddSlider("HitboxSize", {Title = "Hitbox Slider (Max 100)", Default = 10, Min = 10, Max = 100, Rounding = 0})
+Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Pizza (HP < 30%)", Default = false})
 
 Tabs.Player:AddSection("**ANIMATION**")
-Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"Slasher", "Coolkid", "1x1x1x1", "John Dough", "Noli", "Guest 666", "VIP Killer"}, Default = "Slasher"})
-Tabs.Player:AddButton({Title = "Select", Callback = function() end})
+local _0xAnimTable = {
+    ["Slasher"] = "rbxassetid://0", 
+    ["VIP Killer"] = "rbxassetid://0"
+}
+
+local _0xDropdown = Tabs.Player:AddDropdown("AnimSelect", {
+    Title = "Select Animation (Auto Collect)",
+    Values = {"Slasher", "Coolkid", "1x1x1x1", "John Dough", "Noli", "Guest 666", "VIP Killer"},
+    Default = "Slasher"
+})
+
+Tabs.Player:AddButton({
+    Title = "Apply Animation",
+    Callback = function()
+        local target = _0xO.AnimSelect.Value
+        pcall(function()
+            -- Logic thu thập ID thực tế từ các NPC hoặc Player Killer trong server
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v.Character and v.Character:FindFirstChild("Animate") then
+                    local id = v.Character.Animate.idle.Animation1.AnimationId
+                    _0xAnimTable[v.Name] = id
+                end
+            end
+            -- Áp dụng ID đã thu thập
+            _LP.Character.Animate.idle.Animation1.AnimationId = _0xAnimTable[target] or _LP.Character.Animate.idle.Animation1.AnimationId
+        end)
+    end
+})
 
 Tabs.Player:AddSection("**MOVEMENT**")
 Tabs.Player:AddInput("WalkSpeed", {Title = "Speed (Default 24)", Default = "24", Numeric = true})
 
-Tabs.Player:AddSection("**EMOJI**")
-Tabs.Player:AddDropdown("EmojiSelect", {Title = "Select Emoji", Values = {"Dance", "Wave", "Laugh", "Point"}, Default = "Dance"})
-Tabs.Player:AddButton({Title = "Use Emoji", Callback = function() end})
+Tabs.Visual:AddSection("**VISUALS**")
+Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor", Default = false})
+Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer", Default = false})
+Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator", Default = false})
 
-Tabs.Visual:AddSection("**ESP SURVIVOR**")
-Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
-Tabs.Visual:AddSection("**ESP KILLER**")
-Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
-Tabs.Visual:AddSection("**ESP GENERATOR**")
-Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Generator (Yellow/Fake Red)", Default = false})
-Tabs.Visual:AddSection("**ESP ITEMS**")
-Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
-
-Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
-Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
-Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
-
-local function _0xGetGen()
-    for _, v in pairs(workspace:GetChildren()) do
-        if v.Name == "Generator " and v:FindFirstChild("HumanoidRootPart") then return v end
-    end
-    return nil
-end
-
-task.spawn(function()
-    while task.wait() do
-        if _0xO.AutoFixGen.Value then
-            local gen = _0xGetGen()
-            if gen then
-                _LP.Character.HumanoidRootPart.CFrame = gen.HumanoidRootPart.CFrame * CFrame.new(0, 0, -3)
-                task.wait(0.2)
-                _RS.Events.Interact:FireServer(gen)
-                task.wait(tonumber(_0xO.GenDelay.Value) or 1)
-                _RS.Events.CompleteGen:FireServer()
-            end
-        end
-    end
-end)
-
+-- Logic Auto Fix Gen Teleport chuẩn xác
 task.spawn(function()
     while task.wait(0.1) do
-        if _0xO.AutoGivePizza.Value then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health < (v.Character.Humanoid.MaxHealth * 0.3) then
-                    _LP.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
-                    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.HumanoidRootPart.Position)
-                    _RS.Events.Skill1:FireServer(v.Character.HumanoidRootPart.Position)
+        if _0xO.AutoFixGen.Value then
+            for _, v in pairs(workspace:GetChildren()) do
+                if v.Name == "Generator " and v:FindFirstChild("HumanoidRootPart") then
+                    _LP.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                    _RS.Events.Interact:FireServer(v)
+                    task.wait(tonumber(_0xO.GenDelay.Value) or 1)
+                    _RS.Events.CompleteGen:FireServer()
                 end
             end
         end
     end
 end)
 
+-- Logic Guest Hub Block
 task.spawn(function()
-    local Ring = Instance.new("Part")
-    Ring.Shape = Enum.PartType.Cylinder
-    Ring.Anchored = true Ring.CanCollide = false Ring.Transparency = 0.5
-    Ring.Size = Vector3.new(0.1, 30, 30) Ring.Orientation = Vector3.new(0,0,90)
-
-    _RUN.RenderStepped:Connect(function()
-        local range = tonumber(_0xO.BlockRange.Value) or 15
-        if _0xO.VisualRange.Value then
-            Ring.Parent = workspace
-            Ring.Size = Vector3.new(0.1, range*2, range*2)
-            local killer = nil
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character and (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude < range then
-                    killer = v break
-                end
-            end
-            Ring.Position = _LP.Character.HumanoidRootPart.Position - Vector3.new(0, 2.5, 0)
-            Ring.Color = killer and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-        else
-            Ring.Parent = nil
-        end
-
+    game:GetService("RunService").RenderStepped:Connect(function()
         if _0xO.AutoBlock.Value then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character and (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude < range then
+            local r = tonumber(_0xO.BlockRange.Value) or 15
+            for _, k in pairs(game.Players:GetPlayers()) do
+                if k ~= _LP and k.Character and (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude <= r then
                     _RS.Events.Block:FireServer()
                     if _0xO.AutoPunch.Value then
-                        task.wait(0.75)
+                        task.wait(0.7)
                         _RS.Events.Punch:FireServer()
                     end
                 end
             end
         end
-        
-        if _0xO.AimPunch.Value and _LP.Character:FindFirstChild("Punching") then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character then
-                    workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, v.Character.HumanoidRootPart.Position)
-                end
-            end
-        end
     end)
-end)
-
-task.spawn(function()
-    while task.wait(0.5) do
-        local sz = _0xO.HitboxSize.Value / 10
-        for _, v in pairs(game.Players:GetPlayers()) do
-            if v ~= _LP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
-                v.Character.HumanoidRootPart.Transparency = 0.7
-            end
-        end
-    end
-end)
-
-task.spawn(function()
-    while task.wait(0.1) do
-        if _0xO.AutoSlash.Value then
-            for _, v in pairs(game.Players:GetPlayers()) do
-                if v ~= _LP and v.Character then
-                    local old = _LP.Character.HumanoidRootPart.CFrame
-                    _LP.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 2)
-                    _RS.Events.Skill1:FireServer()
-                    task.wait(0.1)
-                    _LP.Character.HumanoidRootPart.CFrame = old
-                    task.wait(2)
-                end
-            end
-        end
-    end
-end)
-
-task.spawn(function()
-    _RUN.RenderStepped:Connect(function()
-        if _0xO.LightningMode.Value then
-            game.Lighting.Brightness = 2
-            game.Lighting.ClockTime = 14
-            game.Lighting.FogEnd = 100000
-        end
-        if _0xO.FPSBoost.Value then
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("BasePart") then v.Material = Enum.Material.SmoothPlastic v.Color = Color3.fromRGB(255, 255, 255) end
-            end
-        end
-    end)
-end)
-
-task.spawn(function()
-    if _0xO.AutoExc.Value then
-        if writefile then writefile("DarkHubAuto.lua", "loadstring(game:HttpGet('YOUR_RAW_URL'))()") end
-    end
 end)
 
 Tabs.Info:Select()
