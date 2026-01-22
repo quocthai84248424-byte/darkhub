@@ -2,7 +2,6 @@ local _0xCheck = "ilovedog1901ilovecat5551"
 if _0xCheck ~= "ilovedog1901ilovecat5551" then return end
 
 local _0xConfig = {
-    Name = "DARK HUB | FREE",
     Author = "ilovedog1901ilovecat5551",
     Discord = "https://discord.gg/xawrhjKP",
     MainImg = "rbxassetid://18820063991",
@@ -48,8 +47,8 @@ Instance.new("UICorner", _0xBar)
 
 local function _0xProg(_0xV, _0xT)
     _0xTitle.Text = _0xT
-    _0xBar:TweenSize(UDim2.new(_0xV, 0, 1, 0), "Out", "Quad", 0.3)
-    task.wait(0.5)
+    _0xBar:TweenSize(UDim2.new(_0xV, 0, 1, 0), "Out", "Quad", 0.5)
+    task.wait(0.6)
 end
 
 _0xProg(0.1, "LOADING CORE...")
@@ -57,6 +56,7 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 
 _0xProg(0.3, "SCANNING EMOJIS...")
 local _0xOwnedEmojis = {"Default Wave", "Default Dance"}
+local _LP = game.Players.LocalPlayer
 pcall(function()
     local inv = _LP:FindFirstChild("Inventory") or _LP:FindFirstChild("Backpack")
     if inv then
@@ -70,14 +70,15 @@ end)
 
 _0xProg(0.5, "BUILDING UI...")
 local Window = Fluent:CreateWindow({
-    Title = "script by " .. _0xConfig.Author,
-    SubTitle = "DARK HUB | FREE",
+    Title = "DARK HUB | FREE",
+    SubTitle = "by " .. _0xConfig.Author,
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
+task.wait(1)
 
 local function _0xStyle()
     Window.Main.BackgroundColor3 = Color3.fromRGB(25, 20, 35)
@@ -102,9 +103,8 @@ _0xStyle()
 
 local Tabs = {}
 local _0xO = Fluent.Options
-local _LP = game.Players.LocalPlayer
 
-_0xProg(0.7, "CONFIGURING GUEST & TWO TIME...")
+_0xProg(0.7, "CONFIGURING TABS...")
 Tabs.Info = Window:AddTab({ Title = "Info", Icon = "info" })
 Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Created by " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
@@ -121,7 +121,6 @@ Tabs.Main = Window:AddTab({ Title = "Main", Icon = "swords" })
 Tabs.Main:AddSection("<b>shedletsky</b>")
 Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash", Default = false})
 Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
-
 Tabs.Main:AddSection("<b>guest</b>")
 Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Guest Hub Style)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15", Numeric = true})
@@ -129,11 +128,9 @@ Tabs.Main:AddToggle("VisualRange", {Title = "Visual Block Range", Default = fals
 Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
 Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (Lock On Hit)", Default = false})
 Tabs.Main:AddSlider("AimRange", {Title = "Aim Range (0-5)", Default = 2, Min = 0, Max = 5, Rounding = 1})
-
 Tabs.Main:AddSection("<b>two time</b>")
 Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (Teleport + Skill 1)", Default = false})
 Tabs.Main:AddSlider("BackRange", {Title = "Range (0-5)", Default = 5, Min = 0, Max = 5, Rounding = 1})
-
 Tabs.Main:AddSection("<b>eliot</b>")
 Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza", Default = false})
 
@@ -165,6 +162,7 @@ Tabs.Settings:AddToggle("AutoExc", {Title = "Auto Execute", Default = false})
 Tabs.Settings:AddToggle("LightningMode", {Title = "Lightning Mode", Default = false})
 Tabs.Settings:AddToggle("FPSBoost", {Title = "FPS Boost", Default = false})
 
+Tabs.Info:Select()
 _0xProg(1.0, "COMPLETE!")
 task.wait(0.5)
 _0xGui:Destroy()
@@ -228,5 +226,52 @@ task.spawn(function()
     end
 end)
 
-Tabs.Info:Select()
-Fluent:Notify({Title = "DARK HUB", Content = "Guest Aim Punch Updated!", Duration = 5})
+task.spawn(function()
+    while task.wait(0.1) do
+        local sz = _0xO.HitboxSize.Value / 10
+        if sz > 1 then
+            for _, v in pairs(game.Players:GetPlayers()) do
+                if v ~= _LP and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                    v.Character.HumanoidRootPart.Size = Vector3.new(sz, sz, sz)
+                    v.Character.HumanoidRootPart.Transparency = 0.6
+                end
+            end
+        end
+    end
+end)
+
+task.spawn(function()
+    local Ring = Instance.new("Part")
+    Ring.Shape = Enum.PartType.Cylinder
+    Ring.Anchored = true Ring.CanCollide = false Ring.Transparency = 0.5
+    Ring.Size = Vector3.new(0.1, 30, 30) Ring.Orientation = Vector3.new(0,0,90)
+
+    while task.wait() do
+        local Range = tonumber(_0xO.BlockRange.Value) or 15
+        if _0xO.VisualRange.Value and _LP.Character and _LP.Character:FindFirstChild("HumanoidRootPart") then
+            Ring.Parent = workspace
+            Ring.Size = Vector3.new(0.1, Range*2, Range*2)
+            Ring.Position = _LP.Character.HumanoidRootPart.Position - Vector3.new(0, 3, 0)
+            local InRange = false
+            for _, k in pairs(game.Players:GetPlayers()) do
+                if k ~= _LP and k.Character and (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude <= Range then
+                    InRange = true break
+                end
+            end
+            Ring.Color = InRange and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+        else
+            Ring.Parent = nil
+        end
+        
+        if _0xO.AutoBlock.Value then
+            for _, k in pairs(game.Players:GetPlayers()) do
+                if k ~= _LP and k.Character then
+                    local Dist = (k.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude
+                    if Dist <= Range then
+                        game:GetService("ReplicatedStorage").Events.Block:FireServer()
+                    end
+                end
+            end
+        end
+    end
+end)
