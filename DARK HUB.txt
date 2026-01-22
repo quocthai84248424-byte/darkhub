@@ -24,41 +24,43 @@ local Window = Fluent:CreateWindow({
     Title = "DARK HUB | FORSAKEN",
     SubTitle = "script by " .. _0xConfig.Author,
     TabWidth = 140,
-    Size = UDim2.fromOffset(580, 480),
+    Size = UDim2.fromOffset(580, 520),
     Acrylic = false,
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
-local function _0xApplyPurple()
-    local _Main = Window.Main
-    _Main.BackgroundColor3 = Color3.fromRGB(35, 25, 55)
-    local _Img = Instance.new("ImageLabel", _Main)
-    _Img.Size = UDim2.new(1, 0, 1, 0)
-    _Img.Image = _0xConfig.MainImg
-    _Img.ImageTransparency = 0.2
-    _Img.ScaleType = Enum.ScaleType.Fill
-    _Img.ZIndex = -1
-    _Img.BackgroundColor3 = Color3.fromRGB(35, 25, 55)
+local function _0xApplyUIStyle()
+    pcall(function()
+        local _Main = Window.Main
+        _Main.BackgroundColor3 = Color3.fromRGB(35, 25, 55)
+        _Main.BackgroundTransparency = 0
+        
+        local _Bg = Instance.new("ImageLabel", _Main)
+        _Bg.Size = UDim2.new(1, 0, 1, 0)
+        _Bg.Image = _0xConfig.MainImg
+        _Bg.ImageTransparency = 0.3
+        _Bg.ScaleType = Enum.ScaleType.Fill
+        _Bg.ZIndex = -1
+        _Bg.BackgroundColor3 = Color3.fromRGB(35, 25, 55)
 
-    local _Btn = Instance.new("TextButton", game:GetService("CoreGui"))
-    _Btn.Name = "DarkHubToggle"
-    _Btn.Size = UDim2.new(0, 120, 0, 50)
-    _Btn.Position = UDim2.new(0.5, -60, 0.02, 0)
-    _Btn.Text = "DARK HUB"
-    _Btn.Font = Enum.Font.GothamBold
-    _Btn.TextSize = 20
-    _Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    _Btn.BackgroundTransparency = 0.2
-    _Btn.BackgroundColor3 = Color3.fromRGB(80, 50, 120)
-    local _Cr = Instance.new("UICorner", _Btn)
-    _Cr.CornerRadius = UDim.new(0, 12)
-    _Btn.Draggable = true
-    _Btn.Active = true
-    _Btn.MouseButton1Click:Connect(function() Window:Minimize() end)
+        local _Btn = Instance.new("TextButton", game:GetService("CoreGui"))
+        _Btn.Name = "DarkHubToggle"
+        _Btn.Size = UDim2.new(0, 120, 0, 50)
+        _Btn.Position = UDim2.new(0.5, -60, 0.02, 0)
+        _Btn.Text = "DARK HUB"
+        _Btn.Font = Enum.Font.GothamBold
+        _Btn.TextSize = 18
+        _Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        _Btn.BackgroundColor3 = Color3.fromRGB(80, 45, 130)
+        local _Cr = Instance.new("UICorner", _Btn)
+        _Cr.CornerRadius = UDim.new(0, 12)
+        _Btn.Draggable = true
+        _Btn.Active = true
+        _Btn.MouseButton1Click:Connect(function() Window:Minimize() end)
+    end)
 end
-
-task.wait(0.5)
+_0xApplyUIStyle()
 
 local Tabs = {
     Info = Window:AddTab({ Title = "Info", Icon = "info" }),
@@ -70,20 +72,17 @@ local Tabs = {
 }
 
 local _0xO = Fluent.Options
-_0xApplyPurple()
+
+task.wait(0.3)
 
 Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script Created by: " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord})
 
 Tabs.Farm:AddSection("**SURVIVOR FARM**")
 Tabs.Farm:AddToggle("AutoFixGen", {Title = "Auto Fix Gen (Teleport)", Default = false})
-Tabs.Farm:AddSlider("GenDelay", {Title = "Puzzle Delay Time", Default = 1, Min = 0.1, Max = 5, Rounding = 1})
-Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen (Auto Walk)", Default = false})
-Tabs.Farm:AddButton({
-    Title = "Finish Gen (Instant Progress)",
-    Callback = function()
-        for i = 1, 4 do _RS.Events.CompleteGen:FireServer() end
-    end
-})
+Tabs.Farm:AddInput("FixDelay", {Title = "TP Fix Delay (Seconds)", Default = "1"})
+Tabs.Farm:AddToggle("RepairGen", {Title = "Repair Gen Assist (Manual)", Default = false})
+Tabs.Farm:AddInput("RepairDelay", {Title = "Manual Progress Delay", Default = "0.5"})
+Tabs.Farm:AddButton({Title = "Finish Gen (Instant Progress)", Callback = function() for i=1,4 do _RS.Events.CompleteGen:FireServer() end end})
 
 Tabs.Farm:AddSection("**KILLER FARM**")
 Tabs.Farm:AddToggle("AutoKillV1", {Title = "Auto Kill Survivor (Teleport)", Default = false})
@@ -94,10 +93,10 @@ Tabs.Main:AddToggle("AutoSlash", {Title = "Auto Slash (TP Back)", Default = fals
 Tabs.Main:AddToggle("AutoEatChicken", {Title = "Auto Eat Chicken", Default = false})
 
 Tabs.Main:AddSection("**GUEST**")
-Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Super Fast)", Default = false})
+Tabs.Main:AddToggle("AutoBlock", {Title = "Auto Block (Super Fast 0.5s)", Default = false})
 Tabs.Main:AddInput("BlockRange", {Title = "Block Range", Default = "15"})
 Tabs.Main:AddToggle("VisualRange", {Title = "Visual Range Block", Default = false})
-Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch (0.7s After Block)", Default = false})
+Tabs.Main:AddToggle("AutoPunch", {Title = "Auto Punch After Block", Default = false})
 Tabs.Main:AddToggle("AimPunch", {Title = "Aim Punch (High Accuracy)", Default = false})
 
 Tabs.Main:AddSection("**TWO TIME**")
@@ -105,18 +104,20 @@ Tabs.Main:AddToggle("AutoBackstab", {Title = "Auto Backstab (Skill 2+1)", Defaul
 Tabs.Main:AddInput("BackRange", {Title = "Backstab Range (0-5)", Default = "5"})
 
 Tabs.Main:AddSection("**ELIOT**")
-Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza (Aim Mode)", Default = false})
+Tabs.Main:AddToggle("AutoGivePizza", {Title = "Auto Give Pizza (HP < 30%)", Default = false})
 
-Tabs.Player:AddSection("**HITBOX (TELE SÁT THƯƠNG)**")
-Tabs.Player:AddSlider("HitboxSize", {Title = "Hitbox Multiplier", Default = 10, Min = 10, Max = 100, Rounding = 0})
+Tabs.Player:AddSection("**HITBOX (TELE ATTACK)**")
+Tabs.Player:AddSlider("HitboxSize", {Title = "Hitbox Multiplier (10=10 Part)", Default = 10, Min = 10, Max = 100, Rounding = 0})
 
 Tabs.Player:AddSection("**ANIMATION FAKE**")
-Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Animation", Values = {"Slasher", "Coolkid", "1x1x1x1", "VIP Killer"}, Default = "Slasher"})
-Tabs.Player:AddButton({Title = "Apply Animation", Callback = function() 
+Tabs.Player:AddDropdown("AnimSelect", {Title = "Select Killer Animation", Values = {"Slasher", "Coolkid", "1x1x1x1", "John Dough", "Guest 666", "VIP Killer"}, Default = "Slasher"})
+Tabs.Player:AddButton({Title = "Select Animation", Callback = function() 
     pcall(function()
         local id = "rbxassetid://0"
         for _, v in pairs(game.Players:GetPlayers()) do
-            if v ~= _LP and v.Character then id = v.Character.Animate.idle.Animation1.AnimationId end
+            if v ~= _LP and v.Character and v.Character:FindFirstChild("Animate") then
+                id = v.Character.Animate.idle.Animation1.AnimationId
+            end
         end
         _LP.Character.Animate.idle.Animation1.AnimationId = id
     end)
@@ -126,15 +127,15 @@ Tabs.Player:AddSection("**SPEED**")
 Tabs.Player:AddInput("WalkSpeed", {Title = "Speed (Default 24)", Default = "24"})
 
 Tabs.Player:AddSection("**EMOJI**")
-Tabs.Player:AddDropdown("EmojiList", {Title = "Select Emoji", Values = {"Dance", "Wave", "Laugh"}, Default = "Dance"})
+Tabs.Player:AddDropdown("EmojiList", {Title = "Select Emoji", Values = {"Dance", "Wave", "Laugh", "Point"}, Default = "Dance"})
 Tabs.Player:AddButton({Title = "Use Emoji", Callback = function() _RS.Events.PlayEmoji:FireServer(_0xO.EmojiList.Value) end})
 
 Tabs.Visual:AddSection("**ESP SURVIVOR**")
-Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green)", Default = false})
+Tabs.Visual:AddToggle("ESPSurv", {Title = "ESP Survivor (Green + HP)", Default = false})
 Tabs.Visual:AddSection("**ESP KILLER**")
-Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red)", Default = false})
+Tabs.Visual:AddToggle("ESPKiller", {Title = "ESP Killer (Red + HP)", Default = false})
 Tabs.Visual:AddSection("**ESP GENERATOR**")
-Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Gen (Yellow/Fake)", Default = false})
+Tabs.Visual:AddToggle("ESPGen", {Title = "ESP Gen (Yellow/Fake Red)", Default = false})
 Tabs.Visual:AddSection("**ESP ITEMS**")
 Tabs.Visual:AddToggle("ESPItem", {Title = "ESP Items (White)", Default = false})
 
@@ -153,6 +154,32 @@ local function _GetTarget()
     end
     return t
 end
+
+task.spawn(function()
+    while task.wait() do
+        if _0xO.RepairGen.Value then
+            _RS.Events.CompleteGen:FireServer()
+            task.wait(tonumber(_0xO.RepairDelay.Value) or 0.5)
+        end
+    end
+end)
+
+task.spawn(function()
+    while task.wait(0.1) do
+        if _0xO.AutoFixGen.Value then
+            for _, v in pairs(_WS:GetChildren()) do
+                if v.Name == "Generator " and v:FindFirstChild("HumanoidRootPart") then
+                    _LP.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                    for i = 1, 4 do
+                        _RS.Events.Interact:FireServer(v)
+                        task.wait(tonumber(_0xO.FixDelay.Value) or 1)
+                        _RS.Events.CompleteGen:FireServer()
+                    end
+                end
+            end
+        end
+    end
+end)
 
 task.spawn(function()
     _RUN.RenderStepped:Connect(function()
@@ -177,31 +204,33 @@ task.spawn(function()
 end)
 
 task.spawn(function()
-    while task.wait(0.1) do
-        if _0xO.AutoFixGen.Value then
-            pcall(function()
-                for _, v in pairs(_WS:GetChildren()) do
-                    if v.Name == "Generator " and v:FindFirstChild("HumanoidRootPart") then
-                        _LP.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
-                        for i = 1, 4 do
-                            _RS.Events.Interact:FireServer(v)
-                            task.wait(_0xO.GenDelay.Value)
-                            _RS.Events.CompleteGen:FireServer()
-                        end
-                    end
-                end
-            end)
-        end
-    end
-end)
-
-task.spawn(function()
     while task.wait() do
         pcall(function()
             local ws = tonumber(_0xO.WalkSpeed.Value) or 24
             if _LP.Character and _LP.Character.Humanoid then _LP.Character.Humanoid.WalkSpeed = ws end
         end)
     end
+end)
+
+task.spawn(function()
+    _RUN.RenderStepped:Connect(function()
+        pcall(function()
+            if _0xO.VisualRange.Value then
+                local r = tonumber(_0xO.BlockRange.Value) or 15
+                local p = _WS:FindFirstChild("G_VRange") or Instance.new("Part", _WS)
+                p.Name = "G_VRange" p.Shape = "Cylinder" p.Anchored = true p.CanCollide = false
+                p.Size = Vector3.new(0.2, r*2, r*2)
+                p.CFrame = _LP.Character.HumanoidRootPart.CFrame * CFrame.Angles(0, 0, math.rad(90)) - Vector3.new(0, 3, 0)
+                p.Color = Color3.fromRGB(255, 0, 0)
+                for _, v in pairs(game.Players:GetPlayers()) do
+                    if v ~= _LP and v.Character and (v.Character.HumanoidRootPart.Position - _LP.Character.HumanoidRootPart.Position).Magnitude <= r then
+                        p.Color = Color3.fromRGB(0, 255, 0)
+                        if _0xO.AutoBlock.Value then _RS.Events.Block:FireServer() end
+                    end
+                end
+            elseif _WS:FindFirstChild("G_VRange") then _WS.G_VRange:Destroy() end
+        end)
+    end)
 end)
 
 Tabs.Info:Select()
