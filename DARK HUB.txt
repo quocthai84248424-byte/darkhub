@@ -31,7 +31,18 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.RightControl
 })
 
-local function _0xStyleInit()
+local Tabs = {
+    Info = Window:AddTab({ Title = "Info", Icon = "info" }),
+    Farm = Window:AddTab({ Title = "Farm", Icon = "home" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
+    Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+local _0xO = Fluent.Options
+
+task.spawn(function()
     local _MainFrame = Window.Main
     local _Bg = Instance.new("ImageLabel", _MainFrame)
     _Bg.Size = UDim2.new(1, 0, 1, 0)
@@ -50,19 +61,7 @@ local function _0xStyleInit()
     _ToggleBtn.Active = true
     Instance.new("UICorner", _ToggleBtn).CornerRadius = UDim.new(1, 0)
     _ToggleBtn.MouseButton1Click:Connect(function() Window:Minimize() end)
-end
-_0xStyleInit()
-
-local Tabs = {
-    Info = Window:AddTab({ Title = "Info", Icon = "info" }),
-    Farm = Window:AddTab({ Title = "Farm", Icon = "home" }),
-    Main = Window:AddTab({ Title = "Main", Icon = "swords" }),
-    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
-    Visual = Window:AddTab({ Title = "Visual", Icon = "eye" }),
-    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
-}
-
-local _0xO = Fluent.Options
+end)
 
 Tabs.Info:AddParagraph({Title = "DARK HUB", Content = "Script Created by: " .. _0xConfig.Author .. "\nDiscord: " .. _0xConfig.Discord .. "\nStatus: Forsaken Edition"})
 
